@@ -1,6 +1,6 @@
-﻿namespace Givt.OnlineCheckout.API.Models;
+﻿namespace Givt.OnlineCheckout.DataAccess;
 
-public class OrganisationDetails
+public class OrganisationResponse
 {
     public string Name { get; set; }
     public string PaymentProviderAccountReference { get; set; }

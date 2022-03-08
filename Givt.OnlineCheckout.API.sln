@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.API", "src\Givt.OnlineCheckout.API\Givt.OnlineCheckout.API.csproj", "{B4000B90-32EA-48A9-BB36-A98EDA65FD75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.DataAccess", "src\Givt.OnlineCheckout.DataAccess\Givt.OnlineCheckout.DataAccess.csproj", "{9ACEA88F-17A6-410E-8DD3-FAA27627CFF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B4000B90-32EA-48A9-BB36-A98EDA65FD75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4000B90-32EA-48A9-BB36-A98EDA65FD75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4000B90-32EA-48A9-BB36-A98EDA65FD75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ACEA88F-17A6-410E-8DD3-FAA27627CFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACEA88F-17A6-410E-8DD3-FAA27627CFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACEA88F-17A6-410E-8DD3-FAA27627CFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACEA88F-17A6-410E-8DD3-FAA27627CFF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
