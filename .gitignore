@@ -5,3 +5,4 @@ src/Givt.OnlineCheckout.API/obj
 src/Givt.OnlineCheckout.API/appsettings.Development.json
 src/Givt.OnlineCheckout.DataAccess/bin
 src/Givt.OnlineCheckout.DataAccess/obj
+.vs
