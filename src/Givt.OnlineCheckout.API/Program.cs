@@ -1,9 +1,16 @@
-using Givt.OnlineCheckout.API.Requests.Queries.GetOrganisationDetailsFromMedium;
+using AutoMapper;
+using Givt.OnlineCheckout.API.Example.Application;
+using Givt.OnlineCheckout.API.Example.Application.MappingProfiles;
+using Givt.OnlineCheckout.API.Example.Business;
+using Givt.OnlineCheckout.API.Example.Business.MappingProfiles.Integrations;
+using Givt.OnlineCheckout.API.Example.Integration;
+using Givt.OnlineCheckout.API.Example.Integration.SDK;
 using Givt.OnlineCheckout.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +18,29 @@ IConfiguration configuration;
 
 builder.Host.ConfigureServices(services =>
 {
-    services.AddAzureAppConfiguration();
-    services.AddMediatR(typeof(GetOrganisationDetailsFromMediumQuery));
+    //services.AddAzureAppConfiguration();
+
+    // Example
+    services.AddSingleton<CustomerService>();
+    services.AddSingleton<StripeIntegration>();
+    var mappingConfig = new MapperConfiguration(mc =>
+    {
+        mc.AddProfiles(new List<Profile>
+        {
+            new CustomerMappingProfile(),
+            new MerchantMappingProfile(),
+            new StripeCustomerIntegrationMappingProfile()
+        });
+    });
+    IMapper autoMapper = mappingConfig.CreateMapper();
+    builder.Services.AddSingleton(autoMapper);
+
+    services.AddMediatR(typeof(GetMerchantByMediumIdQuery).Assembly);
     services.AddDbContext<OnlineCheckoutContext>(options =>
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString("DataBaseConnectionString"));
     });
-    services.AddAutoMapper(typeof(Program));
+    services.AddAutoMapper(Assembly.GetExecutingAssembly());
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen((options) =>
     {
@@ -28,9 +51,7 @@ builder.Host.ConfigureServices(services =>
             Description = "The API microservice to support online giving without the Givt app and without registering within the app."
         });
     });
-
 });
-
 
 var app = builder.Build();
 
@@ -48,9 +69,24 @@ app.UseSwaggerUI((options) =>
 
 });
 
-app.MapGet("/api/organisations", async ([FromQuery] GetOrganisationDetailsFromMediumQuery query, [FromServices] IMediator mediator) =>
+app.MapGet("/api/organisations", async ([FromQuery] GetMerchantRequest query, [FromServices] IMediator mediator, IMapper mapper) =>
 {
+    var businessResponse = mapper.Map<GetMerchantResponse>(query);
     return await mediator.Send(query);
+});
+
+app.MapPost("api/customers", async ([FromBody] CreateCustomerRequest applicationRequest, [FromServices] IMediator mediator, IMapper mapper) =>
+{
+    var businessRequest = mapper.Map<CreateCustomerCommand>(applicationRequest);
+    var businessResponse = await mediator.Send(businessRequest);
+    return new CreatedResult("api/customers", mapper.Map<CreateCustomerResponse>(businessResponse));
+});
+
+app.MapPut("api/customers", async ([FromBody] UpdateCustomerRequest applicationRequest, [FromServices] IMediator mediator, IMapper mapper) =>
+{
+    var businessRequest = mapper.Map<UpdateCustomerCommand>(applicationRequest);
+    var businessResponse = await mediator.Send(businessRequest);
+    return new CreatedResult("api/customers", mapper.Map<UpdateCustomerResponse>(businessResponse));
 });
 
 app.Run();
