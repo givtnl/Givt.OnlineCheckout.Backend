@@ -3,17 +3,19 @@ using System;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Givt.OnlineCheckout.Infrastructure.Migrations
+namespace Givt.OnlineCheckout.DataAccess.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    partial class OnlineCheckoutContextModelSnapshot : ModelSnapshot
+    [Migration("20220310044315_AddedActiveBooleanToMerchant")]
+    partial class AddedActiveBooleanToMerchant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
