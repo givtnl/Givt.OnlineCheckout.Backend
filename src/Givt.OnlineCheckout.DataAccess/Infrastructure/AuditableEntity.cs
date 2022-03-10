@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Givt.OnlineCheckout.DataAccess.Infrastructure
+﻿namespace Givt.OnlineCheckout.DataAccess.Infrastructure
 {
     public abstract class AuditableEntity
     {

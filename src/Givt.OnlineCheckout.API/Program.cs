@@ -75,18 +75,20 @@ app.MapGet("/api/organisations", async ([FromQuery] GetMerchantRequest query, [F
     return await mediator.Send(query);
 });
 
+// Dien post iere ga ne customer aanmaken en datecreated + datemodified zetten via nen AuditableEntity en een hook in EF opt event Entity.Created
 app.MapPost("api/customers", async ([FromBody] CreateCustomerRequest applicationRequest, [FromServices] IMediator mediator, IMapper mapper) =>
 {
     var businessRequest = mapper.Map<CreateCustomerCommand>(applicationRequest);
     var businessResponse = await mediator.Send(businessRequest);
-    return new CreatedResult("api/customers", mapper.Map<CreateCustomerResponse>(businessResponse));
+    return mapper.Map<CreateCustomerResponse>(businessResponse);
 });
 
+// Dien put gaat de datemodified zetten via tzelfste AuditableEntity model een hook in EF opt event Entity.Modified
 app.MapPut("api/customers", async ([FromBody] UpdateCustomerRequest applicationRequest, [FromServices] IMediator mediator, IMapper mapper) =>
 {
     var businessRequest = mapper.Map<UpdateCustomerCommand>(applicationRequest);
     var businessResponse = await mediator.Send(businessRequest);
-    return new CreatedResult("api/customers", mapper.Map<UpdateCustomerResponse>(businessResponse));
+    return mapper.Map<UpdateCustomerResponse>(businessResponse);
 });
 
 app.Run();
