@@ -6,12 +6,12 @@ namespace Givt.OnlineCheckout.Infrastructure.DbContexts;
 
 public class OnlineCheckoutContext : DbContext
 {
-    public virtual DbSet<DataCustomer> Customers { get; set; }
+    public virtual DbSet<DataDonation> Donations { get; set; }
     public virtual DbSet<DataMerchant> Merchants { get; set; }
-
+    public virtual DbSet<DataCustomer> Customers { get; set; } 
     public OnlineCheckoutContext(DbContextOptions options) : base(options)
     {
-
+        
     }
 
     // TODO: put in static extension on context
@@ -37,5 +37,6 @@ public class OnlineCheckoutContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OnlineCheckoutContext).Assembly);
     }
 }

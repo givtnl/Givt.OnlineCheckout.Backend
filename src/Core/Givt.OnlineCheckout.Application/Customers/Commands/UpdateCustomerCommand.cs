@@ -2,7 +2,6 @@
 using Givt.OnlineCheckout.Application.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Stripe;
-using Givt.OnlineCheckout.Integrations.Stripe.SDK;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,16 +29,10 @@ namespace Givt.OnlineCheckout.Application.Customers.Commands
 
         public async Task<CustomerDetailModel> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await Context
-                .Customers
-                .FirstAsync(x => x.Id == request.Id, cancellationToken);
+            var customer = await Context.Customers.FirstAsync(x => x.Id == request.Id, cancellationToken);
 
-            var stripeResponse = await StripeIntegration.UpdateCustomerAsync(
-                Mapper.Map<CustomerUpdateOptions>(request)
-            );
-            
-            customer.StripeCustomerReference = stripeResponse.StripeCustomerReference;
             customer.Email = $"{request.Name}@givtapp.net";
+
             await Context.SaveChangesAsync(cancellationToken);
 
             return Mapper.Map<CustomerDetailModel>(customer);
