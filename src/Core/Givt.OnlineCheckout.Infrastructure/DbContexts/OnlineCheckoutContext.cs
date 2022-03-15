@@ -1,10 +1,8 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Givt.OnlineCheckout.Infrastructure.DbContexts;
-using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Models;
 using Microsoft.EntityFrameworkCore;
 
+namespace Givt.OnlineCheckout.Infrastructure.DbContexts;
 
 public class OnlineCheckoutContext : DbContext
 {

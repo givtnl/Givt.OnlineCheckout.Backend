@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Givt.OnlineCheckout.Persistance.Models;
+﻿using Givt.OnlineCheckout.Persistance.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
