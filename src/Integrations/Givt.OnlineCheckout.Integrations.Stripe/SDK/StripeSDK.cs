@@ -1,4 +1,7 @@
-﻿namespace Givt.OnlineCheckout.Integrations.Stripe.SDK
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Givt.OnlineCheckout.Integrations.Stripe.SDK
 {
     /// <summary>
     ///  Mock van Stripe SDK for .NET

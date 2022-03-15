@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Givt.OnlineCheckout.Persistance\Givt.OnlineCheckout.Persistance.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Givt.OnlineCheckout.Persistance\Givt.OnlineCheckout.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

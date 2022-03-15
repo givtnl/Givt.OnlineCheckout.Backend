@@ -1,4 +1,6 @@
-﻿namespace Givt.OnlineCheckout.API.Requests.Customers
+﻿using System;
+
+namespace Givt.OnlineCheckout.API.Requests.Customers
 {
     public class UpdateCustomerRequest
     {

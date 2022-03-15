@@ -1,4 +1,6 @@
-﻿namespace Givt.OnlineCheckout.API.Requests.Merchants
+﻿using System;
+
+namespace Givt.OnlineCheckout.API.Requests.Merchants
 {
     public class GetMerchantRequest
     {

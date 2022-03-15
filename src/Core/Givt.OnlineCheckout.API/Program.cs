@@ -1,3 +1,7 @@
+
+
+using System.Collections.Generic;
+using System.Reflection;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Mappings;
 using Givt.OnlineCheckout.API.Requests.Customers;
@@ -5,14 +9,16 @@ using Givt.OnlineCheckout.API.Requests.Merchants;
 using Givt.OnlineCheckout.Application.Customers.Commands;
 using Givt.OnlineCheckout.Application.Mappings;
 using Givt.OnlineCheckout.Application.Merchants.Queries;
-using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using Givt.OnlineCheckout.Integrations.Stripe.SDK;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

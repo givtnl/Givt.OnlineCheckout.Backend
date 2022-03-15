@@ -1,4 +1,6 @@
-﻿namespace Givt.OnlineCheckout.Persistance.Models
+﻿using System;
+
+namespace Givt.OnlineCheckout.Persistance.Models
 {
     public abstract class AuditableEntity
     {

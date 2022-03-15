@@ -1,4 +1,6 @@
-﻿using Givt.OnlineCheckout.Persistance.Models;
+﻿using System;
+using System.Collections.Generic;
+using Givt.OnlineCheckout.Persistance.Models;
 
 namespace Givt.OnlineCheckout.Persistance.Entities
 {

@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Givt.OnlineCheckout.Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
-    <ProjectReference Include="..\Givt.OnlineCheckout.Integrations.Stripe\Givt.OnlineCheckout.Integrations.Stripe.csproj" />
+    <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.Stripe\Givt.OnlineCheckout.Integrations.Stripe.csproj" />
+    <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
     <ProjectReference Include="..\Givt.OnlineCheckout.Persistance\Givt.OnlineCheckout.Persistance.csproj" />
   </ItemGroup>
-
 </Project>
