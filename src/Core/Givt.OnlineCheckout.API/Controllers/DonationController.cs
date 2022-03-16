@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Requests.Donations;
 using Givt.OnlineCheckout.Application.Donations;
+using Givt.OnlineCheckout.Application.Exceptions;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +23,19 @@ public class DonationController : Controller
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
-        var command = _mapper.Map<CreateDonationIntentCommand>(request);
-        var response = await _mediator.Send(command);
-        return Ok(new CreateDonationIntentResponse { PaymentMethodId = response.PaymentIntentSecret });
+        try
+        {
+            var command = _mapper.Map<CreateDonationIntentCommand>(request);
+            var response = await _mediator.Send(command);
+            return Ok(new CreateDonationIntentResponse { PaymentMethodId = response.PaymentIntentSecret });
+        }
+        catch (NotFoundException exception)
+        {
+            return NotFound();
+        }
+        catch (BadReqeustException exception)
+        {
+            return BadRequest();
+        }
     }
 }
