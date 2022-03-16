@@ -1,5 +1,6 @@
 using AutoMapper;
 using Givt.OnlineCheckout.API.Requests.Merchants;
+using Givt.OnlineCheckout.Application.Exceptions;
 using Givt.OnlineCheckout.Application.Mediums.Queries;
 using Givt.OnlineCheckout.Application.Merchants.Queries;
 using MediatR;
@@ -23,8 +24,18 @@ namespace Givt.OnlineCheckout.API.Controllers
         [ProducesResponseType(typeof(GetMediumResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Index([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
         {
-            var query = _mapper.Map<GetMediumDetailsQuery>(request);
-            return Ok(await _mediator.Send(query, cancellationToken));
+            try
+            {
+                var query = _mapper.Map<GetMediumDetailsQuery>(request);
+                return Ok(await _mediator.Send(query, cancellationToken));   
+            }catch (NotFoundException exception)
+            {
+                return NotFound();
+            }
+            catch (BadReqeustException exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
