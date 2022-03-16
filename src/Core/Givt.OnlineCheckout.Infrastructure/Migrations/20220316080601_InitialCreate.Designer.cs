@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    [Migration("20220315153134_InitialCreate")]
+    [Migration("20220316080601_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

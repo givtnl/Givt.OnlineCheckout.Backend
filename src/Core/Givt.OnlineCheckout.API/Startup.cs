@@ -63,8 +63,15 @@ namespace Givt.OnlineCheckout.API
                     Description = "The API microservice to support online giving without the Givt app and without registering within the app."
                 });
             });
-            services.AddMvc();
-            services.AddControllers();
+            services.AddMvcCore()
+                    .AddControllersAsServices()
+                    .AddMvcOptions(o => o.EnableEndpointRouting = false)
+                    .AddCors(o => o.AddPolicy("EnableAll", builder =>
+                    {
+                        builder.AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowAnyOrigin();
+                    }));
         }
         
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -85,6 +92,9 @@ namespace Givt.OnlineCheckout.API
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 
             });
+
+            app.UseCors("EnableAll")
+                .UseMvc();
         }
 
         public void ConfigureOptions(IServiceCollection services)
