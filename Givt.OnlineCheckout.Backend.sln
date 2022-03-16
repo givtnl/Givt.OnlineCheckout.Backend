@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.API", "src\Core\Givt.OnlineCheckout.API\Givt.OnlineCheckout.API.csproj", "{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integrations.Interfaces", "src\Integrations\Givt.OnlineCheckout.Integrations.Interfaces\Givt.OnlineCheckout.Integrations.Interfaces.csproj", "{F695729F-835D-4C05-899B-72BFCC2DA7D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,7 @@ Global
 		{347FB746-94CF-48DD-BF67-D52034F642C6} = {D4DB99D4-FC56-4E41-89AE-190B9CFA1DDD}
 		{0A94A59D-DE55-4E3A-B314-F54E615E0FFC} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 		{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A} = {D4DB99D4-FC56-4E41-89AE-190B9CFA1DDD}
+		{F695729F-835D-4C05-899B-72BFCC2DA7D1} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1AB3A49D-246F-4582-8C52-D5A7BFBF3ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -57,5 +60,9 @@ Global
 		{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
