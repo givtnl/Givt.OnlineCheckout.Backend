@@ -63,6 +63,7 @@ namespace Givt.OnlineCheckout.API
                     Description = "The API microservice to support online giving without the Givt app and without registering within the app."
                 });
             });
+            services.AddControllers();
             services.AddMvcCore()
                     .AddControllersAsServices()
                     .AddMvcOptions(o => o.EnableEndpointRouting = false)

@@ -19,5 +19,8 @@ namespace Givt.OnlineCheckout.API.Requests.Merchants
     public class GetMerchantResponse
     {
         public string Name { get; set; }
+        public decimal[] Amounts { get; set; }
+        public string ThankYou { get; set; }
+        public string Goal { get; set; }
     }
 }
