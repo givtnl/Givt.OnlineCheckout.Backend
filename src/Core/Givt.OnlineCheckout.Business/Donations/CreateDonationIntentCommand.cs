@@ -8,4 +8,5 @@ public class CreateDonationIntentCommand: IRequest<CreateDonationIntentCommandRe
     public decimal Amount { get; set; }
     public string Medium { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
+    internal string AccountId { get; set; }
 }

@@ -12,8 +12,13 @@ public class CreateDonationIntentCommandHandler: IRequestHandler<CreateDonationI
         _singlePaymentService = singlePaymentService;
     }
     
-    public Task<CreateDonationIntentCommandResponse> Handle(CreateDonationIntentCommand request, CancellationToken cancellationToken)
+    public async Task<CreateDonationIntentCommandResponse> Handle(CreateDonationIntentCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var result = await _singlePaymentService.CreatePaymentIntent(request.Amount, request.Amount * 0.045m, request.AccountId, request.PaymentMethod);
+
+        return new CreateDonationIntentCommandResponse
+        {
+            PaymentIntentSecret = result
+        };
     }
 }
