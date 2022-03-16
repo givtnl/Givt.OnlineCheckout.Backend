@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using Givt.OnlineCheckout.Application.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 
@@ -8,9 +9,16 @@ public class DataMediumMappingProfile: Profile
 {
     public DataMediumMappingProfile()
     {
-        // mapping voor amounts en voor orgname
-        CreateMap<DataMedium, MediumDetailModel>();
-        // merchant name in mediumdetail
-        // amounts string split op komma en naar decimal array
+        CreateMap<DataMedium, MediumDetailModel>()
+            .ForMember(
+                x => x.Amounts,
+                options => options.MapFrom(
+                    src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
+                    ))
+            .ForMember(
+                x => x.OrganisationName, 
+                options => options.MapFrom(
+                    src => src.Merchant.Name
+                    ));
     }
 }

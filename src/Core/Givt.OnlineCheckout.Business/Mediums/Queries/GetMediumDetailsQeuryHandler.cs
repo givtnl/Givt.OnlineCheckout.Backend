@@ -22,7 +22,6 @@ public class GetMediumDetailsQeuryHandler : IRequestHandler<GetMediumDetailsQuer
     {
         var medium = await _context.Mediums.Where(x => x.Medium == request.MediumId).Include(x => x.Merchant).FirstOrDefaultAsync(cancellationToken);
         
-        // Orgname in mapper steken
         return _mapper.Map<DataMedium, MediumDetailModel>(medium);
     }
 }
