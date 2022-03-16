@@ -9,6 +9,7 @@ public class OnlineCheckoutContext : DbContext
     public virtual DbSet<DataDonation> Donations { get; set; }
     public virtual DbSet<DataMerchant> Merchants { get; set; }
     public virtual DbSet<DataCustomer> Customers { get; set; } 
+    public virtual DbSet<DataMedium> Mediums { get; set; } 
     public OnlineCheckoutContext(DbContextOptions options) : base(options)
     {
         

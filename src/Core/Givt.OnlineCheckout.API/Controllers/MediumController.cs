@@ -1,5 +1,6 @@
 using AutoMapper;
 using Givt.OnlineCheckout.API.Requests.Merchants;
+using Givt.OnlineCheckout.Application.Mediums.Queries;
 using Givt.OnlineCheckout.Application.Merchants.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,21 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    public class MerchantsController : Controller
+    public class MediumController : Controller
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public MerchantsController(IMapper mapper, IMediator mediator)
+        public MediumController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
         }
         
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] GetMerchantRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> Index([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
         {
-            var query = _mapper.Map<GetMerchantByMediumIdQuery>(request);
+            var query = _mapper.Map<GetMediumDetailsQuery>(request);
             return Ok(await _mediator.Send(query, cancellationToken));
         }
     }

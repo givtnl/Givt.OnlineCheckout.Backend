@@ -43,7 +43,8 @@ namespace Givt.OnlineCheckout.API
                     new MerchantMappingProfile(),
                     new DataCustomerMappingProfile(),
                     new DataMerchantMappingProfile(),
-                    new StripeIntegrationMappingProfile()
+                    new StripeIntegrationMappingProfile(),
+                    new MediumMappingProfile()
                 });
             }).CreateMapper());
 
