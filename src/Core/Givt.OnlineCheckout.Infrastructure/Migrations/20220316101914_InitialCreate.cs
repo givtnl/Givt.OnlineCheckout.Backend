@@ -28,7 +28,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                 name: "Merchants",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     PaymentProviderAccountReference = table.Column<string>(type: "text", nullable: true),
                     Namespace = table.Column<string>(type: "text", nullable: true),
@@ -63,6 +64,36 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DataMedium",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MerchantId = table.Column<long>(type: "bigint", nullable: false),
+                    Amounts = table.Column<decimal[]>(type: "numeric[]", nullable: false),
+                    ThankYou = table.Column<string>(type: "text", nullable: false),
+                    Goal = table.Column<string>(type: "text", nullable: false),
+                    Medium = table.Column<string>(type: "text", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DataMedium", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DataMedium_Merchants_MerchantId",
+                        column: x => x.MerchantId,
+                        principalTable: "Merchants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DataMedium_MerchantId",
+                table: "DataMedium",
+                column: "MerchantId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Donations_DataCustomerId",
                 table: "Donations",
@@ -71,6 +102,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DataMedium");
+
             migrationBuilder.DropTable(
                 name: "Donations");
 

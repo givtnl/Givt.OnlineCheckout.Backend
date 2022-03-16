@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    [Migration("20220316080601_InitialCreate")]
+    [Migration("20220316101914_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,11 +74,53 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.ToTable("Donations");
                 });
 
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMedium", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal[]>("Amounts")
+                        .IsRequired()
+                        .HasColumnType("numeric[]");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Goal")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Medium")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("MerchantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ThankYou")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MerchantId");
+
+                    b.ToTable("DataMedium");
+                });
+
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
@@ -110,9 +152,25 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasForeignKey("DataCustomerId");
                 });
 
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMedium", b =>
+                {
+                    b.HasOne("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", "Merchant")
+                        .WithMany("Mediums")
+                        .HasForeignKey("MerchantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Merchant");
+                });
+
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataCustomer", b =>
                 {
                     b.Navigation("Donations");
+                });
+
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", b =>
+                {
+                    b.Navigation("Mediums");
                 });
 #pragma warning restore 612, 618
         }
