@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Mappings;
 using Givt.OnlineCheckout.Application.Mappings;
 using Givt.OnlineCheckout.Application.Merchants.Queries;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
+using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Stripe;
-using Givt.OnlineCheckout.Integrations.Stripe.SDK;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace Givt.OnlineCheckout.API
@@ -33,8 +27,6 @@ namespace Givt.OnlineCheckout.API
         {
             ConfigureOptions(services);
             
-            services.AddSingleton<CustomerService>();
-            services.AddSingleton<StripeIntegration>();
             services.AddSingleton(new MapperConfiguration(mc =>
             {
                 mc.AddProfiles(new List<Profile>
@@ -43,11 +35,12 @@ namespace Givt.OnlineCheckout.API
                     new MerchantMappingProfile(),
                     new DataCustomerMappingProfile(),
                     new DataMerchantMappingProfile(),
-                    new StripeIntegrationMappingProfile(),
-                    new MediumMappingProfile()
+                    new MediumMappingProfile(),
+                    new DonationMappingProfile()
                 });
             }).CreateMapper());
 
+            services.AddSingleton<ISinglePaymentService, StripeIntegration>();
             services.AddMediatR(typeof(GetMerchantByMediumIdQuery).Assembly);
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {

@@ -20,6 +20,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType(typeof(GetMediumResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Index([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<GetMediumDetailsQuery>(request);

@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Stripe.net" Version="39.97.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Givt.OnlineCheckout.Integrations.Interfaces\Givt.OnlineCheckout.Integrations.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
