@@ -33,7 +33,7 @@ public class DonationController : Controller
         {
             return NotFound();
         }
-        catch (BadReqeustException exception)
+        catch (BadRequestException exception)
         {
             return BadRequest();
         }

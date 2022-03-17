@@ -25,7 +25,7 @@ public class CreateDonationIntentFetchAccountIdPreHandler: IRequestPreProcessor<
 
         if (medium.Merchant.PaymentProviderAccountReference == null)
         {
-            throw new BadReqeustException("Merchant has no account reference");
+            throw new BadRequestException("Merchant has no account reference");
         }
 
         request.AccountId = medium.Merchant.PaymentProviderAccountReference;
