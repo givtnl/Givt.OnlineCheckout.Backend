@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Application.Exceptions;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Exceptions;
+using Givt.OnlineCheckout.API.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.Application.Mediums.Queries;
+namespace Givt.OnlineCheckout.API.Mediums.Queries;
 
 public class GetMediumDetailsQeuryHandler : IRequestHandler<GetMediumDetailsQuery, MediumDetailModel>
 {

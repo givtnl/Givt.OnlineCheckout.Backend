@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.Application.Customers.Commands
+namespace Givt.OnlineCheckout.API.Customers.Commands
 {
 
     public class UpdateCustomerCommand : IRequest<CustomerDetailModel>

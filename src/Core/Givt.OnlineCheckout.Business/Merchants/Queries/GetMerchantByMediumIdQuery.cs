@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.Application.Merchants.Queries
+namespace Givt.OnlineCheckout.API.Merchants.Queries
 {
     public class GetMerchantByMediumIdQuery : IRequest<MerchantDetailModel>
     {

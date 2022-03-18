@@ -1,14 +1,17 @@
-using System.Reflection;
 using AutoMapper;
+using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
-using Givt.OnlineCheckout.Application.Mappings;
-using Givt.OnlineCheckout.Application.Merchants.Queries;
+using Givt.OnlineCheckout.API.Merchants.Queries;
+using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
+using Givt.OnlineCheckout.Infrastructure.Loggers;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog.Sinks.Http.Logger;
+using System.Reflection;
 
 namespace Givt.OnlineCheckout.API
 {
@@ -26,7 +29,10 @@ namespace Givt.OnlineCheckout.API
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureOptions(services);
-            
+
+            services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
             services.AddSingleton(new MapperConfiguration(mc =>
             {
                 mc.AddProfiles(new List<Profile>
@@ -59,14 +65,17 @@ namespace Givt.OnlineCheckout.API
                 });
             });
             services.AddControllers();
-            services.AddMvcCore()
+            services.AddMvcCore(x=>
+            {
+                x.Filters.Add<CustomExceptionFilter>();
+            })
                     .AddControllersAsServices()
                     .AddMvcOptions(o => o.EnableEndpointRouting = false)
                     .AddCors(o => o.AddPolicy("EnableAll", builder =>
                     {
                         builder.AllowAnyHeader()
-                               .AllowAnyMethod()
-                               .AllowAnyOrigin();
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin();
                     }));
         }
         

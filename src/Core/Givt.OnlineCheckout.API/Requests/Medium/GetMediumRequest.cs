@@ -1,4 +1,6 @@
-﻿namespace Givt.OnlineCheckout.API.Requests.Merchants;
+﻿using Givt.OnlineCheckout.API.Requests.Merchants;
+
+namespace Givt.OnlineCheckout.API.Requests.Medium;
 
 public class GetMediumRequest
 {

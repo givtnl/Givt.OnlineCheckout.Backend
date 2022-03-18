@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
-namespace Givt.OnlineCheckout.Application.Donations;
+namespace Givt.OnlineCheckout.API.Donations;
 
 public class CreateDonationIntentCommand: IRequest<CreateDonationIntentCommandResponse>
 {

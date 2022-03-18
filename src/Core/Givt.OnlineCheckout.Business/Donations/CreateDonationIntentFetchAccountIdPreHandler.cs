@@ -1,9 +1,9 @@
-﻿using Givt.OnlineCheckout.Application.Exceptions;
+﻿using Givt.OnlineCheckout.API.Exceptions;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.Application.Donations;
+namespace Givt.OnlineCheckout.API.Donations;
 
 public class CreateDonationIntentFetchAccountIdPreHandler: IRequestPreProcessor<CreateDonationIntentCommand>
 {

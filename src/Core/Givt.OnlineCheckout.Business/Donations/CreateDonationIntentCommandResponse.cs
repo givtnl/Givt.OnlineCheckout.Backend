@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.Application.Donations;
+﻿namespace Givt.OnlineCheckout.API.Donations;
 
 public class CreateDonationIntentCommandResponse
 {
