@@ -8,6 +8,9 @@ public class DonationMappingProfile : Profile
 {
     public DonationMappingProfile()
     {
-        CreateMap<CreateDonationIntentRequest, CreateDonationIntentCommand>();
+        CreateMap<CreateDonationIntentRequest, CreateDonationIntentCommand>()
+            .ForMember(x => x.MediumId, options => options.MapFrom(
+            src => src.Medium
+        ));
     }
 }

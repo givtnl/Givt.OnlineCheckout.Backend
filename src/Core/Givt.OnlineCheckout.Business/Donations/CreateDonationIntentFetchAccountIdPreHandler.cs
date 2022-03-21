@@ -10,7 +10,7 @@ public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext
     public async Task Process(CreateDonationIntentCommand request, CancellationToken cancellationToken)
     {
         var medium = await DbContext.Mediums
-            .Where(x => x.Medium == request.MediumId)
+            .Where(x => x.Medium == request.MediumId.ToString())
             .Include(x => x.Merchant)
             .FirstOrDefaultAsync(cancellationToken);
 
