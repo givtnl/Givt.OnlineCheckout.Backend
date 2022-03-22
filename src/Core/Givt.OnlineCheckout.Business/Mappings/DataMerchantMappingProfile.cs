@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 
-namespace Givt.OnlineCheckout.Application.Mappings;
+namespace Givt.OnlineCheckout.API.Mappings;
 public class DataMerchantMappingProfile : Profile
 {
     public DataMerchantMappingProfile()

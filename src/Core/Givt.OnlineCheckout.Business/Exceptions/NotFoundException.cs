@@ -1,9 +1,7 @@
-﻿namespace Givt.OnlineCheckout.Application.Exceptions;
+﻿namespace Givt.OnlineCheckout.API.Exceptions;
 
-public class NotFoundException : Exception
+public class NotFoundException : GivtException
 {
-    public NotFoundException(string message): base(message)
-    {
-        
-    }
+    public NotFoundException(string message): base(message) { }
+    public override int ErrorCode => 404;
 }

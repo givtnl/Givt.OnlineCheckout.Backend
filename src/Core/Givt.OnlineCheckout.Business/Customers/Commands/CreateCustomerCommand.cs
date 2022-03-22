@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 
-namespace Givt.OnlineCheckout.Application.Customers.Commands
+namespace Givt.OnlineCheckout.API.Customers.Commands
 {
     public class CreateCustomerCommand : IRequest<CustomerDetailModel>
     {

@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.Application.Models;
+﻿namespace Givt.OnlineCheckout.API.Models;
 
 public class MediumDetailModel
 {

@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.API.Requests.Merchants;
+﻿namespace Givt.OnlineCheckout.API.Requests.Medium;
 
 public class GetMediumResponse
 {

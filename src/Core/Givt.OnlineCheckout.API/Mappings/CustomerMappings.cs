@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Requests.Customers;
-using Givt.OnlineCheckout.Application.Customers.Commands;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Customers.Commands;
+using Givt.OnlineCheckout.API.Models;
 
 namespace Givt.OnlineCheckout.API.Mappings
 {

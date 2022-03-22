@@ -9,15 +9,14 @@ namespace Givt.OnlineCheckout.API
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-
-            
+            BuildWebHost(args).Run(); 
         }
+        
         public static IWebHost BuildWebHost(string[] args) =>
                 WebHost.CreateDefaultBuilder(args)
                     .ConfigureAppConfiguration((hostingContext, config) => {
                         config
-                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // I think we dont need this anymore right? Bcus AddAzureAppConfig() ?
                             .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
                             .AddEnvironmentVariables();
                     })

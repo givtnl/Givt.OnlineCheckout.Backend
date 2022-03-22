@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.API.Requests.Merchants;
-using Givt.OnlineCheckout.Application.Mediums.Queries;
-using Givt.OnlineCheckout.Application.Models;
+using Givt.OnlineCheckout.API.Requests.Medium;
+using Givt.OnlineCheckout.API.Mediums.Queries;
+using Givt.OnlineCheckout.API.Models;
 
 namespace Givt.OnlineCheckout.API.Mappings;
 
