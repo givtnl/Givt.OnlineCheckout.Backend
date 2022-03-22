@@ -23,7 +23,7 @@ namespace Givt.OnlineCheckout.API.Customers.Commands
         }
         public async Task<CustomerDetailModel> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = new DataCustomer
+            var customer = new CustomerData
             {
                 Email = $"random@{request.Name}.noiceeeeuh"
             };

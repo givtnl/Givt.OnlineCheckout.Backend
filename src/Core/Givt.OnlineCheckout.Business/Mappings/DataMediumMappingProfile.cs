@@ -9,7 +9,7 @@ public class DataMediumMappingProfile: Profile
 {
     public DataMediumMappingProfile()
     {
-        CreateMap<DataMedium, MediumDetailModel>()
+        CreateMap<MediumData, MediumDetailModel>()
             .ForMember(
                 x => x.Amounts,
                 options => options.MapFrom(
