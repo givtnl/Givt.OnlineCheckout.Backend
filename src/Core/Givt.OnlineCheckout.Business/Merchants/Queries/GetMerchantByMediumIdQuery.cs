@@ -8,7 +8,7 @@ namespace Givt.OnlineCheckout.API.Merchants.Queries
 {
     public class GetMerchantByMediumIdQuery : IRequest<MerchantDetailModel>
     {
-        public string MediumId { get; set; }
+        public MediumIdType MediumId { get; set; }
     }
 
     public class GetMerchantByMediumIdQueryHandler : IRequestHandler<GetMerchantByMediumIdQuery, MerchantDetailModel>

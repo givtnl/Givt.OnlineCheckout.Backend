@@ -1,10 +1,11 @@
 ﻿using System;
+using Givt.OnlineCheckout.API.Models;
 
 namespace Givt.OnlineCheckout.API.Requests.Merchants
 {
     public class GetMerchantRequest
     {
-        public string MediumId { get; set; }
+        public MediumIdType MediumId { get; set; }
         public static bool TryParse(string value, out GetMerchantRequest request)
         {
             if (string.IsNullOrEmpty(value))

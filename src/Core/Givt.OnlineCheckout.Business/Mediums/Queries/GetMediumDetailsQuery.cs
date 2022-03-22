@@ -5,5 +5,5 @@ namespace Givt.OnlineCheckout.API.Mediums.Queries;
 
 public class GetMediumDetailsQuery: IRequest<MediumDetailModel>
 {
-    public string MediumId { get; set; }
+    public MediumIdType MediumId { get; set; }
 }
