@@ -7,4 +7,12 @@ public class MediumDetailModel
     public string Goal { get; set; }
     public string Medium { get; set; }
     public string OrganisationName { get; set; }
+    public Currency Currency { get; set; }
+}
+
+public enum Currency
+{
+    EUR,
+    GBP,
+    USD
 }

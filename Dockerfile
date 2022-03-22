@@ -2,7 +2,7 @@
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ./src/Presentation/Givt.OnlineCheckout.API/Givt.OnlineCheckout.API.csproj ./
+COPY ./src/Core/Givt.OnlineCheckout.API/Givt.OnlineCheckout.API.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build

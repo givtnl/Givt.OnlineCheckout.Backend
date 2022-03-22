@@ -19,6 +19,11 @@ public class DataMediumMappingProfile: Profile
                 x => x.OrganisationName, 
                 options => options.MapFrom(
                     src => src.Merchant.Name
-                    ));
+                    ))
+            .ForMember(
+                x => x.Currency, 
+                options => options.MapFrom(
+                    src => src.Merchant.Currency
+                ));
     }
 }

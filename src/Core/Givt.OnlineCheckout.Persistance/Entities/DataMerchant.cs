@@ -9,6 +9,14 @@ namespace Givt.OnlineCheckout.Persistance.Entities
         public string? Name { get; set; }
         public string? PaymentProviderAccountReference { get; set; }
         public string? Namespace { get; set; }
+        public Currency Currency { get; set; }
         public bool Active { get; set; }
+    }
+
+    public enum Currency
+    {
+        EUR,
+        GBP,
+        USD
     }
 }
