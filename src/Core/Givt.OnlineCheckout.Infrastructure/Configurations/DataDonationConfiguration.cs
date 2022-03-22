@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Givt.OnlineCheckout.Infrastructure.Configurations
 {
-    public class DataDonationConfiguration : IEntityTypeConfiguration<DataDonation>
+    public class DataDonationConfiguration : IEntityTypeConfiguration<DonationData>
     {
-        public void Configure(EntityTypeBuilder<DataDonation> builder)
+        public void Configure(EntityTypeBuilder<DonationData> builder)
         {
             
         }

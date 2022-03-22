@@ -2,9 +2,9 @@
 
 namespace Givt.OnlineCheckout.Persistance.Entities;
 
-public class DataMedium: DataEntityBase<long>
+public class MediumData: DataEntityBase<long>
 {
-    public DataMerchant Merchant { get; set; }
+    public Merchantdata Merchant { get; set; }
     public long MerchantId { get; set; }
     public string Amounts { get; set; }
     public string ThankYou { get; set; }

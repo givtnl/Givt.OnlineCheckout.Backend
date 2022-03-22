@@ -6,10 +6,10 @@ namespace Givt.OnlineCheckout.Infrastructure.DbContexts;
 
 public class OnlineCheckoutContext : DbContext
 {
-    public virtual DbSet<DataDonation> Donations { get; set; }
-    public virtual DbSet<DataMerchant> Merchants { get; set; }
-    public virtual DbSet<DataCustomer> Customers { get; set; } 
-    public virtual DbSet<DataMedium> Mediums { get; set; } 
+    public virtual DbSet<DonationData> Donations { get; set; }
+    public virtual DbSet<Merchantdata> Merchants { get; set; }
+    public virtual DbSet<CustomerData> Customers { get; set; } 
+    public virtual DbSet<MediumData> Mediums { get; set; } 
     public OnlineCheckoutContext(DbContextOptions options) : base(options)
     {
         

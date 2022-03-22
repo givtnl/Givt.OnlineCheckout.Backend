@@ -8,7 +8,7 @@ namespace Givt.OnlineCheckout.API.Donations
     {
         public async Task Process(CreateDonationIntentCommand request, CreateDonationIntentCommandResponse response, CancellationToken cancellationToken)
         {
-            var dataDonation = new DataDonation { 
+            var dataDonation = new DonationData { 
                 Amount = request.Amount, 
                 PaymentProviderTransactionReference = request.AccountId 
             };

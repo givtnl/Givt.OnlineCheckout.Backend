@@ -10,6 +10,6 @@ public class DataCustomerMappingProfile : Profile
     public DataCustomerMappingProfile()
     {
         // Domain -> Business
-        CreateMap<DataCustomer, CustomerDetailModel>();
+        CreateMap<CustomerData, CustomerDetailModel>();
     }
 }

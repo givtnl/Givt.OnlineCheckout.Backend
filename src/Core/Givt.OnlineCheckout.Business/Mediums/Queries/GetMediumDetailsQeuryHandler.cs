@@ -29,6 +29,6 @@ public class GetMediumDetailsQeuryHandler : IRequestHandler<GetMediumDetailsQuer
         }
 
         
-        return _mapper.Map<DataMedium, MediumDetailModel>(medium);
+        return _mapper.Map<MediumData, MediumDetailModel>(medium);
     }
 }
