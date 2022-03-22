@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Givt.OnlineCheckout.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Linq.Translations" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.Stripe\Givt.OnlineCheckout.Integrations.Stripe.csproj" />
+    <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
+    <ProjectReference Include="..\Givt.OnlineCheckout.Persistance\Givt.OnlineCheckout.Persistance.csproj" />
+  </ItemGroup>
+</Project>
