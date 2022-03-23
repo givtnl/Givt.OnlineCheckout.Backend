@@ -1,7 +1,7 @@
-﻿using Givt.OnlineCheckout.API.Models;
+﻿using Givt.OnlineCheckout.Business.Models;
 using MediatR;
 
-namespace Givt.OnlineCheckout.API.Mediums.Queries;
+namespace Givt.OnlineCheckout.Business.Mediums.Queries;
 
 public class GetMediumDetailsQuery: IRequest<MediumDetailModel>
 {

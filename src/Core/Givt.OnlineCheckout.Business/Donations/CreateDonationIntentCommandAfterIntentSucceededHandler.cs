@@ -3,7 +3,7 @@ using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.API.Donations
+namespace Givt.OnlineCheckout.Business.Donations
 {
     public record CreateDonationIntentCommandAfterIntentSucceededHandler(OnlineCheckoutContext DbContext) : IRequestPostProcessor<CreateDonationIntentCommand, CreateDonationIntentCommandResponse>
     {
@@ -12,16 +12,17 @@ namespace Givt.OnlineCheckout.API.Donations
             var dataDonation = new DonationData
             {
                 Amount = request.Amount,
-                PaymentProviderTransactionReference = request.AccountId
+                TransactionReference = request.AccountId
             };
-            // link to a customer if the user wants a tax report
-            if (request.TaxReportRequested == true && !String.IsNullOrWhiteSpace(request.Email))
+
+            // link to a donor if the user wants a tax report
+            if (request.TaxReportRequested && !String.IsNullOrWhiteSpace(request.Email))
             {
                 var email = request.Email.ToLower();
-                var c = await DbContext.Customers.FirstAsync(c => c.Email == email, cancellationToken: cancellationToken);
-                if (c != null)
-                    c = new CustomerData { Email = email };
-                dataDonation.Customer = c;
+                var donor = await DbContext.Donors.FirstAsync(c => c.Email == email, cancellationToken: cancellationToken);
+                if (donor != null)
+                    donor = new DonorData { Email = email };
+                dataDonation.Donor = donor;
             }
 
             await DbContext.Donations.AddAsync(dataDonation, cancellationToken);

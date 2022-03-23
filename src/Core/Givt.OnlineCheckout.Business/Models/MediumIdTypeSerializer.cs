@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-namespace Givt.OnlineCheckout.API.Models;
+
+namespace Givt.OnlineCheckout.Business.Models;
 public class MediumIdTypeSerializer : JsonConverter
 {
     public override bool CanConvert(Type objectType)

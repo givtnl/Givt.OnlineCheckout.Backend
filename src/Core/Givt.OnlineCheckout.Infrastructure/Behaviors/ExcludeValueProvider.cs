@@ -15,12 +15,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Behaviors
         {
             _memberInfo = memberInfo;
         }
-        public void SetValue(object target, object? value)
+        public void SetValue(object target, object value)
         {
             target.GetType().GetProperty(_memberInfo.Name)?.SetValue(target, "****");
         }
 
-        public object? GetValue(object target)
+        public object GetValue(object target)
         {
             var value = target.GetType().GetProperty(_memberInfo.Name)?.GetValue(target);
             return value == null ? null : new string('*', value.ToString()!.Length);

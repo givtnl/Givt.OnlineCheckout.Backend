@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <RootNamespace>Givt.OnlineCheckout.API</RootNamespace>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Givt.OnlineCheckout.Business</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

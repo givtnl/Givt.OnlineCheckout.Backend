@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Givt.OnlineCheckout.Persistance.Enums
+﻿namespace Givt.OnlineCheckout.Persistance.Enums
 {
-    public enum DonationStatus
+    public enum DonationStatus : byte
     {
         Created = 0,
         Processing = 1,

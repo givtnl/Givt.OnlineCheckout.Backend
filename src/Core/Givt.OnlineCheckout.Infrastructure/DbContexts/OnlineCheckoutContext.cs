@@ -7,8 +7,8 @@ namespace Givt.OnlineCheckout.Infrastructure.DbContexts;
 public class OnlineCheckoutContext : DbContext
 {
     public virtual DbSet<DonationData> Donations { get; set; }
-    public virtual DbSet<MerchantData> Merchants { get; set; }
-    public virtual DbSet<CustomerData> Customers { get; set; } 
+    public virtual DbSet<OrganisationData> Organisations { get; set; }
+    public virtual DbSet<DonorData> Donors { get; set; } 
     public virtual DbSet<MediumData> Mediums { get; set; } 
     public OnlineCheckoutContext(DbContextOptions options) : base(options)
     {
@@ -16,8 +16,7 @@ public class OnlineCheckoutContext : DbContext
     }
 
     // TODO: put in static extension on context
-    public override int SaveChanges(bool acceptAllChangesOnSuccess)
-    
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)    
     {
         DbContextUpdateOperations.UpdateDates(ChangeTracker.Entries<AuditableEntity>());
         return base.SaveChanges(acceptAllChangesOnSuccess);

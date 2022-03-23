@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Givt.OnlineCheckout.API.Exceptions;
+﻿namespace Givt.OnlineCheckout.Business.Exceptions;
 
 public class BadRequestException: GivtException
 {

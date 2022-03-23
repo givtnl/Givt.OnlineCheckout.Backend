@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.API.Requests.Donations;
-using Givt.OnlineCheckout.API.Donations;
+using Givt.OnlineCheckout.API.Models.Donations;
+using Givt.OnlineCheckout.Business.Donations;
 
 namespace Givt.OnlineCheckout.API.Mappings;
 

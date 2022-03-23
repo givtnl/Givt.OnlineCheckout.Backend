@@ -1,4 +1,4 @@
-namespace Givt.OnlineCheckout.API.Exceptions;
+namespace Givt.OnlineCheckout.Business.Exceptions;
 
 public class InvalidMediumException : GivtException
 {

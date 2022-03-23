@@ -1,7 +1,9 @@
-using Givt.OnlineCheckout.API.Exceptions;
+using Givt.OnlineCheckout.Business.Exceptions;
 using Newtonsoft.Json;
 using Microsoft.Linq.Translations;
-namespace Givt.OnlineCheckout.API.Models;
+
+namespace Givt.OnlineCheckout.Business.Models;
+
 [JsonConverter(typeof(MediumIdTypeSerializer))]
 public struct MediumIdType : IComparable<MediumIdType>
 {

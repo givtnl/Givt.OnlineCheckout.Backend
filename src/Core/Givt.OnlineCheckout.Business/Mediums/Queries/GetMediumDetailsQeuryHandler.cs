@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.API.Exceptions;
-using Givt.OnlineCheckout.API.Models;
+using Givt.OnlineCheckout.Business.Exceptions;
+using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.API.Mediums.Queries;
+namespace Givt.OnlineCheckout.Business.Mediums.Queries;
 
 public class GetMediumDetailsQeuryHandler : IRequestHandler<GetMediumDetailsQuery, MediumDetailModel>
 {
@@ -21,11 +21,11 @@ public class GetMediumDetailsQeuryHandler : IRequestHandler<GetMediumDetailsQuer
     
     public async Task<MediumDetailModel> Handle(GetMediumDetailsQuery request, CancellationToken cancellationToken)
     {
-        var medium = await _context.Mediums.Where(x => x.Medium == request.MediumId).Include(x => x.Merchant).FirstOrDefaultAsync(cancellationToken);
+        var medium = await _context.Mediums.Where(x => x.Medium == request.MediumId).Include(x => x.Organisation).FirstOrDefaultAsync(cancellationToken);
         
         if (medium == null)
         {
-            throw new NotFoundException("Merchant not found for this medium");
+            throw new NotFoundException("Organisation not found for this medium");
         }
 
         

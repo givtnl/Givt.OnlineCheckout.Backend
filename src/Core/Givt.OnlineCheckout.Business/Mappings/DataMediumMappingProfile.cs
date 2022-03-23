@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using AutoMapper;
-using Givt.OnlineCheckout.API.Models;
+using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 
-namespace Givt.OnlineCheckout.API.Mappings;
+namespace Givt.OnlineCheckout.Business.Mappings;
 
 public class DataMediumMappingProfile: Profile
 {
@@ -18,12 +18,12 @@ public class DataMediumMappingProfile: Profile
             .ForMember(
                 x => x.OrganisationName, 
                 options => options.MapFrom(
-                    src => src.Merchant.Name
+                    src => src.Organisation.Name
                     ))
             .ForMember(
                 x => x.Currency, 
                 options => options.MapFrom(
-                    src => src.Merchant.Currency
+                    src => src.Organisation.Currency
                 ));
     }
 }

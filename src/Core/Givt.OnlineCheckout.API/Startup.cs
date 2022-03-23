@@ -1,7 +1,8 @@
 using AutoMapper;
 using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
-using Givt.OnlineCheckout.API.Merchants.Queries;
+using Givt.OnlineCheckout.Business.Mappings;
+using Givt.OnlineCheckout.Business.Organisations.Queries;
 using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
@@ -37,10 +38,10 @@ namespace Givt.OnlineCheckout.API
             {
                 mc.AddProfiles(new List<Profile>
                 {
-                    new CustomerMappingProfile(),
-                    new MerchantMappingProfile(),
-                    new DataCustomerMappingProfile(),
-                    new DataMerchantMappingProfile(),
+                    new DonorMappingProfile(),
+                    new OrganisationMappingProfile(),
+                    new DataDonorMappingProfile(),
+                    new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
                     new DataMediumMappingProfile(),
                     new DonationMappingProfile()
@@ -48,7 +49,7 @@ namespace Givt.OnlineCheckout.API
             }).CreateMapper());
 
             services.AddSingleton<ISinglePaymentService, StripeIntegration>();
-            services.AddMediatR(typeof(GetMerchantByMediumIdQuery).Assembly);
+            services.AddMediatR(typeof(GetOrganisationByMediumIdQuery).Assembly);
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DataBaseConnectionString"));
