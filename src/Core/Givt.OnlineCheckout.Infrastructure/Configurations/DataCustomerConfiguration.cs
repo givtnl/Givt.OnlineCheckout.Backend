@@ -8,7 +8,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<CustomerData> builder)
         {
+            builder.Property(e => e.Email).HasMaxLength(254); // according to RFC 2821
 
+            builder.HasIndex(e => e.Email);
         }
     }
 }

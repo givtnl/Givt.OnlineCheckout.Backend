@@ -8,6 +8,6 @@ public class DataMerchantMappingProfile : Profile
     public DataMerchantMappingProfile()
     {
         // Domain -> Business
-        CreateMap<Merchantdata, MerchantDetailModel>();
+        CreateMap<MerchantData, MerchantDetailModel>();
     }
 }

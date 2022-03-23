@@ -25,7 +25,7 @@ namespace Givt.OnlineCheckout.API.Customers.Commands
         {
             var customer = new CustomerData
             {
-                Email = $"random@{request.Name}.noiceeeeuh"
+                Email = $"random@{request.Name}.noiceeeeuh" // TODO: check/limit to 254 char (RFC 2821)
             };
 
             await Context.AddAsync(customer, cancellationToken);

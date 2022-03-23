@@ -8,7 +8,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<DonationData> builder)
         {
-            
+            //builder.Property(e => e.Currency).HasMaxLength(3);
         }
     }
 }

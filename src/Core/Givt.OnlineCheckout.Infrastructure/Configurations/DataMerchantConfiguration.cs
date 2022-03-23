@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Givt.OnlineCheckout.Infrastructure.Configurations
 {
-    public class DataMerchantConfiguration : IEntityTypeConfiguration<Merchantdata>
+    public class DataMerchantConfiguration : IEntityTypeConfiguration<MerchantData>
     {
-        public void Configure(EntityTypeBuilder<Merchantdata> builder)
+        public void Configure(EntityTypeBuilder<MerchantData> builder)
         {
             
         }

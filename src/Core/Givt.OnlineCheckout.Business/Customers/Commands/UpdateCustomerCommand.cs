@@ -31,7 +31,7 @@ namespace Givt.OnlineCheckout.API.Customers.Commands
         {
             var customer = await Context.Customers.FirstAsync(x => x.Id == request.Id, cancellationToken);
 
-            customer.Email = $"{request.Name}@givtapp.net";
+            customer.Email = $"{request.Name}@givtapp.net"; // TODO: check/limit to 254 char (RFC 2821)
 
             await Context.SaveChangesAsync(cancellationToken);
 
