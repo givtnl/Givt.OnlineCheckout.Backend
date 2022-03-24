@@ -1,5 +1,4 @@
-﻿using Givt.OnlineCheckout.API.Models.Organisations;
-using Givt.OnlineCheckout.Business.Models;
+﻿using Givt.OnlineCheckout.Business.Models;
 
 namespace Givt.OnlineCheckout.API.Models.Mediums;
 
