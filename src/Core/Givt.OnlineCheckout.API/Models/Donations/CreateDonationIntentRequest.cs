@@ -7,4 +7,7 @@ public class CreateDonationIntentRequest
     public decimal Amount { get; set; }
     public string Medium { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
+
+    public string Email { get; set; }
+    public bool TaxReport { get; set; }
 }

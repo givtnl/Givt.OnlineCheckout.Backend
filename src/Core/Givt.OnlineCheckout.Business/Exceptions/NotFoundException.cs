@@ -1,7 +1,19 @@
-﻿namespace Givt.OnlineCheckout.Business.Exceptions;
+﻿using Newtonsoft.Json;
+
+namespace Givt.OnlineCheckout.Business.Exceptions;
 
 public class NotFoundException : GivtException
 {
-    public NotFoundException(string message): base(message) { }
+    public string EntityName { get; }
+    public object LookUpData { get; }
+
+    public NotFoundException(string entityName, object lookUpData) : base($"Entity {entityName} with request {JsonConvert.SerializeObject(lookUpData)} not found")
+    {
+        EntityName = entityName;
+        LookUpData = lookUpData;
+
+        AdditionalInformation.Add(nameof(EntityName), entityName);
+        AdditionalInformation.Add(nameof(LookUpData), lookUpData);
+    }
     public override int ErrorCode => 404;
 }

@@ -8,6 +8,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<DonorData> builder)
         {
+            //builder.ToTable("Customers");
             builder
                 .Property(e => e.Email)
                 .HasMaxLength(70); // 254 according to RFC 2821, we limit to 70

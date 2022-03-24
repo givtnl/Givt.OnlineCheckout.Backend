@@ -1,5 +1,6 @@
 ﻿using Givt.OnlineCheckout.Business.Exceptions;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
+using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,7 @@ public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext
             .FirstOrDefaultAsync(cancellationToken);
 
         if (medium == null)
-            throw new NotFoundException("Organisation not found for this medium");
+            throw new NotFoundException(nameof(MediumData), request.MediumId);
        
         if (medium.Organisation.PaymentProviderAccountReference == null)
             throw new BadRequestException("Organisation has no account reference");

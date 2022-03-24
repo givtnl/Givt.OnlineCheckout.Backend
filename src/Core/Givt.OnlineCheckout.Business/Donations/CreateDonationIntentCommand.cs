@@ -10,7 +10,7 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public decimal Amount { get; set; }
     public MediumIdType MediumId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
-    public bool TaxReportRequested { get; set; }
-    public string Email { get; set; } // TODO: check/limit to 254 char (RFC 2821), validate email address structure and TLD??
+    public bool TaxReport { get; set; }
+    public string Email { get; set; } 
     internal string AccountId { get; set; }
 }

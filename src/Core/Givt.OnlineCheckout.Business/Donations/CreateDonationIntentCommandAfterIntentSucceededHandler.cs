@@ -16,7 +16,7 @@ namespace Givt.OnlineCheckout.Business.Donations
             };
 
             // link to a donor if the user wants a tax report
-            if (request.TaxReportRequested && !String.IsNullOrWhiteSpace(request.Email))
+            if (request.TaxReport && !String.IsNullOrWhiteSpace(request.Email))
             {
                 var email = request.Email.ToLower();
                 var donor = await DbContext.Donors.FirstAsync(c => c.Email == email, cancellationToken: cancellationToken);

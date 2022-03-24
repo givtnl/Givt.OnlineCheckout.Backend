@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    [Migration("20220323132000_RenameEntities")]
-    partial class RenameEntities
+    [Migration("20220324132944_RenameEntityColumns")]
+    partial class RenameEntityColumns
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,7 +82,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("Email");
 
-                    b.ToTable("Donors");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumData", b =>
@@ -160,7 +160,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("Namespace");
 
-                    b.ToTable("Organisations");
+                    b.ToTable("Merchants", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonationData", b =>
