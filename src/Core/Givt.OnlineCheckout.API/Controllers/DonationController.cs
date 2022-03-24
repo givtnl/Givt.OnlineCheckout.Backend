@@ -16,7 +16,7 @@ public class DonationController : Controller
         _mediator = mediator;
         _mapper = mapper;
     }
-    
+
     [HttpPost("api/[controller]/intent")]
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)

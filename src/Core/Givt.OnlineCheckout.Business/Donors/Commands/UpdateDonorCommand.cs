@@ -31,7 +31,7 @@ namespace Givt.OnlineCheckout.Business.Donors.Commands
         {
             var donor = await Context.Donors.FirstAsync(x => x.Id == request.Id, cancellationToken);
 
-            donor.Email = $"{request.Name}@givtapp.net"; // TODO: check/limit to 254 char (RFC 2821)
+            donor.Email = $"{request.Name}@givtapp.net"; // TODO: check/limit to 70 char ?
 
             await Context.SaveChangesAsync(cancellationToken);
 

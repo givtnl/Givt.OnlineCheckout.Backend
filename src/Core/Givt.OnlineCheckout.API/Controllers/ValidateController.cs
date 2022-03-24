@@ -16,8 +16,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        [Route("Email")]
+        [HttpGet("Email")]
         public async Task<IActionResult> Email([FromQuery] string email, CancellationToken cancellationToken)
         {
             var message = await EmailAddress.IsValid(email, _logger, cancellationToken);

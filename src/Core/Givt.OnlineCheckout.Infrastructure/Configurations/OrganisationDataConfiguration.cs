@@ -8,7 +8,6 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<OrganisationData> builder)
         {
-            //builder.ToTable("Merchants");
             builder
                 .Property(e => e.Name)
                 .HasMaxLength(35);

@@ -44,7 +44,8 @@ namespace Givt.OnlineCheckout.API
                     new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
                     new DataMediumMappingProfile(),
-                    new DonationMappingProfile()
+                    new DonationMappingProfile(),
+                    new PaymentProviderMappingProfile()
                 });
             }).CreateMapper());
 

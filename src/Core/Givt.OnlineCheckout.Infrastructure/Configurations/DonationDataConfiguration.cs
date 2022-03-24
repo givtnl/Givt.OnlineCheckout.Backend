@@ -20,7 +20,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .HasOne(e => e.Donor)
                 .WithMany(d => d.Donations)
                 .IsRequired(false);
+
+            builder
+                .HasIndex(e => e.TransactionReference);
         }
     }
 }
-
