@@ -4,5 +4,5 @@ namespace Givt.OnlineCheckout.Integrations.Interfaces;
 
 public interface ISinglePaymentService
 {
-    Task<string> CreatePaymentIntent(decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod);
+    Task<string> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod);
 }

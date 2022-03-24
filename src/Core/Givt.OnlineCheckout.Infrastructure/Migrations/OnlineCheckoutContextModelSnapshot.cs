@@ -22,7 +22,45 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataCustomer", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonationData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Currency")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DonorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("TransactionReference")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonorId");
+
+                    b.ToTable("Donations");
+                });
+
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonorData", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,44 +73,17 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(70)
+                        .HasColumnType("character varying(70)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.HasIndex("Email");
+
+                    b.ToTable("Donors");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataDonation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid?>("DataCustomerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PaymentProviderTransactionReference")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DataCustomerId");
-
-                    b.ToTable("Donations");
-                });
-
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMedium", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,8 +92,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Amounts")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -91,28 +102,26 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Goal")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Medium")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(33)
+                        .HasColumnType("character varying(33)");
 
-                    b.Property<long>("MerchantId")
+                    b.Property<long>("OrganisationId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("ThankYou")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MerchantId");
+                    b.HasIndex("OrganisationId");
 
                     b.ToTable("Mediums");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,8 +132,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("integer");
+                    b.Property<string>("Currency")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -133,43 +143,50 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
 
                     b.Property<string>("Namespace")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("PaymentProviderAccountReference")
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Merchants");
+                    b.HasIndex("Namespace");
+
+                    b.ToTable("Organisations");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataDonation", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonationData", b =>
                 {
-                    b.HasOne("Givt.OnlineCheckout.Persistance.Entities.DataCustomer", null)
+                    b.HasOne("Givt.OnlineCheckout.Persistance.Entities.DonorData", "Donor")
                         .WithMany("Donations")
-                        .HasForeignKey("DataCustomerId");
+                        .HasForeignKey("DonorId");
+
+                    b.Navigation("Donor");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMedium", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumData", b =>
                 {
-                    b.HasOne("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", "Merchant")
+                    b.HasOne("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", "Organisation")
                         .WithMany("Mediums")
-                        .HasForeignKey("MerchantId")
+                        .HasForeignKey("OrganisationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Merchant");
+                    b.Navigation("Organisation");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataCustomer", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonorData", b =>
                 {
                     b.Navigation("Donations");
                 });
 
-            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DataMerchant", b =>
+            modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", b =>
                 {
                     b.Navigation("Mediums");
                 });

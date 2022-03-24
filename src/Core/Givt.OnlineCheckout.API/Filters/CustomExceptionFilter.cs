@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Givt.OnlineCheckout.API.Exceptions;
+using Givt.OnlineCheckout.Business.Exceptions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

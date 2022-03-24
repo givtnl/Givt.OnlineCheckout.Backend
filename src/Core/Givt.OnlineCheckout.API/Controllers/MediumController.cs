@@ -1,6 +1,6 @@
 using AutoMapper;
-using Givt.OnlineCheckout.API.Requests.Medium;
-using Givt.OnlineCheckout.API.Mediums.Queries;
+using Givt.OnlineCheckout.API.Models.Mediums;
+using Givt.OnlineCheckout.Business.Mediums.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

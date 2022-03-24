@@ -1,20 +1,25 @@
-using Givt.OnlineCheckout.API.Exceptions;
+using Givt.OnlineCheckout.Business.Exceptions;
 using Newtonsoft.Json;
 using Microsoft.Linq.Translations;
-namespace Givt.OnlineCheckout.API.Models;
+
+namespace Givt.OnlineCheckout.Business.Models;
+
 [JsonConverter(typeof(MediumIdTypeSerializer))]
 public struct MediumIdType : IComparable<MediumIdType>
 {
     private readonly string _value;
-    private MediumIdType(string value)
+    public MediumIdType(string value)
     {
-        if (value.Contains('.'))
+        // Valid medium length = 20 chars (+ dot + 12 chars)
+        var dot = value.IndexOf('.');
+        var len = value.Length;
+        if (dot >= 0)
         {
-            if (value[..value.IndexOf('.')].Length != 20)
+            if (dot != 20)
                 throw new InvalidMediumException(nameof(Namespace), value);
-            if (value[(value.IndexOf('.') + 1)..].Length != 12)
+            if (len - dot != 12 + 1)
                 throw new InvalidMediumException(nameof(Instance), value);
-        } else if (value.Length != 20)
+        } else if (len != 20)
             throw new InvalidMediumException(nameof(Namespace), value);
 
         _value = value;

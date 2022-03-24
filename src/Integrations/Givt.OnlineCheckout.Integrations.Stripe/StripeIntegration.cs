@@ -7,7 +7,7 @@ namespace Givt.OnlineCheckout.Integrations.Stripe;
 
 public class StripeIntegration: ISinglePaymentService
 {
-   public async Task<string> CreatePaymentIntent(decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
+   public async Task<string> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
     {
         var requestOptions = new RequestOptions();
         requestOptions.ApiKey = "sk_test_51HmwjvLgFatYzb8pVz3bwCyC6EJK8V01LZOoqOsDlBwcdPMyyG2F0eW8k95JdbiEnSp3F7nWjpVuGuGvy8y17lGf00NCJZBLgq";
@@ -20,7 +20,7 @@ public class StripeIntegration: ISinglePaymentService
         
         var result = await service.CreateAsync(new PaymentIntentCreateOptions
         {
-            Currency = "eur",
+            Currency = currency.ToLowerInvariant(),
             Amount = Convert.ToInt64(amount * 100),
             TransferData = new PaymentIntentTransferDataOptions()
             {

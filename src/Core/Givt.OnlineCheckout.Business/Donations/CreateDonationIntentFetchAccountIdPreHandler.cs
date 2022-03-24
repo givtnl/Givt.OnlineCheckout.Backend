@@ -1,9 +1,10 @@
-﻿using Givt.OnlineCheckout.API.Exceptions;
+﻿using Givt.OnlineCheckout.Business.Exceptions;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
+using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
 
-namespace Givt.OnlineCheckout.API.Donations;
+namespace Givt.OnlineCheckout.Business.Donations;
 
 public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext DbContext): IRequestPreProcessor<CreateDonationIntentCommand>
 {   
@@ -11,15 +12,15 @@ public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext
     {
         var medium = await DbContext.Mediums
             .Where(x => x.Medium == request.MediumId.ToString())
-            .Include(x => x.Merchant)
+            .Include(x => x.Organisation)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (medium == null)
-            throw new NotFoundException("Merchant not found for this medium");
+            throw new NotFoundException(nameof(MediumData), request.MediumId);
        
-        if (medium.Merchant.PaymentProviderAccountReference == null)
-            throw new BadRequestException("Merchant has no account reference");
+        if (medium.Organisation.PaymentProviderAccountReference == null)
+            throw new BadRequestException("Organisation has no account reference");
 
-        request.AccountId = medium.Merchant.PaymentProviderAccountReference;
+        request.AccountId = medium.Organisation.PaymentProviderAccountReference;
     }
 }
