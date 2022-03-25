@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using MediatR;
+using Microsoft.Extensions.Primitives;
 
 namespace Givt.OnlineCheckout.API.Models.PaymentProvider;
 
-public class PaymentProviderEvent
+public class PaymentProviderEvent : IRequest
 {
-    public Stream Stream { get; set; }
+    public String Content{ get; set; }
     public IDictionary<string, StringValues> MetaData { get; set; }
 }

@@ -17,13 +17,14 @@ namespace Givt.OnlineCheckout.Business.Donors.Commands
     {
         public IMapper Mapper { get; }
 
+        // TODO: change StripeIntegration to ISinglePaymentService?
         public UpdateDonorCommandHandler(IMapper mapper, StripeIntegration stripeIntegration, OnlineCheckoutContext context)
         {
             Mapper = mapper;
             StripeIntegration = stripeIntegration;
             Context = context;
         }
-
+        // TODO: change StripeIntegration to ISinglePaymentService?
         public StripeIntegration StripeIntegration { get; }
         public OnlineCheckoutContext Context { get; }
 
