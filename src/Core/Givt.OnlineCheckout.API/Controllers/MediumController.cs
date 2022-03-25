@@ -9,8 +9,6 @@ namespace Givt.OnlineCheckout.API.Controllers
     [Route("api/[controller]")]
     public class MediumController : Controller
     {
-        
-        //testing
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
