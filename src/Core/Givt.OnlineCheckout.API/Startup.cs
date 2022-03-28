@@ -30,8 +30,6 @@ namespace Givt.OnlineCheckout.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureOptions(services);
-
             services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
@@ -57,7 +55,7 @@ namespace Givt.OnlineCheckout.API
         services.AddMediatR(typeof(GetOrganisationByMediumIdQuery).Assembly);
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DataBaseConnectionString"));
+                options.UseNpgsql(Configuration.GetConnectionString("GivtOnlineCheckoutDbDebug"));
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddEndpointsApiExplorer();
@@ -106,11 +104,6 @@ namespace Givt.OnlineCheckout.API
 
             app.UseCors("EnableAll")
                 .UseMvc();
-        }
-
-        public void ConfigureOptions(IServiceCollection services)
-        {
-            services.AddAzureAppConfiguration();
         }
     }
 }
