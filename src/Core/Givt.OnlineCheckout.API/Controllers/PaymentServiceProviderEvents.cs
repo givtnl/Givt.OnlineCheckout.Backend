@@ -7,7 +7,7 @@ using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.API.Controllers
 {
-    //[ApiExplorerSettings(IgnoreApi = true)] // do not show in Swagger to protect it from abuse
+    [ApiExplorerSettings(IgnoreApi = true)] // do not show in Swagger to protect it from abuse
     [Route("/psp")]
     //[ApiController]
     public class PaymentServiceProviderEvents : ControllerBase
@@ -31,6 +31,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             // Stripe sends JSON as the body, cannot directly let ASP.Net Core map that into a class
             // future: Other PSPs might do the same
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            Console.WriteLine(json);
             var eventData = new PaymentProviderEvent
             {
                 Content = json,
