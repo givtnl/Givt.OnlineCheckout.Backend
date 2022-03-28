@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    public class MediumController : Controller
+    public class MediumController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;

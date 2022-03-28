@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Givt.OnlineCheckout.API.Controllers;
 
-public class DonationController : Controller
+public class DonationController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public class DonationController : Controller
         _mediator = mediator;
         _mapper = mapper;
     }
-    
+
     [HttpPost("api/[controller]/intent")]
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)

@@ -10,7 +10,7 @@ namespace Givt.OnlineCheckout.Business.Validations
         /// </summary>
         /// <param name="email">Email address to check</param>
         /// <returns>null = OK, otherwise a message stating the problem</returns>
-        public static async Task<string> IsValid(string email, ILog log, CancellationToken cancellationToken)
+        public static string IsValid(string email, ILog log)
         {
 
             // check non-empty
@@ -41,7 +41,7 @@ namespace Givt.OnlineCheckout.Business.Validations
             // check TLD
             p = email.LastIndexOf('.');
             var tld = email[(p + 1)..];
-            if (!await TopLevelDomain.IsValid(tld,log, cancellationToken))
+            if (!TopLevelDomain.IsValid(tld, log))
                 return "Top level domain is unknown";
 
             return null;

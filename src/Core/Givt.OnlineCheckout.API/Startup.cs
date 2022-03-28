@@ -10,6 +10,7 @@ using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog.Sinks.Http.Logger;
 using System.Reflection;
@@ -44,12 +45,16 @@ namespace Givt.OnlineCheckout.API
                     new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
                     new DataMediumMappingProfile(),
-                    new DonationMappingProfile()
+                    new DonationMappingProfile(),
+                    new PaymentProviderMappingProfile()
                 });
             }).CreateMapper());
 
             services.AddSingleton<ISinglePaymentService, StripeIntegration>();
-            services.AddMediatR(typeof(GetOrganisationByMediumIdQuery).Assembly);
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"))
+                .AddSingleton(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
+        
+        services.AddMediatR(typeof(GetOrganisationByMediumIdQuery).Assembly);
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DataBaseConnectionString"));

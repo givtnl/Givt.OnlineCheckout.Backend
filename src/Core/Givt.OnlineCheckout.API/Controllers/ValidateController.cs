@@ -6,7 +6,6 @@ using Serilog.Sinks.Http.Logger;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    //[ApiController]
     public class ValidateController : ControllerBase
     {
         private readonly ILog _logger;
@@ -16,11 +15,10 @@ namespace Givt.OnlineCheckout.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        [Route("Email")]
-        public async Task<IActionResult> Email([FromQuery] string email, CancellationToken cancellationToken)
+        [HttpGet("Email")]
+        public IActionResult Email([FromQuery] string email)
         {
-            var message = await EmailAddress.IsValid(email, _logger, cancellationToken);
+            var message = EmailAddress.IsValid(email, _logger);
 
             if (message == null)
             {
@@ -29,7 +27,6 @@ namespace Givt.OnlineCheckout.API.Controllers
             }
             else
             {
-
                 _logger.Debug($"Request to validate email '{email}' -> {message}");
                 return BadRequest(new ErrorResponse
                 {

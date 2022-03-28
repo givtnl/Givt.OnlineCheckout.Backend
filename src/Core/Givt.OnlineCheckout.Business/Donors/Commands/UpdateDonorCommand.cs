@@ -17,13 +17,14 @@ namespace Givt.OnlineCheckout.Business.Donors.Commands
     {
         public IMapper Mapper { get; }
 
+        // TODO: change StripeIntegration to ISinglePaymentService?
         public UpdateDonorCommandHandler(IMapper mapper, StripeIntegration stripeIntegration, OnlineCheckoutContext context)
         {
             Mapper = mapper;
             StripeIntegration = stripeIntegration;
             Context = context;
         }
-
+        // TODO: change StripeIntegration to ISinglePaymentService?
         public StripeIntegration StripeIntegration { get; }
         public OnlineCheckoutContext Context { get; }
 
@@ -31,7 +32,7 @@ namespace Givt.OnlineCheckout.Business.Donors.Commands
         {
             var donor = await Context.Donors.FirstAsync(x => x.Id == request.Id, cancellationToken);
 
-            donor.Email = $"{request.Name}@givtapp.net"; // TODO: check/limit to 254 char (RFC 2821)
+            donor.Email = $"{request.Name}@givtapp.net"; // TODO: check/limit to 70 char ?
 
             await Context.SaveChangesAsync(cancellationToken);
 
