@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Givt.OnlineCheckout.API.Controllers;
 
-public class DonationController : Controller
+public class DonationController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
