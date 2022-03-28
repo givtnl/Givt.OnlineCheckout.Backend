@@ -7,6 +7,7 @@ using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
 using Givt.OnlineCheckout.Integrations.Interfaces;
+using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace Givt.OnlineCheckout.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureOptions(services);
+
             services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
@@ -43,19 +46,22 @@ namespace Givt.OnlineCheckout.API
                     new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
                     new DataMediumMappingProfile(),
-                    new DonationMappingProfile(),
-                    new PaymentProviderMappingProfile()
+                    new DonationMappingProfile()
                 });
             }).CreateMapper());
 
             services.AddSingleton<ISinglePaymentService, StripeIntegration>();
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"))
                 .AddSingleton(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
-        
-        services.AddMediatR(typeof(GetOrganisationByMediumIdQuery).Assembly);
+
+            services.AddMediatR(
+                typeof(GetOrganisationByMediumIdQuery).Assembly, // Givt.OnlineCheckout.Business
+                typeof(RawSinglePaymentNotification).Assembly,   // Givt.OnlineCheckout.Integrations.Interfaces
+                typeof(StripeIntegration).Assembly);             // Givt.OnlineCheckout.Integrations.Stripe
+
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("GivtOnlineCheckoutDbDebug"));
+                options.UseNpgsql(Configuration.GetConnectionString("DataBaseConnectionString"));
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddEndpointsApiExplorer();
@@ -69,7 +75,7 @@ namespace Givt.OnlineCheckout.API
                 });
             });
             services.AddControllers();
-            services.AddMvcCore(x=>
+            services.AddMvcCore(x =>
             {
                 x.Filters.Add<CustomExceptionFilter>();
             })
@@ -82,12 +88,12 @@ namespace Givt.OnlineCheckout.API
                                 .AllowAnyOrigin();
                     }));
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             Console.WriteLine($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
-            
-            
+
+
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
             {
@@ -104,6 +110,11 @@ namespace Givt.OnlineCheckout.API
 
             app.UseCors("EnableAll")
                 .UseMvc();
+        }
+
+        public void ConfigureOptions(IServiceCollection services)
+        {
+            services.AddAzureAppConfiguration();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Givt.OnlineCheckout.API.Models.PaymentProvider;
-using Givt.OnlineCheckout.Business.PaymentProviders;
+﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Serilog.Sinks.Http.Logger;
@@ -14,34 +12,32 @@ namespace Givt.OnlineCheckout.API.Controllers
     {
         private readonly ILog _logger;
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public PaymentServiceProviderEvents(ILog logger, IMediator mediator, IMapper mapper)
+        public PaymentServiceProviderEvents(ILog logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpPost("stripe")]
-        public async Task<IActionResult> WebHook(CancellationToken cancellationToken)
+        public async Task<IActionResult> StripeWebHook(CancellationToken cancellationToken)
         {
             _logger.Debug("Stripe Webhook called");
 
-            // Stripe sends JSON as the body, cannot directly let ASP.Net Core map that into a class
-            // future: Other PSPs might do the same
+            // Stripe sends JSON as the body, cannot directly let ASP.Net Core map that into a string
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            Console.WriteLine(json);
-            var eventData = new PaymentProviderEvent
+
+            // create a notification record and send it to implementor(s)
+            var notification = new RawSinglePaymentNotification
             {
-                Content = json,
+                RawData = json,
                 MetaData = HttpContext.Request.Headers
             };
-            // Note: we could just as well populate the object on the business layer directly, but we love structures and mappers
-            var command = _mapper.Map<PaymentProviderEventData>(eventData); 
-            await _mediator.Send(command, cancellationToken);
+
+            await _mediator.Publish< RawSinglePaymentNotification>(notification, cancellationToken);
 
             return Ok();
         }
     }
+
 }

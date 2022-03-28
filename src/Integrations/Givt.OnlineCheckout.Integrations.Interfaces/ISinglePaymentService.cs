@@ -1,10 +1,12 @@
 ﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
-using Microsoft.Extensions.Primitives;
+using MediatR;
 
 namespace Givt.OnlineCheckout.Integrations.Interfaces;
 
-public interface ISinglePaymentService
+/// <summary>
+/// Our definition of a Payment Service Provider. 
+/// </summary>
+public interface ISinglePaymentService: INotificationHandler<RawSinglePaymentNotification>
 {
-    Task<string> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod);
-    ISinglePaymentEvent GetEventData(string content, IDictionary<string, StringValues> metaData);
+    Task<string> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod);   
 }

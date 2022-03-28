@@ -25,7 +25,7 @@ namespace Givt.OnlineCheckout.Business.Donors.Commands
         {
             var donor = new DonorData
             {
-                Email = $"random@{request.Name}.noiceeeeuh" // TODO: check/limit to 254 char (RFC 2821)
+                Email = $"random@{request.Name}.noiceeeeuh" // TODO: check/limit to 70 (254 char = RFC 2821 limit)
             };
 
             await Context.AddAsync(donor, cancellationToken);
