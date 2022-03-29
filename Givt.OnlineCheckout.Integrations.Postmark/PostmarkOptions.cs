@@ -1,4 +1,4 @@
-namespace Givt.OnlineCheckout.Integrations.Postmark.Configuration;
+namespace Givt.OnlineCheckout.Integrations.Postmark;
 
 public class PostmarkOptions
 {

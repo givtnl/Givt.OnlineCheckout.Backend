@@ -1,5 +1,4 @@
 using Givt.OnlineCheckout.Integrations.Interfaces;
-using Givt.OnlineCheckout.Integrations.Postmark.Configuration;
 using MediatR;
 using Microsoft.Extensions.Options;
 using PostmarkDotNet;

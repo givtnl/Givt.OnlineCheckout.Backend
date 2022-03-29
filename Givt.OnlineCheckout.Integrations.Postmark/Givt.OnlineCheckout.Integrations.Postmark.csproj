@@ -16,4 +16,8 @@
     <ProjectReference Include="..\src\Integrations\Givt.OnlineCheckout.Integrations.Interfaces\Givt.OnlineCheckout.Integrations.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>
