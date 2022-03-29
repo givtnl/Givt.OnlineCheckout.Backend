@@ -12,5 +12,6 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public PaymentMethod PaymentMethod { get; set; }
     public bool TaxReport { get; set; }
     public string Email { get; set; } 
+    // TODO: get and pass TimeZoneOffset
     internal string AccountId { get; set; }
 }

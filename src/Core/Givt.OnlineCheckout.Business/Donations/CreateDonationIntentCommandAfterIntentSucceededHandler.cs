@@ -15,6 +15,7 @@ namespace Givt.OnlineCheckout.Business.Donations
             {
                 Amount = request.Amount,
                 TransactionReference = request.AccountId
+                // TODO: store TimeZoneOffset
             };
 
             // link to a donor if the user wants a tax report

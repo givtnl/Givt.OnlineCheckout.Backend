@@ -3,3 +3,4 @@
 **/**/obj/*
 src/Givt.OnlineCheckout.API/appsettings.Development.json
 .vs
+/src/Core/Givt.OnlineCheckout.API/appsettings.development.json

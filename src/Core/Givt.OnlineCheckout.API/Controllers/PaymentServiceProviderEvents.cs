@@ -1,6 +1,7 @@
-﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
+﻿using Givt.OnlineCheckout.Integrations.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.API.Controllers
@@ -10,6 +11,13 @@ namespace Givt.OnlineCheckout.API.Controllers
     //[ApiController]
     public class PaymentServiceProviderEvents : ControllerBase
     {
+        class RawSinglePaymentNotification : IRawSinglePaymentNotification
+        {
+            public string RawData { get; set; }
+            public IDictionary<string, StringValues> MetaData { get; set; }
+        }
+
+
         private readonly ILog _logger;
         private readonly IMediator _mediator;
 
@@ -34,7 +42,7 @@ namespace Givt.OnlineCheckout.API.Controllers
                 MetaData = HttpContext.Request.Headers
             };
 
-            await _mediator.Publish< RawSinglePaymentNotification>(notification, cancellationToken);
+            await _mediator.Publish(notification, CancellationToken.None); // decouple from HTTP server cancellations etc.
 
             return Ok();
         }
