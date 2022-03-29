@@ -16,7 +16,7 @@ namespace Givt.OnlineCheckout.Business.Donations
                 Amount = request.Amount,
                 TransactionReference = request.AccountId,
                 TransactionDate = DateTime.UtcNow,
-                TimezoneOffset = request.TimezoneOffset ?? -120 // TODO: make TimezoneOffset a required parameter at the API, and remove the default of -120
+                //TimezoneOffset = request.TimezoneOffset ?? -120 // TODO: make TimezoneOffset a required parameter at the API, and remove the default of -120
             };
 
             // link to a donor if the user wants a tax report

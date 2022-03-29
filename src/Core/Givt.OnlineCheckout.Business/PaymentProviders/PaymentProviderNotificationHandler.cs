@@ -100,7 +100,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         email.TemplateData[AMOUNT] = donation.Amount;
         email.TemplateData[TRANSACTION_DATE] = donation.TransactionReference;
         email.TemplateData[TRANSACTION_REFERENCE] = 
-            CreateLocalTimeStr("nl-NL", donation.TransactionDate, donation.TimezoneOffset);
+            CreateLocalTimeStr("nl-NL", donation.TransactionDate, -120/* TODO: donation.TimezoneOffset */);
         email.TemplateData[TRANSACTION_STATUS] = donation.Status.ToString();// TODO: localise
         // etc.
         // Could try to get more info from Payment Service Provider

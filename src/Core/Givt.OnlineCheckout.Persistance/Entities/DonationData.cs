@@ -9,7 +9,7 @@ namespace Givt.OnlineCheckout.Persistance.Entities
         public decimal Amount { get; set; }
         public string TransactionReference { get; set; }
         public DateTime? TransactionDate { get; set; }
-        public int TimezoneOffset { get; set; }
+        //public int TimezoneOffset { get; set; }
         public DonorData Donor { get; set; }
         public DonationStatus Status { get; set; }
 
