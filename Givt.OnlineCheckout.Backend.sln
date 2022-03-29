@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Givt.OnlineCheckout.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Givt.OnlineCheckout.Integrations.Interfaces", "src\Integrations\Givt.OnlineCheckout.Integrations.Interfaces\Givt.OnlineCheckout.Integrations.Interfaces.csproj", "{F695729F-835D-4C05-899B-72BFCC2DA7D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integrations.Postmark", "Givt.OnlineCheckout.Integrations.Postmark\Givt.OnlineCheckout.Integrations.Postmark.csproj", "{D0F3286C-EA64-4226-A204-4F16B2BE8EE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F695729F-835D-4C05-899B-72BFCC2DA7D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0F3286C-EA64-4226-A204-4F16B2BE8EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0F3286C-EA64-4226-A204-4F16B2BE8EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0F3286C-EA64-4226-A204-4F16B2BE8EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0F3286C-EA64-4226-A204-4F16B2BE8EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{0A94A59D-DE55-4E3A-B314-F54E615E0FFC} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 		{09E0A52A-CCE0-45A7-9C7B-4CA420EF278A} = {D4DB99D4-FC56-4E41-89AE-190B9CFA1DDD}
 		{F695729F-835D-4C05-899B-72BFCC2DA7D1} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
+		{D0F3286C-EA64-4226-A204-4F16B2BE8EE7} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0D29C95-59B5-45EA-A94C-E7075E2ADE54}

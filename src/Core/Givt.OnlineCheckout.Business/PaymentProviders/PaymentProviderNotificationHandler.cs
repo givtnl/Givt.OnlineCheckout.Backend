@@ -8,8 +8,8 @@ using Serilog.Sinks.Http.Logger;
 namespace Givt.OnlineCheckout.Business.PaymentProviders;
 
 // Setup polymorphic dispatch, this handler is now a "generic" handler for every ISinglePaymentNotification
-public class PaymentProviderNotificationHandler<TNotification> : INotificationHandler<TNotification>
-    where TNotification : ISinglePaymentNotification
+public class PaymentProviderNotificationHandler<TPaymentNotification> : INotificationHandler<TPaymentNotification>
+    where TPaymentNotification : ISinglePaymentNotification
 {
     private readonly ILog _log;
     private readonly OnlineCheckoutContext _context;
@@ -20,7 +20,7 @@ public class PaymentProviderNotificationHandler<TNotification> : INotificationHa
         _context = context;
     }
 
-    public async Task Handle(TNotification notification, CancellationToken cancellationToken)
+    public async Task Handle(TPaymentNotification notification, CancellationToken cancellationToken)
     {
         if (notification is not ISinglePaymentNotification spNotification)
             return;

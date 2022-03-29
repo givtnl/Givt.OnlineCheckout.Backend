@@ -7,7 +7,7 @@ using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
 using Givt.OnlineCheckout.Integrations.Interfaces;
-using Givt.OnlineCheckout.Integrations.Interfaces.Models;
+using Givt.OnlineCheckout.Integrations.Postmark;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -56,8 +56,9 @@ namespace Givt.OnlineCheckout.API
 
             services.AddMediatR(
                 typeof(GetOrganisationByMediumIdQuery).Assembly,    // Givt.OnlineCheckout.Business
-                typeof(ISinglePaymentNotification).Assembly,         // Givt.OnlineCheckout.Integrations.Interfaces
-                typeof(StripeIntegration).Assembly                  // Givt.OnlineCheckout.Integrations.Stripe
+                typeof(ISinglePaymentNotification).Assembly,        // Givt.OnlineCheckout.Integrations.Interfaces
+                typeof(StripeIntegration).Assembly,                 // Givt.OnlineCheckout.Integrations.Stripe
+                typeof(PostmarkEmailService<IEmailNotification>).Assembly               // Givt.OnlineCheckout.Integrations.Postmark
             );
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
