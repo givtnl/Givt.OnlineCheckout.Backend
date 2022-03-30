@@ -6,5 +6,5 @@ public class GetMediumRequest
 {
     public string Code { get; set;  }
     public string? Locale { get; set; }
-    internal MediumIdType MediumId => new(Code);
+    public MediumIdType MediumId => new(Code);
 }
