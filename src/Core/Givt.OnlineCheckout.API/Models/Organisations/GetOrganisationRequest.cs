@@ -5,6 +5,8 @@ namespace Givt.OnlineCheckout.API.Models.Organisations
     public class GetOrganisationRequest
     {
         public MediumIdType MediumId { get; set; }
+        public string Locale { get; set; }
+
         public static bool TryParse(string value, out GetOrganisationRequest request)
         {
             if (string.IsNullOrEmpty(value))

@@ -1,20 +1,33 @@
 ﻿using Givt.OnlineCheckout.Integrations.Interfaces;
-using Microsoft.Extensions.Primitives;
-using Stripe;
+using MediatR;
 using Serilog.Sinks.Http.Logger;
-using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
+using Stripe;
 using System.Diagnostics;
+using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
 
 namespace Givt.OnlineCheckout.Integrations.Stripe;
 
-public class StripeIntegration : ISinglePaymentService
+public class StripeIntegration : StripeIntegration<IRawSinglePaymentNotification>
 {
+    public StripeIntegration(StripeSettings settings, IMediator mediator, ILog log) :
+        base(settings, mediator, log)
+    { }
+}
+
+// Setup polymorphic dispatch, this handler is now a "generic" handler for every IRawSinglePaymentNotification
+public class StripeIntegration<TNotification> : ISinglePaymentService, INotificationHandler<TNotification>
+    where TNotification : IRawSinglePaymentNotification
+{
+
+    private const string SIGNATURE_HEADER_KEY = "Stripe-Signature";
     private readonly StripeSettings _settings;
+    private readonly IMediator _mediator;
     private readonly ILog _log;
 
-    public StripeIntegration(StripeSettings settings, ILog log)
+    public StripeIntegration(StripeSettings settings, IMediator mediator, ILog log)
     {
         _settings = settings;
+        _mediator = mediator;
         _log = log;
     }
 
@@ -49,18 +62,46 @@ public class StripeIntegration : ISinglePaymentService
         return result.ClientSecret;
     }
 
-
-    public ISinglePaymentEvent GetEventData(string content, IDictionary<string, StringValues> metaData)
+    public async Task Handle(TNotification notification, CancellationToken cancellationToken)
     {
+        if (notification is not IRawSinglePaymentNotification rawNotification)
+            return;
+
+        Event stripeEvent;
         StripeConfiguration.ApiKey = _settings.StripeApiKey;
-        _log.Debug("Stripe event received: {0}", new object[] { content });
-        var signature = metaData["Stripe-Signature"].ToString();
-        _log.Debug("Stripe event signature: '{0}'", new object[] { signature });
-        var stripeEvent = EventUtility.ConstructEvent(content, signature, _settings.EndpointSecret);
-        //var stripeEvent = EventUtility.ConstructEvent(content, signature,
-        //    "whsec_e5bd3b92653fc7989261589580ccad9a552643778dbeeb7c95c5acd1d66f46f2"); // secret for local session on QTLT02
-        if (stripeEvent.Data.Object is PaymentIntent)
-            return new StripeEventWrapper(stripeEvent);
-        return null;
+        _log.Debug("Stripe notification received: {0}", new object[] { rawNotification.RawData });
+        if (rawNotification.MetaData.ContainsKey(SIGNATURE_HEADER_KEY))
+        {
+            try
+            {
+                var signature = rawNotification.MetaData[SIGNATURE_HEADER_KEY].ToString();
+                _log.Debug("Stripe event signature: '{0}'", new object[] { signature });
+                stripeEvent = EventUtility.ConstructEvent(rawNotification.RawData, signature, _settings.EndpointSecret);
+            }
+            catch (Exception ex)
+            {
+                _log.Warning("Failed to decode Stripe event data: {0}", new object[] { ex.Message });
+                return;
+            }
+        }
+        else
+        {
+            // call is not from Stripe itself, perhaps an attack / spoofing attempt?
+            _log.Debug("No Stripe signature!");
+            return;
+        }
+        if (stripeEvent == null)
+        {
+            _log.Debug("Failed to decode Stripe event data");
+            return;
+        }
+        if (stripeEvent.Data.Object is not PaymentIntent)
+        {
+            _log.Debug("Stripe notification data does not contain PaymentIntent");
+            return;
+        }
+        ISinglePaymentNotification cookedNotification = new StripePaymentNotification(stripeEvent);
+        await _mediator.Publish(cookedNotification, cancellationToken);
     }
+
 }

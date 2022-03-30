@@ -11,6 +11,7 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public MediumIdType MediumId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public bool TaxReport { get; set; }
-    public string Email { get; set; } 
+    public string Email { get; set; }
+    public int? TimezoneOffset { get; set; } // TODO: make this a required parameter
     internal string AccountId { get; set; }
 }

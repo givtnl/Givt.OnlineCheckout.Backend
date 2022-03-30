@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Givt.OnlineCheckout.Integrations.Postmark\Givt.OnlineCheckout.Integrations.Postmark.csproj" />
       <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.Stripe\Givt.OnlineCheckout.Integrations.Stripe.csproj" />
       <ProjectReference Include="..\Givt.OnlineCheckout.Business\Givt.OnlineCheckout.Business.csproj" />
       <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
