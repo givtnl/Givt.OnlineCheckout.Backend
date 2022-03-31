@@ -15,5 +15,5 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public string Email { get; set; }
     public int TimezoneOffset { get; set; } 
     
-    internal MediumData Medium { get; set; }
+    public MediumData Medium { get; set; }
 }

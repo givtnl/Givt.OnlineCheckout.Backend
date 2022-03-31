@@ -10,5 +10,5 @@ public class MediumDetailModel
     public string ThankYou { get; set; }
 
     // Locale is used to select the best matching version of the Goal and ThankYou strings while mapping the data back to the API
-    internal string Locale { get; set; }
+    public string Locale { get; set; }
 }
