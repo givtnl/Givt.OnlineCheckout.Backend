@@ -1,6 +1,8 @@
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PostmarkDotNet;
 
 namespace Givt.OnlineCheckout.Integrations.Postmark;
@@ -26,11 +28,16 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         if (notification is not IEmailNotification emailData)
             throw new ArgumentException("IEmailNotification needed");
         EnsureSettingsAreValid();
+        if (String.IsNullOrWhiteSpace(emailData.To))
+            throw new ArgumentNullException("emailData.To");
 
         PostmarkMessageBase message;
         if (String.IsNullOrWhiteSpace(emailData.TemplateName))
         {
-            EnsureParametersValid(emailData.To);
+            if (String.IsNullOrWhiteSpace(emailData.Subject))
+                throw new ArgumentNullException("emailData.Subject");
+            if (String.IsNullOrWhiteSpace(emailData.HtmlBody))
+                throw new ArgumentNullException("emailData.HtmlBody");
             message = new PostmarkMessage()
             {
                 Subject = _options.EnvironmentName == "Development" ?
@@ -41,13 +48,20 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         }
         else
         {
-            EnsureParametersValid(emailData.To, emailData.Subject, emailData.HtmlBody);
+            // convert the object passed in emailData to a JObject to send to the mail server
+            // add special serializer that ignores reference loops and converts locale to Postmark stuff
+            
+            var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            serializerSettings.Converters.Add(new LocaleConverter(emailData.TemplateData.GetType()));
+            var templateModel = JObject.FromObject(emailData.TemplateData, JsonSerializer.CreateDefault(serializerSettings));
+
             if (_options.EnvironmentName == "Development")
-                emailData.TemplateData["SubjectPrefix"] = S_DEBUG_PREFIX;
+                templateModel["SubjectPrefix"] = S_DEBUG_PREFIX;
+
             message = new TemplatedPostmarkMessage()
             {
                 TemplateAlias = emailData.TemplateName,
-                TemplateModel = emailData.TemplateData
+                TemplateModel = templateModel,
             };
         }
 
@@ -107,12 +121,6 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
             using var stream = File.OpenRead(path);
             message.AddAttachment(stream, Path.GetFileName(path));
         }
-    }
-    private void EnsureParametersValid(params string[] parameters)
-    {
-        foreach (var param in parameters)
-            if (String.IsNullOrWhiteSpace(param))
-                throw new ArgumentNullException(nameof(param));
     }
 
     private void EnsureSettingsAreValid()

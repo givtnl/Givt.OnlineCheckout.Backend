@@ -19,7 +19,7 @@ namespace Givt.OnlineCheckout.Business.Models
 
         public string TemplateName { get; set; }
 
-        public JObject TemplateData { get; set; }
+        public object TemplateData { get; set; }
 
         public string HtmlBody { get; set; }
 

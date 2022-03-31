@@ -21,6 +21,6 @@ public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext
         if (medium.Organisation.PaymentProviderAccountReference == null)
             throw new BadRequestException("Organisation has no account reference");
 
-        request.AccountId = medium.Organisation.PaymentProviderAccountReference;
+        request.Medium = medium;        
     }
 }

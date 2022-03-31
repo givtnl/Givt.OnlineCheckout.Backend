@@ -25,6 +25,11 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .HasMaxLength(3);
 
 
+            builder.HasMany(e => e.Texts)
+                .WithOne(t => t.Organisation)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             builder
                 .HasIndex(e => e.Namespace);
         }

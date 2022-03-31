@@ -6,6 +6,7 @@ namespace Givt.OnlineCheckout.Persistance.Entities
     {
         public IEnumerable<MediumData> Mediums { get; set; }
         public string Name { get; set; }
+        public ICollection<OrganisationTexts> Texts { get; set; }
         public string PaymentProviderAccountReference { get; set; }
         public string Namespace { get; set; }
         public string Currency { get; set; }

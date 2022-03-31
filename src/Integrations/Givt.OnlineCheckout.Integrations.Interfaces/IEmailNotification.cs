@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Newtonsoft.Json.Linq;
 
 namespace Givt.OnlineCheckout.Integrations.Interfaces
 {
@@ -12,7 +11,7 @@ namespace Givt.OnlineCheckout.Integrations.Interfaces
         string Subject { get; }
         string Tag { get; }
         string TemplateName { get; }
-        JObject TemplateData { get; }
+        object TemplateData { get; }
         string HtmlBody { get; }
         string ReplyTo { get; }
         Dictionary<string, string> Headers { get; }

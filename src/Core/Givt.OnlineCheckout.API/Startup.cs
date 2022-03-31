@@ -55,10 +55,10 @@ namespace Givt.OnlineCheckout.API
                 .AddSingleton(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
 
             services.AddMediatR(
-                typeof(GetOrganisationByMediumIdQuery).Assembly,    // Givt.OnlineCheckout.Business
-                typeof(ISinglePaymentNotification).Assembly,        // Givt.OnlineCheckout.Integrations.Interfaces
-                typeof(StripeIntegration).Assembly,                 // Givt.OnlineCheckout.Integrations.Stripe
-                typeof(PostmarkEmailService<IEmailNotification>).Assembly               // Givt.OnlineCheckout.Integrations.Postmark
+                typeof(GetOrganisationByMediumIdQuery).Assembly,            // Givt.OnlineCheckout.Business
+                typeof(ISinglePaymentNotification).Assembly,                // Givt.OnlineCheckout.Integrations.Interfaces
+                typeof(StripeIntegration).Assembly,                         // Givt.OnlineCheckout.Integrations.Stripe
+                typeof(PostmarkEmailService<IEmailNotification>).Assembly   // Givt.OnlineCheckout.Integrations.Postmark
             );
 
             services.AddDbContext<OnlineCheckoutContext>(options =>

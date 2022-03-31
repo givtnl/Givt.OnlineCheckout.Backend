@@ -14,9 +14,10 @@ namespace Givt.OnlineCheckout.Business.Donations
             var dataDonation = new DonationData
             {
                 Amount = request.Amount,
-                TransactionReference = request.AccountId,
+                TransactionReference = response.TransactionReference,
                 TransactionDate = DateTime.UtcNow,
-                //TimezoneOffset = request.TimezoneOffset ?? -120 // TODO: make TimezoneOffset a required parameter at the API, and remove the default of -120
+                TimezoneOffset = request.TimezoneOffset,
+                Medium = request.Medium
             };
 
             // link to a donor if the user wants a tax report
@@ -35,7 +36,8 @@ namespace Givt.OnlineCheckout.Business.Donations
 
             await DbContext.Donations.AddAsync(dataDonation, cancellationToken);
             var writeCount = await DbContext.SaveChangesAsync(cancellationToken);
-            logger.Debug("Donation with reference '{0}' recorded, {1} records written", new object[] { request.AccountId, writeCount });
+            logger.Debug("Donation with reference '{0}' recorded, {1} records written",
+                new object[] { request.Medium.Organisation.PaymentProviderAccountReference, writeCount });
         }
     }
 }

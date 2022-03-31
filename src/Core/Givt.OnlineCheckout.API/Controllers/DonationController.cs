@@ -21,6 +21,10 @@ public class DonationController : ControllerBase
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
+        // check parameters that are currently optional for development, but should not be in the finished product
+        if (!request.TimezoneOffset.HasValue)
+            request.TimezoneOffset = -120;
+
         var command = _mapper.Map<CreateDonationIntentCommand>(request);
         var response = await _mediator.Send(command);
         return Ok(new CreateDonationIntentResponse { PaymentMethodId = response.PaymentIntentSecret });

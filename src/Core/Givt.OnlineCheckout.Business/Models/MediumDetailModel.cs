@@ -8,4 +8,7 @@ public class MediumDetailModel
     public string Currency { get; set; }
     public decimal[] Amounts { get; set; }
     public string ThankYou { get; set; }
+
+    // Locale is used to select the best matching version of the Goal and ThankYou strings while mapping the data back to the API
+    internal string Locale { get; set; }
 }

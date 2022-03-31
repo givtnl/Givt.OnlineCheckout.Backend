@@ -59,6 +59,7 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         });
         stopwatch.Stop();
         _log.Debug("Stripe returned a payment intent, id='{0}' in {1} ms", new object[] { result.Id, stopwatch.ElapsedMilliseconds });
+        
         return result.ClientSecret;
     }
 

@@ -57,7 +57,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("DonorId");
 
-                    b.ToTable("Donations");
+                    b.ToTable("Donations", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonorData", b =>
@@ -80,7 +80,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("Email");
 
-                    b.ToTable("Donors");
+                    b.ToTable("Donors", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumData", b =>
@@ -118,7 +118,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("OrganisationId");
 
-                    b.ToTable("Mediums");
+                    b.ToTable("Mediums", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", b =>
@@ -158,7 +158,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasIndex("Namespace");
 
-                    b.ToTable("Organisations");
+                    b.ToTable("Organisations", (string)null);
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonationData", b =>

@@ -7,7 +7,12 @@ public record CreateDonationIntentCommandHandler(ISinglePaymentService SinglePay
 {
     public async Task<CreateDonationIntentCommandResponse> Handle(CreateDonationIntentCommand request, CancellationToken cancellationToken)
     {
-        var result = await SinglePaymentService.CreatePaymentIntent("EUR", request.Amount, request.Amount * 0.045m, request.AccountId, request.PaymentMethod);
+        var result = await SinglePaymentService.CreatePaymentIntent(
+                request.Currency, 
+                request.Amount, 
+                request.Amount * 0.045m, 
+                request.Medium.Organisation.PaymentProviderAccountReference, 
+                request.PaymentMethod);
 
         return new CreateDonationIntentCommandResponse
         {
