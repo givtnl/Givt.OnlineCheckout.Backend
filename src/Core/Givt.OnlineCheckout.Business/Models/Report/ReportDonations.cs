@@ -55,10 +55,16 @@ public class ReportDonations
             Donations = new List<Donation>()
         };
         goals.Add(goal);
+
+        var timezoneOffset = new TimeSpan(0, -donation.TimezoneOffset, 0);
+        string timezoneOffsetString =
+            (donation.TimezoneOffset > 0) ? "-" : "+" + // yup, seems reversed but that's how it is. +00:00 for no offset from Z
+            timezoneOffset.ToString(@"hh\:mm");
         var donationInfo = new Donation
         {
             Amount = new CurrencyAmount { Currency = donation.Currency, Amount = donation.Amount },
-            Timestamp = donation.TransactionDate.Value.AddMinutes(-donation.TimezoneOffset).ToString(cultureInfo),
+            Timestamp = donation.TransactionDate.Value.Add(timezoneOffset).ToString(cultureInfo) + " " + timezoneOffsetString
+
         };
         goal.Donations.Add(donationInfo);
 
