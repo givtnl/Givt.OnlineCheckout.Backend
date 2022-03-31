@@ -14,6 +14,6 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public bool TaxReport { get; set; }
     public string Email { get; set; }
     public int TimezoneOffset { get; set; } 
-    //internal string AccountId { get; set; }
+    
     internal MediumData Medium { get; set; }
 }

@@ -63,7 +63,7 @@ namespace Givt.OnlineCheckout.API
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DataBaseConnectionString"));
+                options.UseNpgsql(Configuration.GetConnectionString("GivtOnlineCheckoutDbDebug"));
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddEndpointsApiExplorer();
