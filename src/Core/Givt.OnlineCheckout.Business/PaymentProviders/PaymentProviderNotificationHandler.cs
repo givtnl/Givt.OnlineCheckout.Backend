@@ -6,6 +6,7 @@ using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Serilog.Sinks.Http.Logger;
 using System.Globalization;
 
@@ -17,11 +18,13 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
 {
     private const string TEMPLATE_NAME = "Some Template Name";
 
-    private readonly ILog _log;
+    private readonly ILogger _log;
     private readonly OnlineCheckoutContext _context;
     private readonly IMediator _mediator;
 
-    public PaymentProviderNotificationHandler(ILog log, OnlineCheckoutContext context, IMediator mediator)
+    public ILogger Log => _log;
+
+    public PaymentProviderNotificationHandler(ILogger log, OnlineCheckoutContext context, IMediator mediator)
     {
         _log = log;
         _context = context;
@@ -33,14 +36,14 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         if (notification is not ISinglePaymentNotification spNotification)
             return;
 
-        _log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
+        Log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
         // load the matching donation
         var donation = await _context.Donations
             .Where(donation => donation.TransactionReference == spNotification.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         if (donation == null)
         {
-            _log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
+            Log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
             return; // donation not found
         }
 
@@ -67,20 +70,20 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
             {
                 donation.Status = DonationStatus.Succeeded;
                 donation.TransactionDate = notification.TransactionDate;
-                _log.Debug("Donation with transaction reference '{0}' set to status {1}",
+                Log.Debug("Donation with transaction reference '{0}' set to status {1}",
                     new object[] { notification.TransactionReference, donation.Status });
             }
         }
         else if (notification.Cancelled)
         {
             donation.Status = DonationStatus.Cancelled;
-            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
+            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
                 new object[] { notification.TransactionReference, donation.Status });
         }
         else if (notification.Failed)
         {
             donation.Status = DonationStatus.PaymentFailed;
-            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
+            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
                 new object[] { notification.TransactionReference, donation.Status });
         }
 
@@ -90,7 +93,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
 
     private async Task SendEmail(DonationData donation, CancellationToken cancellationToken)
     {
-        _log.Debug("Sending email to {1} for donation with transaction reference '{0}'",
+        Log.Debug("Sending email to {1} for donation with transaction reference '{0}'",
             new object[] { donation.TransactionReference, donation.Donor.Email });
 
         // Could try to get more info from Payment Service Provider

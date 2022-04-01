@@ -8,8 +8,8 @@ namespace Givt.OnlineCheckout.Integrations.Postmark
     /// This class helps to serialise a locale like "en-GB" to a structure that can be used in Postmark to localise emails.
     /// <para>Examples:</para>
     /// <list type="bullet">
-    /// <item>Locale = "en-US" -> "en" : { "US" : true } </item>
-    /// <item>Locale = "en" -> "en" : true </item>
+    /// <item>Locale = "en-US" -> Language : { "en" : { "US" : true } }</item>
+    /// <item>Locale = "en" -> Language : { "en" : true }</item>
     /// </list>
     /// </summary>
     public class LocaleConverter : JsonConverter
@@ -34,17 +34,17 @@ namespace Givt.OnlineCheckout.Integrations.Postmark
                 JProperty p = o.Property("Locale");
                 if (p != null)
                 {
-                    var localeParts = p.Value.ToString().Split('-');
-                    object data = true;
-                    if (localeParts.Length > 1)
+                    var localeParts = p.Value?.ToString().Split('-');
+                    if (localeParts != null)
                     {
-                        var child = new JObject
-                        {
-                            new JProperty(localeParts[1], true)
-                        };
-                        data = child;
+                        object regionNode = true;
+                        if (localeParts.Length > 1)
+                            regionNode = new JObject { new JProperty(localeParts[1], true) };
+
+                        var languageNode = new JObject { new JProperty(localeParts[0], regionNode) };
+                        var languageRoot = new JProperty("Language", languageNode);
+                        o.AddFirst(languageRoot);
                     }
-                    o.AddFirst(new JProperty(localeParts[0], data));
                 }
                 o.WriteTo(writer);
             }

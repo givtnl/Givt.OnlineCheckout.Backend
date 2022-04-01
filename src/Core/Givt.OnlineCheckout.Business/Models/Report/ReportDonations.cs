@@ -26,24 +26,28 @@ public class ReportDonations
         var result = new ReportDonations
         {
             Locale = donation.LanguageId,
+            /*
             FirstName = "FirstName_Value",
             LastName = "LastName_Value",
             Street = "Street_Value",
             PostalCode = "PostalCode_Value",
             City = "City_Value",
             Country = "Country_Value",
+            */
         };
-        // simple (single) totals because it's just one donation
+        // no totals because it's just one donation
+        /*
         var totals = new List<CurrencyAmount>
         {
-            new CurrencyAmount { Currency = donation.Currency, Amount = donation.Amount }
+            new CurrencyAmount { Currency = donation.Currency, Amount = donation.Amount.ToString("F2") }
         };
+        */
         var organisations = new List<Organisation>();
         result.Organisations = organisations;
         var organisation = new Organisation
         {
             Name = donation.Medium.Organisation.Name,
-            TotalAmount = totals
+            //TotalAmount = totals
         };
         organisations.Add(organisation);
         var goals = new List<Goal>();
@@ -51,7 +55,7 @@ public class ReportDonations
         var goal = new Goal
         {
             Name = donation.Medium.Goal,
-            TotalAmount = totals,
+            //TotalAmount = totals,
             Donations = new List<Donation>()
         };
         goals.Add(goal);
@@ -62,7 +66,7 @@ public class ReportDonations
             timezoneOffset.ToString(@"hh\:mm");
         var donationInfo = new Donation
         {
-            Amount = new CurrencyAmount { Currency = donation.Currency, Amount = donation.Amount },
+            Amount = new CurrencyAmount { Currency = donation.Currency, Amount = donation.Amount.ToString("F2") },
             Timestamp = donation.TransactionDate.Value.Add(timezoneOffset).ToString(cultureInfo) + " " + timezoneOffsetString
 
         };
