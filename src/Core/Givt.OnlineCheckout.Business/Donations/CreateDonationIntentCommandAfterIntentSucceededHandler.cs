@@ -2,11 +2,11 @@
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.Business.Donations
 {
-    public record CreateDonationIntentCommandAfterIntentSucceededHandler(OnlineCheckoutContext DbContext, ILogger logger) :
+    public record CreateDonationIntentCommandAfterIntentSucceededHandler(OnlineCheckoutContext DbContext, ILog logger) :
         IRequestPostProcessor<CreateDonationIntentCommand, CreateDonationIntentCommandResponse>
     {
         public async Task Process(CreateDonationIntentCommand request, CreateDonationIntentCommandResponse response, CancellationToken cancellationToken)

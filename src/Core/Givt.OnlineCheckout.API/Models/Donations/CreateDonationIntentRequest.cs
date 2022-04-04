@@ -5,6 +5,7 @@ namespace Givt.OnlineCheckout.API.Models.Donations;
 public class CreateDonationIntentRequest
 {
     public string Code { get; set; }
+    public string Currency { get; set; }
     public decimal Amount { get; set; }
     public string Medium { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
