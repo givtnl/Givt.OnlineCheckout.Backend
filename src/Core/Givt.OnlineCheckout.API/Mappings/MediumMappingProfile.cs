@@ -10,6 +10,7 @@ public class MediumMappingProfile: Profile
     public MediumMappingProfile()
     {
         CreateMap<GetMediumRequest, GetMediumDetailsQuery>();
+        CreateMap<GetMediumRequest, CheckMediumQuery>();
         CreateMap<MediumDetailModel, GetMediumResponse>();
     }
 }
