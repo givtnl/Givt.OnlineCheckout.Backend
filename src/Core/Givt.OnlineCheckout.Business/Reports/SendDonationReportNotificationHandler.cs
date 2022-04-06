@@ -17,9 +17,9 @@ namespace Givt.OnlineCheckout.Business.Reports
         Mediator mediator,
         IPdfService pdfService
         ) :
-        INotificationHandler<SendDonationReportCommand>
+        INotificationHandler<SendDonationReportNotification>
     {
-        public async Task Handle(SendDonationReportCommand notification, CancellationToken cancellationToken)
+        public async Task Handle(SendDonationReportNotification notification, CancellationToken cancellationToken)
         {
             logger.Debug("Sending email to {1} for donation with transaction reference '{0}'",
                     new object[] { notification.TransactionReference, notification.Email });

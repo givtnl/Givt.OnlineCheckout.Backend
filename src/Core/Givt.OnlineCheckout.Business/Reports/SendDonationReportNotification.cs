@@ -2,7 +2,7 @@
 
 namespace Givt.OnlineCheckout.Business.Reports
 {
-    public class SendDonationReportCommand: INotification
+    public class SendDonationReportNotification: INotification
     {
         public string Language { get; set; }
         public string TransactionReference { get; set; }

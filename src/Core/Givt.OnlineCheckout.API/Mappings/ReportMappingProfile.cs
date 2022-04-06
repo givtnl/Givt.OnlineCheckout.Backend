@@ -13,7 +13,7 @@ public class ReportMappingProfile : Profile
         CreateMap<GetDonationReportCommandResponse, GetDonationReportResponse>();
 
 
-        CreateMap<SendDonationReportRequest, SendDonationReportCommand>().ForMember(
+        CreateMap<SendDonationReportRequest, SendDonationReportNotification>().ForMember(
                 x => x.Language, options => options.MapFrom(src => src.Locale));
     }
 }
