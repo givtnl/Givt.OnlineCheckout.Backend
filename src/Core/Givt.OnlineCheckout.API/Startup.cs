@@ -39,7 +39,9 @@ namespace Givt.OnlineCheckout.API
         {
             ConfigureOptions(services);
 
-            services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
+            var log = new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]);
+            services.AddSingleton<ILog, LogitHttpLogger>(x => log);
+            services.AddSingleton(log.SerilogLogger);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddSingleton(new MapperConfiguration(mc =>

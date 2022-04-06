@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.Business.Models;
-using Givt.OnlineCheckout.Business.Models.Report;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
+using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,7 @@ namespace Givt.OnlineCheckout.Business.Reports
                     new object[] { notification.TransactionReference, notification.Email });
             var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
-            var donationMessage = ReportDonations.CreateFromDonation(donation, notification.Language);
+            var donationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
             var fileData = await pdfService.CreateSinglePaymentReport(/*donationMessage, */notification.Language, cancellationToken);
 
             var email = new BaseEmailModel

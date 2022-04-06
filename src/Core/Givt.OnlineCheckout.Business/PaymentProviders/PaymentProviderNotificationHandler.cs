@@ -1,12 +1,9 @@
-﻿using Givt.OnlineCheckout.Business.Models;
-using Givt.OnlineCheckout.Business.Models.Report;
-using Givt.OnlineCheckout.Infrastructure.DbContexts;
+﻿using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace Givt.OnlineCheckout.Business.PaymentProviders;

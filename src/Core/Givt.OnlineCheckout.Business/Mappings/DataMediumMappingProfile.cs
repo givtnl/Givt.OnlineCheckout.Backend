@@ -8,6 +8,7 @@ namespace Givt.OnlineCheckout.Business.Mappings;
 
 public class DataMediumMappingProfile : Profile
 {
+    public const string LanguageTag = "Language";
     public DataMediumMappingProfile()
     {
         CreateMap<MediumData, MediumDetailModel>()
@@ -30,14 +31,14 @@ public class DataMediumMappingProfile : Profile
             .ForMember(
                 x => x.Goal,
                 options => options.MapFrom(
-                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.Goal), dest.Language)
+                    (src, dest, _, context) => src.GetLocalisedText(nameof(LocalisableTexts.Goal), context.Items[LanguageTag] as string)
                 ))
             .ForMember(
                 x => x.ThankYou,
                 options => options.MapFrom(
-                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), dest.Language)
+                    (src, dest, _, context) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), context.Items[LanguageTag] as string)
                 ))
-            .ForMember(x => x.OrganisationLogoLink, 
+            .ForMember(x => x.OrganisationLogoLink,
                 options => options.MapFrom(
                     (src, dest) => src.Organisation.LogoImageLink
                 ))
