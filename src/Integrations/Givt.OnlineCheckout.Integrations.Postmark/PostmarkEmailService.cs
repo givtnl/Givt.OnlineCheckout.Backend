@@ -31,8 +31,20 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         if (String.IsNullOrWhiteSpace(emailData.To))
             throw new ArgumentNullException("emailData.To");
 
+        string template;
         PostmarkMessageBase message;
-        if (String.IsNullOrWhiteSpace(emailData.TemplateName))
+        switch (emailData.EmailType)
+        {
+            case EmailType.Plain:
+                template = String.Empty;
+                break;
+            case EmailType.SingleDonation:
+                template = _options.MailReportSingleDonationTemplate;
+                break;
+            default:
+                throw new NotSupportedException(emailData.EmailType.ToString());
+        }
+        if (String.IsNullOrWhiteSpace(template))
         {
             if (String.IsNullOrWhiteSpace(emailData.Subject))
                 throw new ArgumentNullException("emailData.Subject");
@@ -48,20 +60,10 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         }
         else
         {
-            // convert the object passed in emailData to a JObject to send to the mail server
-            // add special serializer that ignores reference loops and converts locale to Postmark stuff
-            
-            var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            serializerSettings.Converters.Add(new LocaleConverter(emailData.TemplateData.GetType()));
-            var templateModel = JObject.FromObject(emailData.TemplateData, JsonSerializer.CreateDefault(serializerSettings));
-
-            if (_options.EnvironmentName == "Development")
-                templateModel["SubjectPrefix"] = S_DEBUG_PREFIX;
-
             message = new TemplatedPostmarkMessage()
             {
-                TemplateAlias = emailData.TemplateName,
-                TemplateModel = templateModel,
+                TemplateAlias = template,
+                TemplateModel = ConvertTemplateData(emailData.TemplateData)
             };
         }
 
@@ -70,15 +72,32 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         message.TrackLinks = LinkTrackingOptions.HtmlAndText;
 
         ValidateAndAssignCcAddresses(message, emailData.Cc);
-        ValidateAndAssignAttachment(message, emailData.Attachment, emailData.AttachmentFileName);
+        ValidateAndAssignAttachment(message,
+            emailData.Attachment,
+            emailData.AttachmentFileName,
+            emailData.AttachmentContentType);
         ValidateAndAddAttachments(message, emailData.AttachmentFiles);
 
-        var result = String.IsNullOrWhiteSpace(emailData.TemplateName) ?
+        var result = String.IsNullOrWhiteSpace(template) ?
             await _postmarkClient.SendMessageAsync(message as PostmarkMessage) :
             await _postmarkClient.SendMessageAsync(message as TemplatedPostmarkMessage);
 
         if (result.Status != PostmarkStatus.Success)
             throw new Exception("Postmark Response = " + result.Status);
+    }
+
+    private JObject ConvertTemplateData(object templateData)
+    {
+        // convert the object passed in emailData to a JObject to send to the mail server
+        // add special serializer that ignores reference loops and converts locale to Postmark stuff
+        var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+        serializerSettings.Converters.Add(new LocaleConverter(templateData.GetType()));
+        var result = JObject.FromObject(templateData, JsonSerializer.CreateDefault(serializerSettings));
+
+        if (_options.EnvironmentName == "Development")
+            result["SubjectPrefix"] = S_DEBUG_PREFIX;
+
+        return result;
     }
 
     #region private helpers
@@ -90,7 +109,8 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         var validEmailAddresses = addresses.Where(address => !String.IsNullOrWhiteSpace(address));
         message.Cc = string.Join(",", validEmailAddresses);
     }
-    private void ValidateAndAssignAttachment(PostmarkMessageBase message, byte[] attachment, string attachmentName)
+    private void ValidateAndAssignAttachment(PostmarkMessageBase message, byte[] attachment, string attachmentName,
+        string attachmentContentType)
     {
         if (attachmentName == null && attachment == null)
             return;
@@ -100,12 +120,12 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
 
         var ext = Path.GetExtension(attachmentName).TrimStart('.');
         if (_forbiddenExts.Any(forbiddenValue => ext.Equals(forbiddenValue, StringComparison.InvariantCulture)))
-            throw new Exception($"This attachment extension {attachmentName} is forbidden by postmark");
+            throw new Exception($"This attachment extension of '{attachmentName}' is forbidden by postmark");
 
         if (attachment.Length <= 0)
             throw new ArgumentException("Zero sized attachments are not allowed");
 
-        message.AddAttachment(attachment, attachmentName);
+        message.AddAttachment(attachment, attachmentName, attachmentContentType ?? "application/octet-stream");
     }
     private void ValidateAndAddAttachments(PostmarkMessageBase message, List<string> attachmentFiles)
     {

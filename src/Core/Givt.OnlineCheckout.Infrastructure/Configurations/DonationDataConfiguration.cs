@@ -18,7 +18,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
 
             builder
                 .Property(e => e.LanguageId)
-                .HasMaxLength(20);
+                .HasMaxLength(20); 
+
 
             builder
                 .HasOne(e => e.Donor)

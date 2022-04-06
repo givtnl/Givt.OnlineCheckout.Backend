@@ -24,7 +24,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         {
             // check if locale is provided, otherwise take from Headers or set default
             if (String.IsNullOrWhiteSpace(request.Locale))
-                request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "EN";
+                request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "en";
 
             var query = _mapper.Map<GetMediumDetailsQuery>(request);
             return Ok(await _mediator.Send(query, cancellationToken));   

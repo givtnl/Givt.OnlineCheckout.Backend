@@ -17,27 +17,12 @@ namespace Givt.OnlineCheckout.Business.Donations
                 TransactionReference = response.TransactionReference,
                 TransactionDate = DateTime.UtcNow,
                 TimezoneOffset = request.TimezoneOffset,
-                Medium = request.Medium
+                Medium = request.Medium                
             };
-
-            // link to a donor if the user wants a tax report
-            if (request.TaxReport && !String.IsNullOrWhiteSpace(request.Email))
-            {
-                logger.Debug("Registering tax report request for email address '{0}'", new object[] { request.Email });
-                var email = request.Email.ToLower();
-                var donor = await DbContext.Donors.FirstAsync(c => c.Email == email, cancellationToken: cancellationToken);
-                if (donor != null)
-                {
-                    logger.Debug("Creating a new donor record for email address '{0}'", new object[] { request.Email });
-                    donor = new DonorData { Email = email };
-                }
-                dataDonation.Donor = donor;
-            }
-
             await DbContext.Donations.AddAsync(dataDonation, cancellationToken);
             var writeCount = await DbContext.SaveChangesAsync(cancellationToken);
             logger.Debug("Donation with reference '{0}' recorded, {1} records written",
-                new object[] { request.Medium.Organisation.PaymentProviderAccountReference, writeCount });
+                new object[] { response.TransactionReference, writeCount });
         }
     }
 }

@@ -11,8 +11,6 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
     public decimal Amount { get; set; }
     public MediumIdType MediumId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
-    public bool TaxReport { get; set; }
-    public string Email { get; set; }
     public int TimezoneOffset { get; set; } 
     
     internal MediumData Medium { get; set; }
