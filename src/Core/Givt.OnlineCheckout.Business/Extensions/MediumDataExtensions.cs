@@ -7,7 +7,7 @@ public static class MediumDataExtensions
 {
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
     public static string GetLocalisedText(this MediumData medium, string propertyName, string locale)
-    { 
+    {
         // get the property value through reflection
         var propertyInfo = typeof(LocalisableTexts).GetProperty(propertyName);
         if (propertyInfo == null)
@@ -16,14 +16,14 @@ public static class MediumDataExtensions
         // get language from locale
         var p = locale.IndexOf('-');
         var language = p > 0 ? locale[..p] : locale;
-        
+
         string result;
 
         // match on Medium texts
-        result = GetMatchingText((ICollection<LocalisableTexts>)medium.Texts, locale, language, propertyInfo);
+        result = GetMatchingText(medium.Texts.ToList<LocalisableTexts>(), locale, language, propertyInfo);
         if (result != null) return result;
         // match on Organisation texts
-        result = GetMatchingText((ICollection<LocalisableTexts>)medium.Organisation.Texts, locale, language, propertyInfo);
+        result = GetMatchingText(medium.Organisation.Texts.ToList<LocalisableTexts>(), locale, language, propertyInfo);
         if (result != null) return result;
 
         // Look for text in lingua franca
@@ -46,7 +46,7 @@ public static class MediumDataExtensions
         return String.Empty;
     }
 
-    private static string GetMatchingText(ICollection<LocalisableTexts> texts, string locale, string language, PropertyInfo propertyInfo)
+    private static string GetMatchingText(IList<LocalisableTexts> texts, string locale, string language, PropertyInfo propertyInfo)
     {
         if (texts?.Count > 0)
         {

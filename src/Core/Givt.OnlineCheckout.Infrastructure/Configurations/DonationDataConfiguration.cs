@@ -16,10 +16,6 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .Property(e => e.TransactionReference)
                 .HasMaxLength(50); // Stripe seems to use 27 characters
 
-            builder
-                .Property(e => e.LanguageId)
-                .HasMaxLength(20); 
-
 
             builder
                 .HasOne(e => e.Donor)

@@ -47,9 +47,9 @@ namespace Givt.OnlineCheckout.Api.Test
                 IssuerSigningKey = _key,
                 ClockSkew = TimeSpan.FromMinutes(1),
             };
-            var user = securityHandler.ValidateToken(tokenString, validationParameters, out SecurityToken validatedToken);
+            var claimsPrincipal = securityHandler.ValidateToken(tokenString, validationParameters, out SecurityToken validatedToken);
 
-            var returnedTransactionReference = handler.GetTransactionReference(user);
+            var returnedTransactionReference = handler.GetTransactionReference(claimsPrincipal);
 
             Assert.AreEqual(transactionReference, returnedTransactionReference);
         }

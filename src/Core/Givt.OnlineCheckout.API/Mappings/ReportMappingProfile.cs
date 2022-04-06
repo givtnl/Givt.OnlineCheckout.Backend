@@ -8,7 +8,7 @@ public class ReportMappingProfile : Profile
 {
     public ReportMappingProfile()
     {
-        CreateMap<GetDonationReportRequest, GetDonationReportQuery>();
-        CreateMap<GetDonationReportQueryResponse, GetDonationReportResponse>();
+        CreateMap<GetDonationReportRequest, GetDonationReportCommand>();
+        CreateMap<GetDonationReportCommandResponse, GetDonationReportResponse>();
     }
 }

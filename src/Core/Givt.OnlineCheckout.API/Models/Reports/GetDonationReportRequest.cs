@@ -2,6 +2,6 @@
 
 public class GetDonationReportRequest
 {
-    internal string TransactionReference { get; set; }
     public string Locale { get; set; }
+    internal string TransactionReference { get; set; }
 }
