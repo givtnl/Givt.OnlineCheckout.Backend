@@ -29,6 +29,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .WithOne(t => t.Organisation)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(x => x.LogoImageLink)
+                .HasMaxLength(100);
 
             builder
                 .HasIndex(e => e.Namespace);

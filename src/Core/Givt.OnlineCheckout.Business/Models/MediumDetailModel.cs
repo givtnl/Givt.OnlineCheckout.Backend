@@ -3,6 +3,7 @@
 public class MediumDetailModel
 {
     public string OrganisationName { get; set; }
+    public string OrganisationLogoLink { get; set; }
     public string Goal { get; set; }
     public string Medium { get; set; }
     public string Currency { get; set; }
