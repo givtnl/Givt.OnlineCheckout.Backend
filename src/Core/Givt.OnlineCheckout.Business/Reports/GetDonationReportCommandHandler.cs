@@ -2,6 +2,7 @@
 using Givt.OnlineCheckout.Business.Models.Report;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
+using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +21,9 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Map
             .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
-        var donationData = ReportDonations.CreateFromDonation(donation, request.Language);
+        var donationData = _mapper.Map<SingleDonationReport>( ReportDonations.CreateFromDonation(donation, request.Language));
         var fileData = await pdfService.CreateSinglePaymentReport(
+            donationData,
             request.Language,
             cancellationToken);        
 

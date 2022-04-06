@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Givt.OnlineCheckout.Integrations.GoogleDocs;
 
 namespace Givt.OnlineCheckout.API
 {
@@ -68,6 +69,9 @@ namespace Givt.OnlineCheckout.API
             services.Configure<PostmarkOptions>(Configuration.GetSection(PostmarkOptions.SectionName))
                 .AddSingleton(sp => sp.GetRequiredService<IOptions<PostmarkOptions>>().Value);
 
+            services.Configure<GoogleDocsOptions>(Configuration.GetSection(GoogleDocsOptions.SectionName))
+                .AddSingleton(sp => sp.GetRequiredService<IOptions<GoogleDocsOptions>>().Value);
+
             services.AddMediatR(
                 typeof(GetOrganisationByMediumIdQuery).Assembly,            // Givt.OnlineCheckout.Business
                 typeof(ISinglePaymentNotification).Assembly,                // Givt.OnlineCheckout.Integrations.Interfaces
@@ -76,6 +80,7 @@ namespace Givt.OnlineCheckout.API
             );
 
             services.AddTransient(typeof(JwtTokenHandler));
+            services.AddTransient<IPdfService, GooglePdfService>();
 
             var jwtOptions = jwtSection.Get<JwtOptions>();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.IssuerSigningKey));
