@@ -1,9 +1,8 @@
 ﻿using Givt.OnlineCheckout.Integrations.Interfaces;
-using Newtonsoft.Json.Linq;
 
 namespace Givt.OnlineCheckout.Business.Models
 {
-    public abstract class BaseEmailModel : IEmailNotification
+    public class BaseEmailModel : IEmailNotification
     {
         public EmailType EmailType { get; set; }
         public string From { get; set; }

@@ -46,13 +46,16 @@ namespace Givt.OnlineCheckout.API
             {
                 mc.AddProfiles(new List<Profile>
                 {
+                    new DonationMappingProfile(),
                     new DonorMappingProfile(),
-                    new OrganisationMappingProfile(),
-                    new DataDonorMappingProfile(),
-                    new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
+                    new OrganisationMappingProfile(),
+                    new ReportMappingProfile(),
+
+                    new DataDonorMappingProfile(),
                     new DataMediumMappingProfile(),
-                    new DonationMappingProfile()
+                    new DataOrganisationMappingProfile(),
+                    new DonationReportMappingProfile(),
                 });
             }).CreateMapper());
 
