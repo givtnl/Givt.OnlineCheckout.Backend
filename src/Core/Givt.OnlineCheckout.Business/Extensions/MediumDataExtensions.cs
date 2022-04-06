@@ -14,7 +14,7 @@ public static class MediumDataExtensions
             return null;
 
         // get language from locale
-        var p = locale.IndexOf('-');
+        var p = locale.IndexOf('_');        
         var language = p > 0 ? locale[..p] : locale;
 
         string result;

@@ -23,7 +23,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             if (message == null)
             {
                 _logger.Debug($"Request to validate email '{email}' -> OK");
-                return Ok(email);
+                return Ok();
             }
             else
             {

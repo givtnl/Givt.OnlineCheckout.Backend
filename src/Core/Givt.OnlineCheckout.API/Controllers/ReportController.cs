@@ -31,8 +31,7 @@ public class ReportController : ControllerBase
     {
         _logger.Debug("Get Report/singleDonation {0}", request);
 
-        if (String.IsNullOrWhiteSpace(request.Locale))
-            request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "en";
+        request.Locale = LocaleUtils.GetLocaleId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
             request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
@@ -54,8 +53,7 @@ public class ReportController : ControllerBase
     {
         _logger.Debug("Post Report/singleDonation {0}", request);
 
-        if (String.IsNullOrWhiteSpace(request.Locale))
-            request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "en";
+        request.Locale = LocaleUtils.GetLocaleId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
             request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);

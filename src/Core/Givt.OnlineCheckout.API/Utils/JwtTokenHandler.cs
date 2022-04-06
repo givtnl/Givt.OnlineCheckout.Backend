@@ -1,9 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.API.Utils;
 
@@ -11,10 +9,10 @@ public class JwtTokenHandler
 {
     private const string S_TRANSACTIONREFERENCE = "txref";
 
-    private readonly ILog _logger;
+    private readonly Serilog.ILogger _logger;
     private readonly JwtOptions _options;
 
-    public JwtTokenHandler(ILog logger, JwtOptions options)
+    public JwtTokenHandler(Serilog.ILogger logger, JwtOptions options)
     {
         _logger = logger;
         _options = options;
