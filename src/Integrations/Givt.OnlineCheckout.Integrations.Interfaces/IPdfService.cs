@@ -4,7 +4,7 @@ namespace Givt.OnlineCheckout.Integrations.Interfaces;
 
 public interface IPdfService
 {
-   Task<IFileData> CreateSinglePaymentReport(SingleDonationReport report ,string locale, CancellationToken cancellationToken);
+   Task<IFileData> CreateSinglePaymentReport(DonationReport report ,string locale, CancellationToken cancellationToken);
 }
 
 public interface IFileData

@@ -25,7 +25,7 @@ public class Tests
     public async Task Test1()
     {
         var service = new GooglePdfService(_options);
-        var doc = await service.CreateSinglePaymentReport(new SingleDonationReport()
+        var doc = await service.CreateSinglePaymentReport(new DonationReport()
         {
             OrganisationName = "Bjorns epic organisation"
         }, "en", CancellationToken.None);

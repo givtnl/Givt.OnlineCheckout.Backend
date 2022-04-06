@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Business.Models.Report;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.Reports;
 
-public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Mapper _mapper, IPdfService pdfService) : 
+public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Mapper mapper, IPdfService pdfService) :
     IRequestHandler<GetDonationReportCommand, GetDonationReportCommandResponse>
 {
     public async Task<GetDonationReportCommandResponse> Handle(GetDonationReportCommand request, CancellationToken cancellationToken)
@@ -21,12 +20,9 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Map
             .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
-        var donationData = _mapper.Map<SingleDonationReport>( ReportDonations.CreateFromDonation(donation, request.Language));
-        var fileData = await pdfService.CreateSinglePaymentReport(
-            donationData,
-            request.Language,
-            cancellationToken);        
 
-        return _mapper.Map<GetDonationReportCommandResponse>(fileData);
+        var donationReport = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = request.Language; });
+        var fileData = await pdfService.CreateSinglePaymentReport(donationReport, request.Language, cancellationToken);
+        return mapper.Map<GetDonationReportCommandResponse>(fileData);
     }
 }

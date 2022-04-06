@@ -22,12 +22,12 @@ public class GooglePdfService: IPdfService
     }
     
     
-    public async Task<IFileData> CreateSinglePaymentReport(SingleDonationReport report, string locale, CancellationToken cancellationToken)
+    public async Task<IFileData> CreateSinglePaymentReport(DonationReport report, string locale, CancellationToken cancellationToken)
     {
         var parameters = new Dictionary<string, string>();
         parameters.Add("receivingOrganisation", report.OrganisationName);
-        parameters.Add("date", report.Date.ToString("o"));
-        parameters.Add("currencySymbol", "€");
+        parameters.Add("date", report.Timestamp);
+        parameters.Add("currencySymbol", report.Currency);
         parameters.Add("amount", report.Amount.ToString(CultureInfo.InvariantCulture));
         var document = await GenerateDocument(parameters , "1L-5CEuy7df4TO77LVzl13VzEnQXtOTRO4imHM5TTf2E", cancellationToken);
         return new GoogleFile()

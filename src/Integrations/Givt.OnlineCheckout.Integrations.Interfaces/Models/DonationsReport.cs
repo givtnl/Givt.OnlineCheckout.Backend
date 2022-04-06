@@ -1,6 +1,6 @@
 ﻿namespace Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
-public class DonationReport
+public class DonationsReport
 {
     // requested report langage / region
     public string Locale { get; set; }
@@ -14,9 +14,6 @@ public class DonationReport
     public string Country { get; set; }
 
     // donations
-    public string OrganisationName { get; set; }
-    public string Goal { get; set; }
-    public string Timestamp { get; set; }
-    public string Currency { get; set; }
-    public string Amount { get; set; }
+    public IEnumerable<Organisation> Organisations { get; set; }
+
 }

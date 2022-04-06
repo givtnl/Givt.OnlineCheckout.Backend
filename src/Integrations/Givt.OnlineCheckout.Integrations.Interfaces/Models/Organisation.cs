@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.Business.Models.Report;
+﻿namespace Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 public class Organisation
 {

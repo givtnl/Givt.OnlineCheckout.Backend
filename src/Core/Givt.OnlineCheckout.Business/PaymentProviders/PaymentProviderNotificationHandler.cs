@@ -1,12 +1,9 @@
-﻿using Givt.OnlineCheckout.Business.Models;
-using Givt.OnlineCheckout.Business.Models.Report;
-using Givt.OnlineCheckout.Infrastructure.DbContexts;
+﻿using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace Givt.OnlineCheckout.Business.PaymentProviders;
@@ -83,19 +80,4 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    //private async Task SendEmail(DonationData donation, CancellationToken cancellationToken)
-    //{
-    //    Log.Debug("Sending email to {1} for donation with transaction reference '{0}'",
-    //        new object[] { donation.TransactionReference, donation.Donor.Email });
-
-    //    // Could try to get more info from Payment Service Provider
-
-    //    var email = new TemplateEmailModel(_configuration["MailReportSingleDonationTemplate"])
-    //    {
-    //        To = donation.Donor.Email,
-    //    };
-    //    // convert the donation into a donation report
-    //    email.TemplateData = ReportDonations.CreateFromDonation(donation);
-    //    await _mediator.Publish(email, cancellationToken);
-    //}
 }

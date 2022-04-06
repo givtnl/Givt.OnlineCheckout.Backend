@@ -11,7 +11,6 @@ using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Postmark;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -22,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Givt.OnlineCheckout.Integrations.GoogleDocs;
+using ReportMappingProfile = Givt.OnlineCheckout.API.Mappings.ReportMappingProfile;
 
 namespace Givt.OnlineCheckout.API
 {
@@ -40,20 +40,25 @@ namespace Givt.OnlineCheckout.API
         {
             ConfigureOptions(services);
 
-            services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
+            var log = new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]);
+            services.AddSingleton<ILog, LogitHttpLogger>(x => log);
+            services.AddSingleton(log.SerilogLogger);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddSingleton(new MapperConfiguration(mc =>
             {
                 mc.AddProfiles(new List<Profile>
                 {
+                    new DonationMappingProfile(),
                     new DonorMappingProfile(),
-                    new OrganisationMappingProfile(),
-                    new DataDonorMappingProfile(),
-                    new DataOrganisationMappingProfile(),
                     new MediumMappingProfile(),
+                    new OrganisationMappingProfile(),
+                    new ReportMappingProfile(),
+
+                    new DataDonorMappingProfile(),
                     new DataMediumMappingProfile(),
-                    new DonationMappingProfile()
+                    new DataOrganisationMappingProfile(),
+                    new DonationReportMappingProfile(),
                 });
             }).CreateMapper());
 

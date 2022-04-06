@@ -30,11 +30,6 @@ public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuer
         if (medium == null)
             throw new NotFoundException(nameof(MediumIdType), request.MediumId);
 
-        // Allow the mapper to select proper texts based on requested language
-        var detailModel = new MediumDetailModel
-        {
-            Language = request.Language
-        };
-        return _mapper.Map(medium, detailModel);
+        return _mapper.Map<MediumDetailModel>(medium, opt => { opt.Items["Language"] = request.Language; });
     }
 }
