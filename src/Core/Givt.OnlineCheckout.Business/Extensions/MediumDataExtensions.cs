@@ -6,7 +6,7 @@ namespace Givt.OnlineCheckout.Business.Extensions;
 public static class MediumDataExtensions
 {
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
-    public static string GetLocalisedText(this MediumData medium, string propertyName, string locale)
+    public static string GetLocalisedText(this MediumData medium, string propertyName, string languageId)
     {
         // get the property value through reflection
         var propertyInfo = typeof(LocalisableTexts).GetProperty(propertyName);
@@ -14,20 +14,20 @@ public static class MediumDataExtensions
             return null;
 
         // get language from locale
-        var p = locale.IndexOf('_');        
-        var language = p > 0 ? locale[..p] : locale;
+        var p = languageId.IndexOf('-');
+        var languageOnly = p > 0 ? languageId[..p] : languageId;
 
         string result;
 
         // match on Medium texts
-        result = GetMatchingText(medium.Texts.ToList<LocalisableTexts>(), locale, language, propertyInfo);
+        result = GetMatchingText(medium.Texts.ToList<LocalisableTexts>(), languageId, languageOnly, propertyInfo);
         if (result != null) return result;
         // match on Organisation texts
-        result = GetMatchingText(medium.Organisation.Texts.ToList<LocalisableTexts>(), locale, language, propertyInfo);
+        result = GetMatchingText(medium.Organisation.Texts.ToList<LocalisableTexts>(), languageId, languageOnly, propertyInfo);
         if (result != null) return result;
 
         // Look for text in lingua franca
-        if (!language.Equals("en", StringComparison.OrdinalIgnoreCase))
+        if (!languageOnly.Equals("en", StringComparison.OrdinalIgnoreCase))
         {
             // match on Medium texts on default language "en" only
             result = GetMatchingText((ICollection<LocalisableTexts>)medium.Texts, "en", propertyInfo);
@@ -46,19 +46,19 @@ public static class MediumDataExtensions
         return String.Empty;
     }
 
-    private static string GetMatchingText(IList<LocalisableTexts> texts, string locale, string language, PropertyInfo propertyInfo)
+    private static string GetMatchingText(IList<LocalisableTexts> texts, string languageId, string languageOnly, PropertyInfo propertyInfo)
     {
         if (texts?.Count > 0)
         {
             LocalisableTexts match = null;
-            // exact match on locale 
+            // exact match on language AND region 
             match = texts
-                .Where(t => t.LanguageId.Equals(locale, StringComparison.OrdinalIgnoreCase))
+                .Where(t => t.LanguageId.Equals(languageId, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
             if (match != null && propertyInfo.GetValue(match) is string result && !String.IsNullOrEmpty(result))
                 return result;
         }
-        return GetMatchingText(texts, language, propertyInfo);
+        return GetMatchingText(texts, languageOnly, propertyInfo);
     }
 
     private static string GetMatchingText(ICollection<LocalisableTexts> texts, string language, PropertyInfo propertyInfo)
@@ -66,14 +66,14 @@ public static class MediumDataExtensions
         if (texts?.Count > 0)
         {
             LocalisableTexts match = null;
-            // language only match on locale 
+            // language only
             match = texts
                 .Where(t => t.LanguageId.Equals(language, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
             if (match != null && propertyInfo.GetValue(match) is string result1 && !String.IsNullOrEmpty(result1))
                 return result1;
 
-            // other locale with same language on Medium
+            // other language codes with same language
             match = texts
                 .Where(t => t.LanguageId.StartsWith(language + '-', StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();

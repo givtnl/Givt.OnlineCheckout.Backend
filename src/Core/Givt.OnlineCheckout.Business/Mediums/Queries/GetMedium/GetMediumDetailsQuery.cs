@@ -6,5 +6,5 @@ namespace Givt.OnlineCheckout.Business.Mediums.Queries;
 public class GetMediumDetailsQuery: IRequest<MediumDetailModel>
 {
     public MediumIdType MediumId { get; set; }
-    public string Locale { get; set; }
+    public string Language { get; set; }
 }

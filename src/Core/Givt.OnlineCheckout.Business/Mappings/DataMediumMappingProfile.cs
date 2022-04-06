@@ -30,12 +30,12 @@ public class DataMediumMappingProfile : Profile
             .ForMember(
                 x => x.Goal,
                 options => options.MapFrom(
-                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.Goal), dest.Locale)
+                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.Goal), dest.Language)
                 ))
             .ForMember(
                 x => x.ThankYou,
                 options => options.MapFrom(
-                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), dest.Locale)
+                    (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), dest.Language)
                 ))
             .ForMember(x => x.OrganisationLogoLink, 
                 options => options.MapFrom(
