@@ -75,6 +75,8 @@ namespace Givt.OnlineCheckout.API
                 typeof(PostmarkEmailService<IEmailNotification>).Assembly   // Givt.OnlineCheckout.Integrations.Postmark
             );
 
+            services.AddTransient(typeof(JwtTokenHandler));
+
             var jwtOptions = jwtSection.Get<JwtOptions>();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.IssuerSigningKey));
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
