@@ -4,7 +4,6 @@ using Givt.OnlineCheckout.Business.Reports;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
-using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.Mappings
 {
@@ -41,14 +40,11 @@ namespace Givt.OnlineCheckout.Business.Mappings
             CreateMap<DonationData, DonationsReport>()
                     .ForMember(dst => dst.Organisations,
                         options => options.MapFrom(
-                            (src, dest, _, context) => src.GetOrganisations(context.Items[LanguageTag] as string)
-                        )
+                            (src, dest, _, context) => src.GetOrganisations(context.Items[LanguageTag] as string))
                     )
                     .ForMember(dst => dst.Locale,
                         options => options.MapFrom(
-                            (src, dst, _, context) => context.Items[LanguageTag] as string
-                        )
-                    );
+                            (src, dst, _, context) => context.Items[LanguageTag] as string));
         }
 
     }

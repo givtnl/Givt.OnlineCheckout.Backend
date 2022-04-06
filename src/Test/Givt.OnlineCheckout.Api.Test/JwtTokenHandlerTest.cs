@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Serilog;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace Givt.OnlineCheckout.Api.Test

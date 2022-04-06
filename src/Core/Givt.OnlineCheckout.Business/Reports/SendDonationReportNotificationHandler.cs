@@ -25,7 +25,7 @@ namespace Givt.OnlineCheckout.Business.Reports
                     new object[] { notification.TransactionReference, notification.Email });
             var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
-            var donationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
+            var donationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
             var fileData = await pdfService.CreateSinglePaymentReport(/*donationMessage, */notification.Language, cancellationToken);
 
             var email = new BaseEmailModel
