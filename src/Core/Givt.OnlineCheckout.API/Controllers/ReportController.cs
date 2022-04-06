@@ -35,7 +35,7 @@ public class ReportController : ControllerBase
             request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "en";
         try
         {
-            request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext);
+            request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
 
             var query = _mapper.Map<GetDonationReportRequest>(request);
             var response = (GetDonationReportResponse)await _mediator.Send(query, cancellationToken);
@@ -58,7 +58,7 @@ public class ReportController : ControllerBase
             request.Locale = HttpContext.Request.Headers.AcceptLanguage.FirstOrDefault() ?? "en";
         try
         {
-            request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext);
+            request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
 
             var notification = _mapper.Map<SendDonationReportRequest>(request);
             await _mediator.Publish(notification, CancellationToken.None);
