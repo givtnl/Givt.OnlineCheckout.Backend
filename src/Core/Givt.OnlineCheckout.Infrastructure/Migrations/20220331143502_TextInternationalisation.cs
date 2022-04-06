@@ -22,21 +22,17 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                 table: "Donations",
                 type: "bigint",
                 nullable: true);
-            /* is already in the database???
             migrationBuilder.AddColumn<int>(
                 name: "TimezoneOffset",
                 table: "Donations",
                 type: "integer",
                 nullable: false,
                 defaultValue: 0);
-            */
-            /* is already in the database???
             migrationBuilder.AddColumn<DateTime>(
                 name: "TransactionDate",
                 table: "Donations",
                 type: "timestamp with time zone",
                 nullable: true);
-            */
             migrationBuilder.CreateTable(
                 name: "MediumTexts",
                 columns: table => new
@@ -86,12 +82,10 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                 table: "Donations",
                 column: "MediumId");
 
-            /* is already in the database???
             migrationBuilder.CreateIndex(
                 name: "IX_Donations_TransactionReference",
                 table: "Donations",
                 column: "TransactionReference");
-            */
             migrationBuilder.CreateIndex(
                 name: "IX_MediumTexts_MediumId",
                 table: "MediumTexts",

@@ -18,6 +18,19 @@ namespace Givt.OnlineCheckout.API.Controllers
             _mediator = mediator;
         }
         
+        // This head method is used to check whether a medium exists in our databse
+        [HttpHead]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CheckForExistence([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
+        {
+            var query = _mapper.Map<CheckMediumQuery>(request);
+            if(await _mediator.Send(query, cancellationToken))
+                return Ok();
+            
+            return NotFound();
+        }
+        
         [HttpGet]
         [ProducesResponseType(typeof(GetMediumResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Index([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
