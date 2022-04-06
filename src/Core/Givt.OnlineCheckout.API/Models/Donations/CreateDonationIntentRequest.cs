@@ -10,5 +10,4 @@ public class CreateDonationIntentRequest
     public string Medium { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public int TimezoneOffset { get; set; } 
-    public string LanguageId { get; set; }
 }

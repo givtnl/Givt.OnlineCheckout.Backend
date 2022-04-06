@@ -20,9 +20,9 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Map
             .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
-        var donationData = ReportDonations.CreateFromDonation(donation, request.Locale);
+        var donationData = ReportDonations.CreateFromDonation(donation, request.Language);
         var fileData = await pdfService.CreateSinglePaymentReport(
-            request.Locale,
+            request.Language,
             cancellationToken);        
 
         return _mapper.Map<GetDonationReportCommandResponse>(fileData);

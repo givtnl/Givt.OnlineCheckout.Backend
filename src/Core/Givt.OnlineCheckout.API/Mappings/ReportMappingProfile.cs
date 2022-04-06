@@ -8,7 +8,12 @@ public class ReportMappingProfile : Profile
 {
     public ReportMappingProfile()
     {
-        CreateMap<GetDonationReportRequest, GetDonationReportCommand>();
+        CreateMap<GetDonationReportRequest, GetDonationReportCommand>().ForMember(
+                x => x.Language, options => options.MapFrom(src => src.Locale));
         CreateMap<GetDonationReportCommandResponse, GetDonationReportResponse>();
+
+
+        CreateMap<SendDonationReportRequest, SendDonationReportCommand>().ForMember(
+                x => x.Language, options => options.MapFrom(src => src.Locale));
     }
 }

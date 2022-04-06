@@ -36,7 +36,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         [ProducesResponseType(typeof(GetMediumResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Index([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
         {
-            request.Locale = LocaleUtils.GetLocaleId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+            request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
 
             var query = _mapper.Map<GetMediumDetailsQuery>(request);
             return Ok(await _mediator.Send(query, cancellationToken));   

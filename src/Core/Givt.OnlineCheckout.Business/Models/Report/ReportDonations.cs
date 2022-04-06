@@ -19,16 +19,15 @@ public class ReportDonations
     // donations
     public IEnumerable<Organisation> Organisations { get; set; }
 
-    public static ReportDonations CreateFromDonation(DonationData donation, string locale)
+    public static ReportDonations CreateFromDonation(DonationData donation, string language)
     {
-        var languageId = locale?.Split('-').FirstOrDefault();
-        if (String.IsNullOrEmpty(languageId))
-            languageId = "en";
-        var cultureInfo = CultureInfo.GetCultureInfo(languageId);
+        if (String.IsNullOrEmpty(language?.Split('-')?.FirstOrDefault()))
+            language = "en";
+        var cultureInfo = CultureInfo.GetCultureInfo(language);
 
         var result = new ReportDonations
         {
-            Locale = languageId,
+            Locale = language,
             /*
             FirstName = "FirstName_Value",
             LastName = "LastName_Value",
