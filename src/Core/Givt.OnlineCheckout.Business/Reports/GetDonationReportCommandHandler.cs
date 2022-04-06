@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.Reports;
 
-public record GetDonationReportCommandHandler(OnlineCheckoutContext context, Mapper mapper, IPdfService pdfService) :
+public record GetDonationReportCommandHandler(OnlineCheckoutContext context, IMapper mapper, IPdfService pdfService) :
     IRequestHandler<GetDonationReportCommand, GetDonationReportCommandResponse>
 {
     public async Task<GetDonationReportCommandResponse> Handle(GetDonationReportCommand request, CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Reports;
 using Givt.OnlineCheckout.API.Utils;
+using Givt.OnlineCheckout.Business.Reports;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,8 +37,8 @@ public class ReportController : ControllerBase
         {
             request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
 
-            var query = _mapper.Map<GetDonationReportRequest>(request);
-            var response = (GetDonationReportResponse)await _mediator.Send(query, cancellationToken);
+            var query = _mapper.Map<GetDonationReportCommand>(request);
+            var response = await _mediator.Send(query, cancellationToken);
             return File(response.Content, response.MimeType, response.Filename);
         }
         catch (UnauthorizedAccessException uae)
