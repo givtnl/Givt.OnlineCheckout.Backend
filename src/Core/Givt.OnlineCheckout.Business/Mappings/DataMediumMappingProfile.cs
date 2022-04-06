@@ -37,6 +37,10 @@ public class DataMediumMappingProfile : Profile
                 options => options.MapFrom(
                     (src, dest) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), dest.Locale)
                 ))
+            .ForMember(x => x.OrganisationLogoLink, 
+                options => options.MapFrom(
+                    (src, dest) => src.Organisation.LogoImageLink
+                ))
             ;
     }
 }
