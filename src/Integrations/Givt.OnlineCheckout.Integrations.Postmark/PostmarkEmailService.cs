@@ -129,7 +129,10 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
     }
     private void ValidateAndAddAttachments(PostmarkMessageBase message, List<string> attachmentFiles)
     {
-        foreach (var path in attachmentFiles ?? Enumerable.Empty<string>())
+        if (attachmentFiles == null)
+            return;
+
+        foreach (var path in attachmentFiles)
         {
             if (path == null)
                 return;
