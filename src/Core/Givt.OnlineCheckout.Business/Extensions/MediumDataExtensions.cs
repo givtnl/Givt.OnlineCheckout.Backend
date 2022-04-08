@@ -58,28 +58,30 @@ public static class MediumDataExtensions
 
         string result;
 
+        var mediumTexts = medium.Texts.ToList<LocalisableTexts>();
         // match on Medium texts
-        result = GetMatchingText(medium.Texts.ToList<LocalisableTexts>(), languageId, languageOnly, propertyInfo);
+        result = GetMatchingText(mediumTexts, languageId, languageOnly, propertyInfo);
         if (result != null) return result;
         // match on Organisation texts
-        result = GetMatchingText(medium.Organisation.Texts.ToList<LocalisableTexts>(), languageId, languageOnly, propertyInfo);
+        var organisationTexts = medium.Organisation.Texts.ToList<LocalisableTexts>();
+        result = GetMatchingText(organisationTexts, languageId, languageOnly, propertyInfo);
         if (result != null) return result;
 
         // Look for text in lingua franca
         if (!languageOnly.Equals("en", StringComparison.OrdinalIgnoreCase))
         {
             // match on Medium texts on default language "en" only
-            result = GetMatchingText((ICollection<LocalisableTexts>)medium.Texts, "en", propertyInfo);
+            result = GetMatchingText(mediumTexts, "en", propertyInfo);
             if (result != null) return result;
             // match on Organisation texts on default language "en" only
-            result = GetMatchingText((ICollection<LocalisableTexts>)medium.Organisation.Texts, "en", propertyInfo);
+            result = GetMatchingText(organisationTexts, "en", propertyInfo);
             if (result != null) return result;
         }
 
         // Still desperately seeking... match any text
-        result = GetAnyText((ICollection<LocalisableTexts>)medium.Texts, propertyInfo);
+        result = GetAnyText(mediumTexts, propertyInfo);
         if (result != null) return result;
-        result = GetAnyText((ICollection<LocalisableTexts>)medium.Organisation.Texts, propertyInfo);
+        result = GetAnyText(organisationTexts, propertyInfo);
         if (result != null) return result;
 
         return String.Empty;
