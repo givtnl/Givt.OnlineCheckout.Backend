@@ -59,7 +59,7 @@ public class ReportController : ControllerBase
         {
             request.TransactionReference = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
 
-            var notification = _mapper.Map<SendDonationReportRequest>(request);
+            var notification = _mapper.Map<SendDonationReportNotification>(request);
             await _mediator.Publish(notification, CancellationToken.None); // decouple from HTTP server cancellations etc.
             return Ok();
         }

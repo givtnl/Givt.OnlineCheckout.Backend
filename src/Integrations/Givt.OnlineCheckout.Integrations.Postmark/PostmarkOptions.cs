@@ -2,7 +2,7 @@ namespace Givt.OnlineCheckout.Integrations.Postmark;
 
 public class PostmarkOptions
 {
-    public static string SectionName = "Postmark";
+    public static string SectionName = "PostmarkOptions";
 
     public string ApiKey { get; set; }
     public string SupportAddress { get; set; }
