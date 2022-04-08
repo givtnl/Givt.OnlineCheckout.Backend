@@ -13,8 +13,8 @@ namespace Givt.OnlineCheckout.Business.Reports
     public record SendDonationReportNotificationHandler(
         ILogger logger,
         OnlineCheckoutContext context,
-        Mapper mapper,
-        Mediator mediator,
+        IMapper mapper,
+        IMediator mediator,
         IPdfService pdfService
         ) :
         INotificationHandler<SendDonationReportNotification>

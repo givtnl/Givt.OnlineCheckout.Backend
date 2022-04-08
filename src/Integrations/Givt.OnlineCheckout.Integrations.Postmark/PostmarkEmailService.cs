@@ -17,9 +17,9 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
     private readonly PostmarkClient _postmarkClient;
     private readonly string[] _forbiddenExts = { "vbs", "exe", "bin", "bat", "chm", "com", "cpl", "crt", "hlp", "hta", "inf", "ins", "isp", "jse", "lnk", "mdb", "pcd", "pif", "reg", "scr", "sct", "shs", "vbe", "vba", "wsf", "wsh", "wsl", "msc", "msi", "msp", "mst" };
 
-    public PostmarkEmailService(IOptions<PostmarkOptions> options)
+    public PostmarkEmailService(PostmarkOptions options)
     {
-        _options = options.Value;
+        _options = options;
         _postmarkClient = new PostmarkClient(_options.ApiKey);
     }
 
@@ -129,7 +129,7 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
     }
     private void ValidateAndAddAttachments(PostmarkMessageBase message, List<string> attachmentFiles)
     {
-        foreach (var path in attachmentFiles)
+        foreach (var path in attachmentFiles ?? Enumerable.Empty<string>())
         {
             if (path == null)
                 return;
