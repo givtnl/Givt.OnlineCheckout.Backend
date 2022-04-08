@@ -1,6 +1,6 @@
 ﻿namespace Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
-public enum PaymentMethod // TODO: fix values in enum and make sure they're the same everywhere
+public enum PaymentMethod
 {
     Bancontact = 0,
     Card = 1,
