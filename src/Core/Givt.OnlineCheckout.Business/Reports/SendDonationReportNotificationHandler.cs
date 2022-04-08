@@ -25,14 +25,17 @@ namespace Givt.OnlineCheckout.Business.Reports
                     new object[] { notification.TransactionReference, notification.Email });
             var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
-            var donationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
-            var fileData = await pdfService.CreateSinglePaymentReport(donationMessage, notification.Language, cancellationToken);
+            // Google Docs expects this
+            var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
+            // the Postmark template expects this
+            var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
+            var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.Language, cancellationToken);
 
             var email = new BaseEmailModel
             {
                 EmailType = EmailType.SingleDonation,
                 To = notification.Email,
-                TemplateData = donationMessage,
+                TemplateData = multipleDonationMessage,
                 Attachment = fileData.Content,
                 AttachmentFileName = fileData.Filename,
                 AttachmentContentType = fileData.MimeType,
