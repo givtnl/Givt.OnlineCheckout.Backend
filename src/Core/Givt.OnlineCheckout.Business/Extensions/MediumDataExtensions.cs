@@ -35,9 +35,10 @@ public static class MediumDataExtensions
         var businessPaymentMethods = (UInt64)paymentMethods.Value;
         var apiPaymentMethods = new List<integrations.PaymentMethod>();
         UInt64 mask = 0x0000000000000001;
-        for (integrations.PaymentMethod i = 0; i <= (integrations.PaymentMethod)63; i++)
+        for (int i = 0; i < sizeof(persistance.PaymentMethod) * 8; i++)
         {
-            if ((businessPaymentMethods & mask) != 0) { apiPaymentMethods.Add(i); }
+            System.Diagnostics.Debug.Write(i);
+            if ((businessPaymentMethods & mask) != 0) { apiPaymentMethods.Add((integrations.PaymentMethod)i); }
             mask <<= 1;
         }
         return apiPaymentMethods;
