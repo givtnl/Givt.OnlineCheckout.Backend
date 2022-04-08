@@ -7,6 +7,7 @@ namespace Givt.OnlineCheckout.Infrastructure.DbContexts;
 public class OnlineCheckoutContext : DbContext
 {
     public virtual DbSet<DonationData> Donations { get; set; }
+    public virtual DbSet<CountryData> Countries { get; set; }
     public virtual DbSet<OrganisationData> Organisations { get; set; }
     public virtual DbSet<DonorData> Donors { get; set; } 
     public virtual DbSet<MediumData> Mediums { get; set; } 
