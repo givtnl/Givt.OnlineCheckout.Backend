@@ -1,10 +1,21 @@
-﻿using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Business.Enums;
+using Givt.OnlineCheckout.Persistance.Entities;
 using System.Reflection;
 
 namespace Givt.OnlineCheckout.Business.Extensions;
 
 public static class MediumDataExtensions
 {
+    public static PaymentMethod GetPaymentMethods(this MediumData medium)
+    {
+        if (medium.Organisation?.PaymentMethods > 0)
+            return (PaymentMethod)medium.Organisation?.PaymentMethods;
+
+        if (medium.Organisation?.Country?.PaymentMethods > 0)
+            return (PaymentMethod)medium.Organisation?.Country?.PaymentMethods;
+        return PaymentMethod.All;
+    }
+
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
     public static string GetLocalisedText(this MediumData medium, string propertyName, string languageId)
     {
