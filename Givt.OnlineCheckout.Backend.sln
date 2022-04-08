@@ -31,6 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integrations.GoogleDocs.Test", "src\Test\Givt.OnlineCheckout.Integrations.GoogleDocs.Test\Givt.OnlineCheckout.Integrations.GoogleDocs.Test.csproj", "{E400FC6C-817D-43FD-AE0C-9CBDCBD5D785}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{DC206A39-1690-4379-9928-16AFF5106C99}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
