@@ -1,4 +1,4 @@
-﻿using Givt.OnlineCheckout.Business.Enums;
+﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 namespace Givt.OnlineCheckout.Business.Models;
 
@@ -8,7 +8,7 @@ public class MediumDetailModel
     public string OrganisationLogoLink { get; set; }
     public string Goal { get; set; }
     public string Medium { get; set; }
-    public PaymentMethod PaymentMethods { get; set; }
+    public IEnumerable<PaymentMethod> PaymentMethods { get; set; }
     public string Currency { get; set; }
     public decimal[] Amounts { get; set; }
     public string ThankYou { get; set; }

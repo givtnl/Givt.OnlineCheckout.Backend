@@ -3,26 +3,20 @@
 [Flags]
 public enum PaymentMethod : UInt64
 {
-    Card        = 0x0000000000000001, // credit or debit. Global, 135+ currencies
-    Ideal       = 0x0000000000000002, // Bank redirect. NL / EUR
-    Bancontact  = 0x0000000000000004, // Bank redirect. BE / EUR
-    /*
-    bacs_debit  = 0x0000000000000008, // Bank debit. UK / GBP
+    Bancontact  = 0x0000000000000001, // Bank redirect. BE / EUR
+    Card        = 0x0000000000000002, // credit or debit. Global, 135+ currencies
+    Ideal       = 0x0000000000000004, // Bank redirect. NL / EUR
+    Sofort      = 0x0000000000000008, // Bank redirect. AT, BE, DE, IT, NL, ES / EUR (acquired by Klarna)
     Giropay     = 0x0000000000000010, // Bank redirect. DE / EUR
-    */
-    Sofort      = 0x0000000000000020, // Bank redirect. AT, BE, DE, IT, NL, ES / EUR (acquired by Klarna)
-    /*
-    EPS         = 0x0000000000000040, // Bank redirect. AT / EUR
-    */
-    // wallets
-    ApplePay    = 0x0000000000010000, // "global", 135+ currencies
-    GooglePay   = 0x0000000000020000, // "global", 135+ currencies
-    /*
-    MicrosoftPay= 0x0000000000040000, // 135+ currencies
-    */
-    All         = 0xFFFFFFFFFFFFFFFF
+    EPS         = 0x0000000000000020, // Bank redirect. AT / EUR
+    ApplePay    = 0x0000000000000040, // "global", 135+ currencies
+    GooglePay   = 0x0000000000000080, // "global", 135+ currencies
+    All = 0xFFFFFFFFFFFFFFFF
 }
 // Other stuff supported by Stripe:
+
+//MicrosoftPay// 135+ currencies
+//bacs_debit  // Bank debit. UK / GBP
 // acss_debit 
 // afterpay_clearpay - Afterpay / Clearpay. Buy now, pay later: Australia, Canada, France, Italy, New Zealand, Spain, United Kingdom, United States. AUD, CAD, EUR, GBP, NZD, USD
 // alipay: Wallet. All geographies with Chinese consumers. AUD, CAD, CNY, EUR, GBP, HKD, JPY, MYR, NZD, USD

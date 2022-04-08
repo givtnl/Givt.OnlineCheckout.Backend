@@ -34,12 +34,29 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
     public async Task<ISinglePaymentServicePaymentIntent> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
     {
         _log.Debug("Creating a Stripe Payment Intent: currency='{0}', amount='{1}', applicationFee='{2}', accountId='{3}', paymentMethod={4}",
-            new object[] { currency, amount, applicationFee, accountId });
+            new object[] { currency, amount, applicationFee, accountId, paymentMethod });
         StripeConfiguration.ApiKey = _settings.StripeApiKey;
         StripeConfiguration.StripeClient = new StripeClient(
             _settings.StripeApiKey,
             httpClient: new SystemNetHttpClient(new HttpClient()));
-        
+        string stripe_payment_method;
+        switch (paymentMethod)
+        {
+            case PaymentMethod.Card:
+            case PaymentMethod.Bancontact:
+            case PaymentMethod.Ideal:
+            case PaymentMethod.Sofort:
+            case PaymentMethod.Giropay:
+            case PaymentMethod.EPS:
+                stripe_payment_method = paymentMethod.ToString().ToLower();
+                break;
+            //case PaymentMethod.ApplePay:
+            //    break;
+            //case PaymentMethod.GooglePay:
+            //    break;
+            default:
+                throw new NotSupportedException("Payment method not supported: " + paymentMethod.ToString());
+        }
         var service = new PaymentIntentService();
         var createOptions = new PaymentIntentCreateOptions
         {
@@ -50,10 +67,7 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
                 Destination = accountId
             },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
-            PaymentMethodTypes = new List<string>
-            {
-                paymentMethod.ToString().ToLowerInvariant()
-            }
+            PaymentMethodTypes = new List<string> { stripe_payment_method }
         };
         var stopwatch = new Stopwatch();
         stopwatch.Start();

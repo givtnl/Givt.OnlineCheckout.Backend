@@ -30,10 +30,10 @@ namespace Givt.OnlineCheckout.API.Controllers
         [HttpPost("stripe")]
         public async Task<IActionResult> StripeWebHook(CancellationToken cancellationToken)
         {
-            _logger.Debug("Stripe Webhook called");
-
             // Stripe sends JSON as the body, cannot directly let ASP.Net Core map that into a string
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+
+            _logger.Debug("Stripe Webhook called:\n{0}", new object[] { json });
 
             // create a notification record and send it to implementor(s)
             var notification = new RawSinglePaymentNotification

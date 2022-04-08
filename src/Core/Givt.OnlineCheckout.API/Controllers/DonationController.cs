@@ -25,13 +25,9 @@ public class DonationController : ControllerBase
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
         var command = _mapper.Map<CreateDonationIntentCommand>(request);
-        var response = await _mediator.Send(command);
-
-        return Ok(new CreateDonationIntentResponse
-        {
-            PaymentMethodId = response.PaymentIntentSecret,
-            Token = _jwtTokenHandler.GetBearerToken(response.TransactionReference)
-        });
+        var model = await _mediator.Send(command);
+        var response = _mapper.Map<CreateDonationIntentCommand>(request, opt => { opt.Items["TokenHandler"] = _jwtTokenHandler; });
+        return Ok(response);
     }
 
 }
