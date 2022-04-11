@@ -26,7 +26,7 @@ public class DonationController : ControllerBase
     {
         var command = _mapper.Map<CreateDonationIntentCommand>(request);
         var model = await _mediator.Send(command);
-        var response = _mapper.Map<CreateDonationIntentCommand>(request, opt => { opt.Items["TokenHandler"] = _jwtTokenHandler; });
+        var response = _mapper.Map<CreateDonationIntentResponse>(model, opt => { opt.Items["TokenHandler"] = _jwtTokenHandler; });
         return Ok(response);
     }
 

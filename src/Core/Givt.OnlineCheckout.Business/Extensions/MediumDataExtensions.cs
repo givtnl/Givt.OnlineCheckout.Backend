@@ -37,7 +37,6 @@ public static class MediumDataExtensions
         UInt64 mask = 0x0000000000000001;
         for (int i = 0; i < sizeof(persistance.PaymentMethod) * 8; i++)
         {
-            System.Diagnostics.Debug.Write(i);
             if ((businessPaymentMethods & mask) != 0) { apiPaymentMethods.Add((integrations.PaymentMethod)i); }
             mask <<= 1;
         }
