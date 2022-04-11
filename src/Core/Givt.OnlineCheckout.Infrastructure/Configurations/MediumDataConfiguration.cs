@@ -21,6 +21,10 @@ public class MediumDataConfiguration : IEntityTypeConfiguration<MediumData>
             .Property(e => e.Amounts)
             .HasMaxLength(50);
 
+        builder.HasMany(e => e.Texts)
+            .WithOne(t => t.Medium)
+            .OnDelete(DeleteBehavior.Cascade);
+
         //builder
         //    .Property(e => e.Goal)
         //    .HasMaxLength ... "unlimited"

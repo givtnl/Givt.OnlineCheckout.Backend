@@ -9,7 +9,7 @@ namespace Givt.OnlineCheckout.Integrations.Stripe;
 
 public class StripeIntegration : StripeIntegration<IRawSinglePaymentNotification>
 {
-    public StripeIntegration(StripeSettings settings, IMediator mediator, ILog log) :
+    public StripeIntegration(StripeOptions settings, IMediator mediator, ILog log) :
         base(settings, mediator, log)
     { }
 }
@@ -20,30 +20,45 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
 {
 
     private const string SIGNATURE_HEADER_KEY = "Stripe-Signature";
-    private readonly StripeSettings _settings;
+    private readonly StripeOptions _settings;
     private readonly IMediator _mediator;
     private readonly ILog _log;
 
-    public StripeIntegration(StripeSettings settings, IMediator mediator, ILog log)
+    public StripeIntegration(StripeOptions settings, IMediator mediator, ILog log)
     {
         _settings = settings;
         _mediator = mediator;
         _log = log;
     }
 
-    public async Task<string> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
+    public async Task<ISinglePaymentServicePaymentIntent> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
     {
         _log.Debug("Creating a Stripe Payment Intent: currency='{0}', amount='{1}', applicationFee='{2}', accountId='{3}', paymentMethod={4}",
-            new object[] { currency, amount, applicationFee, accountId });
+            new object[] { currency, amount, applicationFee, accountId, paymentMethod });
         StripeConfiguration.ApiKey = _settings.StripeApiKey;
         StripeConfiguration.StripeClient = new StripeClient(
             _settings.StripeApiKey,
             httpClient: new SystemNetHttpClient(new HttpClient()));
-
+        string stripe_payment_method;
+        switch (paymentMethod)
+        {
+            case PaymentMethod.Card:
+            case PaymentMethod.Bancontact:
+            case PaymentMethod.Ideal:
+            case PaymentMethod.Sofort:
+            case PaymentMethod.Giropay:
+            case PaymentMethod.EPS:
+                stripe_payment_method = paymentMethod.ToString().ToLower();
+                break;
+            //case PaymentMethod.ApplePay:
+            //    break;
+            //case PaymentMethod.GooglePay:
+            //    break;
+            default:
+                throw new NotSupportedException("Payment method not supported: " + paymentMethod.ToString());
+        }
         var service = new PaymentIntentService();
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-        var result = await service.CreateAsync(new PaymentIntentCreateOptions
+        var createOptions = new PaymentIntentCreateOptions
         {
             Currency = currency.ToLowerInvariant(),
             Amount = Convert.ToInt64(amount * 100),
@@ -52,14 +67,15 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
                 Destination = accountId
             },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
-            PaymentMethodTypes = new List<string>
-            {
-                paymentMethod.ToString().ToLowerInvariant()
-            }
-        });
+            PaymentMethodTypes = new List<string> { stripe_payment_method }
+        };
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        var paymentIntent = await service.CreateAsync(createOptions);
         stopwatch.Stop();
-        _log.Debug("Stripe returned a payment intent, id='{0}' in {1} ms", new object[] { result.Id, stopwatch.ElapsedMilliseconds });
-        return result.ClientSecret;
+        _log.Debug("Stripe returned a payment intent, id='{0}' in {1} ms", new object[] { paymentIntent.Id, stopwatch.ElapsedMilliseconds });
+
+        return new StripePaymentIntent(paymentIntent.Id, paymentIntent.ClientSecret);
     }
 
     public async Task Handle(TNotification notification, CancellationToken cancellationToken)

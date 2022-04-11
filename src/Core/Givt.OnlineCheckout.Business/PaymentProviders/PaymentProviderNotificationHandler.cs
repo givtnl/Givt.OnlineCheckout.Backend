@@ -1,9 +1,10 @@
 ﻿using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
+using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog.Sinks.Http.Logger;
+using Serilog;
 
 namespace Givt.OnlineCheckout.Business.PaymentProviders;
 
@@ -11,13 +12,19 @@ namespace Givt.OnlineCheckout.Business.PaymentProviders;
 public class PaymentProviderNotificationHandler<TPaymentNotification> : INotificationHandler<TPaymentNotification>
     where TPaymentNotification : ISinglePaymentNotification
 {
-    private readonly ILog _log;
+    private readonly ILogger _log;
+    //private readonly IConfiguration _configuration;
     private readonly OnlineCheckoutContext _context;
+    //private readonly IMediator _mediator;
 
-    public PaymentProviderNotificationHandler(ILog log, OnlineCheckoutContext context)
+    public ILogger Log => _log;
+
+    public PaymentProviderNotificationHandler(ILogger log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
     {
         _log = log;
+        //_configuration = config;
         _context = context;
+        //_mediator = mediator;
     }
 
     public async Task Handle(TPaymentNotification notification, CancellationToken cancellationToken)
@@ -25,17 +32,24 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         if (notification is not ISinglePaymentNotification spNotification)
             return;
 
-        _log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
+        Log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
         // load the matching donation
         var donation = await _context.Donations
             .Where(donation => donation.TransactionReference == spNotification.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         if (donation == null)
         {
-            _log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
+            Log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
             return; // donation not found
         }
 
+        await UpdatePaymentStatus(spNotification, donation, cancellationToken);
+
+        return;
+    }
+
+    private async Task UpdatePaymentStatus(ISinglePaymentNotification notification, DonationData donation, CancellationToken cancellationToken)
+    {
         // update donation status
         if (notification.Processing)
             donation.Status = DonationStatus.Processing;
@@ -44,36 +58,26 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
             if (donation.Status != DonationStatus.Succeeded)
             {
                 donation.Status = DonationStatus.Succeeded;
-                // TODO: donation.TransactionDate = notification.TransactionDate;
-                _log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                    new object[] { spNotification.TransactionReference, donation.Status });
-
-                // send confirmation if TaxRefund requested
-                if (!String.IsNullOrWhiteSpace(donation.Donor?.Email)) // donation is linked to donor (this only happens if a TaxReport is requested) and email is filled in
-                {
-                    // collect information to build confirmation email/report
-                    // send email
-                    _log.Debug("Sending email to {1} for donation with transaction reference '{0}'",
-                        new object[] { spNotification.TransactionReference, donation.Donor.Email });
-                }
+                donation.TransactionDate = notification.TransactionDate;
+                Log.Debug("Donation with transaction reference '{0}' set to status {1}",
+                    new object[] { notification.TransactionReference, donation.Status });
             }
         }
         else if (notification.Cancelled)
         {
             donation.Status = DonationStatus.Cancelled;
-            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { spNotification.TransactionReference, donation.Status });
+            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
+                new object[] { notification.TransactionReference, donation.Status });
         }
         else if (notification.Failed)
         {
             donation.Status = DonationStatus.PaymentFailed;
-            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { spNotification.TransactionReference, donation.Status });
+            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
+                new object[] { notification.TransactionReference, donation.Status });
         }
 
         // write changes
         await _context.SaveChangesAsync(cancellationToken);
-        return;
     }
 
 }

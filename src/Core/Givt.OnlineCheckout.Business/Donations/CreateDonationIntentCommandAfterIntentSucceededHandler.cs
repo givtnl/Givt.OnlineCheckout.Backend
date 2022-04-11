@@ -2,11 +2,11 @@
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.Business.Donations
 {
-    public record CreateDonationIntentCommandAfterIntentSucceededHandler(OnlineCheckoutContext DbContext, ILogger logger) :
+    public record CreateDonationIntentCommandAfterIntentSucceededHandler(OnlineCheckoutContext DbContext, ILog logger) :
         IRequestPostProcessor<CreateDonationIntentCommand, CreateDonationIntentCommandResponse>
     {
         public async Task Process(CreateDonationIntentCommand request, CreateDonationIntentCommandResponse response, CancellationToken cancellationToken)
@@ -14,28 +14,15 @@ namespace Givt.OnlineCheckout.Business.Donations
             var dataDonation = new DonationData
             {
                 Amount = request.Amount,
-                TransactionReference = request.AccountId,
+                TransactionReference = response.TransactionReference,
                 TransactionDate = DateTime.UtcNow,
-                TimezoneOffset = request.TimezoneOffset ?? -120 // TODO: make TimezoneOffset a required parameter at the API, and remove the default of -120
+                TimezoneOffset = request.TimezoneOffset,
+                Medium = request.Medium                
             };
-
-            // link to a donor if the user wants a tax report
-            if (request.TaxReport && !String.IsNullOrWhiteSpace(request.Email))
-            {
-                logger.Debug("Registering tax report request for email address '{0}'", new object[] { request.Email });
-                var email = request.Email.ToLower();
-                var donor = await DbContext.Donors.FirstAsync(c => c.Email == email, cancellationToken: cancellationToken);
-                if (donor != null)
-                {
-                    logger.Debug("Creating a new donor record for email address '{0}'", new object[] { request.Email });
-                    donor = new DonorData { Email = email };
-                }
-                dataDonation.Donor = donor;
-            }
-
             await DbContext.Donations.AddAsync(dataDonation, cancellationToken);
             var writeCount = await DbContext.SaveChangesAsync(cancellationToken);
-            logger.Debug("Donation with reference '{0}' recorded, {1} records written", new object[] { request.AccountId, writeCount });
+            logger.Debug("Donation with reference '{0}' recorded, {1} records written",
+                new object[] { response.TransactionReference, writeCount });
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Givt.OnlineCheckout.Integrations.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace Givt.OnlineCheckout.Business.Models
 {
     public class TemplateEmailModel : BaseEmailModel
     {
-        public TemplateEmailModel(string templateName)
+        public TemplateEmailModel(EmailType emailType)
         {
-            TemplateName = templateName;
+            EmailType = emailType;
             TemplateData = new JObject();
         }
     }

@@ -18,14 +18,20 @@ public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuer
         _mapper = mapper;
         _context = context;
     }
-    
+
     public async Task<MediumDetailModel> Handle(GetMediumDetailsQuery request, CancellationToken cancellationToken)
     {
-        var medium = await _context.Mediums.Where(x => x.Medium == request.MediumId.ToString())
-                                            .Include(x => x.Organisation)
-                                            .SingleOrDefaultAsync(cancellationToken);
-        return medium == null 
-            ? throw new NotFoundException(nameof(MediumIdType), request.MediumId)
-            : _mapper.Map<MediumData, MediumDetailModel>(medium);
+        var medium = await _context.Mediums
+            .Where(x => x.Medium == request.MediumId.ToString())
+            .Include(m => m.Texts)
+            .Include(m => m.Organisation)
+            .ThenInclude(o => o.Country)
+            .Include(m => m.Organisation)
+            .ThenInclude(o => o.Texts)
+            .SingleOrDefaultAsync(cancellationToken);
+        if (medium == null)
+            throw new NotFoundException(nameof(MediumIdType), request.MediumId);
+
+        return _mapper.Map<MediumDetailModel>(medium, opt => { opt.Items["Language"] = request.Language; });
     }
 }
