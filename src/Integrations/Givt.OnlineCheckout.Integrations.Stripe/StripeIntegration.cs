@@ -42,18 +42,18 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         string stripe_payment_method;
         switch (paymentMethod)
         {
-            case PaymentMethod.Card:
             case PaymentMethod.Bancontact:
+            case PaymentMethod.Card:
             case PaymentMethod.Ideal:
             case PaymentMethod.Sofort:
             case PaymentMethod.Giropay:
             case PaymentMethod.EPS:
                 stripe_payment_method = paymentMethod.ToString().ToLower();
                 break;
-            //case PaymentMethod.ApplePay:
-            //    break;
-            //case PaymentMethod.GooglePay:
-            //    break;
+            case PaymentMethod.ApplePay:
+            case PaymentMethod.GooglePay:
+                stripe_payment_method = "card";
+                break;
             default:
                 throw new NotSupportedException("Payment method not supported: " + paymentMethod.ToString());
         }
