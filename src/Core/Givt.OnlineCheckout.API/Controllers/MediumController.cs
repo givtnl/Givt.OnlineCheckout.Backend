@@ -26,7 +26,8 @@ namespace Givt.OnlineCheckout.API.Controllers
         public async Task<IActionResult> CheckForExistence([FromQuery] GetMediumRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<CheckMediumQuery>(request);
-            if(await _mediator.Send(query, cancellationToken))
+            var model = await _mediator.Send(query, cancellationToken);
+            if (model)
                 return Ok();
             
             return NotFound();
