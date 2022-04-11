@@ -39,36 +39,35 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         StripeConfiguration.StripeClient = new StripeClient(
             _settings.StripeApiKey,
             httpClient: new SystemNetHttpClient(new HttpClient()));
-        string stripe_payment_method;
+        var service = new PaymentIntentService();
+        string stripePaymentMethod;
         switch (paymentMethod)
         {
-            case PaymentMethod.Card:
             case PaymentMethod.Bancontact:
+            case PaymentMethod.Card:
             case PaymentMethod.Ideal:
             case PaymentMethod.Sofort:
             case PaymentMethod.Giropay:
             case PaymentMethod.EPS:
-                stripe_payment_method = paymentMethod.ToString().ToLower();
+                // stripe payment method tags correspond to our PaymentMethod enum names for these
+                stripePaymentMethod = paymentMethod.ToString().ToLower();
                 break;
-            //case PaymentMethod.ApplePay:
-            //    break;
-            //case PaymentMethod.GooglePay:
-            //    break;
+            case PaymentMethod.ApplePay:
+            case PaymentMethod.GooglePay:
+                stripePaymentMethod = "card"; // the Stripe UI will show ApplePay etc. automatically
+                break;
             default:
                 throw new NotSupportedException("Payment method not supported: " + paymentMethod.ToString());
         }
-        var service = new PaymentIntentService();
         var createOptions = new PaymentIntentCreateOptions
         {
             Currency = currency.ToLowerInvariant(),
             Amount = Convert.ToInt64(amount * 100),
-            TransferData = new PaymentIntentTransferDataOptions()
-            {
-                Destination = accountId
-            },
+            TransferData = new PaymentIntentTransferDataOptions() { Destination = accountId },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
-            PaymentMethodTypes = new List<string> { stripe_payment_method }
+            PaymentMethodTypes = new List<string> { stripePaymentMethod }
         };
+        
         var stopwatch = new Stopwatch();
         stopwatch.Start();
         var paymentIntent = await service.CreateAsync(createOptions);
