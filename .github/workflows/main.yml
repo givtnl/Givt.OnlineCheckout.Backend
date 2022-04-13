@@ -32,3 +32,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/onlinecheckout-api:latest
+  
+  notify:
+    name: Notify on Slack
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: abinoda/slack-action@master
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.GIVT_SLACK_BOT_OAUTH_SECRET }}
+        with:
+          args: '{\"channel\":\"${{ secrets.SLACK_DEBUG_GIVT_ONLINE_CHECKOUT_CHANNEL_ID }}\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Pipeline ran successfull on branch main of GivtOnlineCheckout.Backend:* ${{ github.event.author.name }}\"}}]}'
