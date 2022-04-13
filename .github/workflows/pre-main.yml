@@ -42,5 +42,5 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.GIVT_SLACK_BOT_OAUTH_SECRET }}
         with:
-          args: '{\"channel\":\"${{ secrets.SLACK_DEBUG_GIVT_ONLINE_CHECKOUT_CHANNEL_ID }}\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Pushed:* ${{ github.event.push.title }}\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Contributor :* ${{ github.event.push.user.login }}\n*Request State:* ${{ github.event.push.state }}\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"<${{ github.event.push.html_url }}|View commit>\"}}]}'        if: success()
+          args: '{\"channel\":\"${{ secrets.SLACK_DEBUG_GIVT_ONLINE_CHECKOUT_CHANNEL_ID }}\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Pushed:* ${{ github.event.push.title }}\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Contributor :* ${{ github.event.push.user.login }}\n*Request State:* ${{ github.event.push.state }}\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"<${{ github.event.push.html_url }}|View commit>\"}}]}'
 
