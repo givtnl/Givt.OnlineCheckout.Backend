@@ -7,20 +7,20 @@ using Givt.OnlineCheckout.Business.Organisations.Queries;
 using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
+using Givt.OnlineCheckout.Integrations.GoogleDocs;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Postmark;
 using Givt.OnlineCheckout.Integrations.Stripe;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog.Sinks.Http.Logger;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Givt.OnlineCheckout.Integrations.GoogleDocs;
 using ReportMappingProfile = Givt.OnlineCheckout.API.Mappings.ReportMappingProfile;
 
 namespace Givt.OnlineCheckout.API
