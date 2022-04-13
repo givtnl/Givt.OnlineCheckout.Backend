@@ -24,6 +24,15 @@ public class ReportController : ControllerBase
         _jwtTokenHandler = jwtTokenHandler;
     }
 
+    /// <summary>
+    /// Get donation report for a donation.
+    /// Bearer token is needed for authentication and identification of the transaction.
+    /// </summary>
+    /// <param name="request">Request json</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Report file</returns>
+    /// <response code="200">report</response>
+    /// <response code="401">no valid transaction reference given</response>
     [HttpGet("singleDonation")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK, "application/octet-stream")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -47,6 +56,14 @@ public class ReportController : ControllerBase
             return Unauthorized(uae.Message);
         }
     }
+
+    /// <summary>
+    /// Sends a donation report for a donation to an email address. 
+    /// Bearer token is needed for authentication and identification of the transaction.
+    /// </summary>
+    /// <param name="request">Request json</param>
+    /// <response code="200">report is sent</response>
+    /// <response code="401">no valid transaction reference given</response>
 
     [HttpPost("singleDonation")]
     [ProducesResponseType(StatusCodes.Status200OK)]

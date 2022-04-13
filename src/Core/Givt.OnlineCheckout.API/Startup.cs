@@ -149,7 +149,6 @@ namespace Givt.OnlineCheckout.API
             app.UseSwaggerUI((options) =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-
             });
 
             app.UseAuthentication(); // To support JWT Bearer tokens
@@ -160,7 +159,12 @@ namespace Givt.OnlineCheckout.API
 
         public void ConfigureOptions(IServiceCollection services)
         {
-            services.AddAzureAppConfiguration();
+            services.AddAzureAppConfiguration(); 
+            services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
         }
     }
 }
