@@ -39,7 +39,7 @@ jobs:
     needs: [build]
     if: ${{ github.base_ref == 'pre-main' && github.event_name == 'push' }}
     steps:
-      - uses: abinoda/slack action@master
+      - uses: abinoda/slack-action@master
         env:
           SLACK_BOT_TOKEN: ${{ secrets.GIVT_SLACK_BOT_OAUTH_SECRET }}
         with:
