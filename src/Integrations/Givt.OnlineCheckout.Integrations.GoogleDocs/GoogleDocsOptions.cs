@@ -2,7 +2,7 @@
 
 public class GoogleDocsOptions
 {
-    public static string SectionName = "GoogleDocsOptions";
+    public static string SectionName = "GoogleDocs";
     public string DonationConfirmationNL { get; set; }
     public string DonationConfirmationEN { get; set; }
     public string PrivateKey { get; set; }

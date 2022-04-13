@@ -2,6 +2,7 @@
 using Givt.OnlineCheckout.API.Models.Donations;
 using Givt.OnlineCheckout.API.Utils;
 using Givt.OnlineCheckout.Business.Donations;
+using Givt.OnlineCheckout.Business.Models;
 
 namespace Givt.OnlineCheckout.API.Mappings;
 
@@ -10,9 +11,9 @@ public class DonationMappingProfile : Profile
     public DonationMappingProfile()
     {
         CreateMap<CreateDonationIntentRequest, CreateDonationIntentCommand>()
-            .ForMember(x => x.MediumId,
+            .ForMember(dst => dst.MediumId, 
                 options => options.MapFrom(
-                    src => src.Medium
+                    src => MediumIdType.FromString(src.Medium)
             ));
         CreateMap<CreateDonationIntentCommandResponse, CreateDonationIntentResponse>()
             .ForMember(x => x.PaymentMethodId, 

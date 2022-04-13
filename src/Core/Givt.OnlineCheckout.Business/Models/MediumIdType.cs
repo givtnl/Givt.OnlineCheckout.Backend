@@ -1,6 +1,7 @@
 using Givt.OnlineCheckout.Business.Exceptions;
 using Newtonsoft.Json;
 using Microsoft.Linq.Translations;
+using System.Text;
 
 namespace Givt.OnlineCheckout.Business.Models;
 
@@ -19,10 +20,25 @@ public struct MediumIdType : IComparable<MediumIdType>
                 throw new InvalidMediumException(nameof(Namespace), value);
             if (len - dot != 12 + 1)
                 throw new InvalidMediumException(nameof(Instance), value);
-        } else if (len != 20)
+        }
+        else if (len != 20)
             throw new InvalidMediumException(nameof(Namespace), value);
 
         _value = value;
+    }
+
+    public static MediumIdType FromString(string s)
+    {
+        try
+        {
+            return new MediumIdType(s);            
+        }
+        catch (InvalidMediumException)
+        {
+            byte[] data = Convert.FromBase64String(s);
+            string decodedString = Encoding.UTF8.GetString(data);
+            return new MediumIdType(decodedString);
+        }
     }
 
     private static readonly CompiledExpression<MediumIdType, string> NameSpaceExpression =

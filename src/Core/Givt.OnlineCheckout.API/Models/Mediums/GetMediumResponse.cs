@@ -4,7 +4,6 @@ namespace Givt.OnlineCheckout.API.Models.Mediums;
 
 public class GetMediumResponse
 {
-    public string Medium { get; set; }
     public string OrganisationName { get; set; }
     public string OrganisationLogoLink { get; set; }
     public string Goal { get; set; }
