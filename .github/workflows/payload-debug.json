@@ -1,0 +1,12 @@
+{
+    "channel":"${{ secrets.SLACK_DEBUG_GIVT_ONLINE_CHECKOUT_CHANNEL_ID }}",
+    "blocks":[
+       {
+          "type":"section",
+          "text":{
+             "type":"mrkdwn",
+             "text":"*Pipeline ran successfull on branch pre-main of GivtOnlineCheckout.Backend:* ${{ github.event.author.name }}"
+          }
+       }
+    ]
+ }
