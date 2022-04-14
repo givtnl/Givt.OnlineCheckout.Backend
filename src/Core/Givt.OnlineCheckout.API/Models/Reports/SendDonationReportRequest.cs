@@ -5,8 +5,7 @@ namespace Givt.OnlineCheckout.API.Models.Reports;
 
 public class SendDonationReportRequest
 {
-    [DefaultValue("en")]
-    [Description("Language/Region for texts")]
+    [Description("Language/Region for texts. Defaults to AcceptLanguage, otherwise 'en'")]
     public string Locale { get; set; }
 
     [Required()]

@@ -8,8 +8,7 @@ public class GetMediumRequest
     [Required]
     [Description("Medium ID or Code")]
     public string Code { get; set; }
-
-    [DefaultValue("en")]
-    [Description("Language/Region for texts")]
+        
+    [Description("Language/Region for texts. Defaults to AcceptLanguage, otherwise 'en'")]
     public string Locale { get; set; }
 }
