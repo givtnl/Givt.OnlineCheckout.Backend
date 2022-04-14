@@ -47,7 +47,7 @@ namespace Givt.OnlineCheckout.Business.Extensions
             organisation.Goals = goals;
             var goal = new Goal
             {
-                Name = donation.Medium.Goal,
+                Name = donation.Medium.GetLocalisedText(nameof(LocalisableTexts.Goal), language),
                 //TotalAmount = totals,
                 Donations = new List<Donation>()
             };
