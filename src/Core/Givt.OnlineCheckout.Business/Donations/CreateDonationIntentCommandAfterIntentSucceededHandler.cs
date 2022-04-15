@@ -17,7 +17,8 @@ namespace Givt.OnlineCheckout.Business.Donations
                 TransactionReference = response.TransactionReference,
                 TransactionDate = DateTime.UtcNow,
                 TimezoneOffset = request.TimezoneOffset,
-                Medium = request.Medium                
+                Medium = request.Medium,
+                Currency = request.Currency
             };
             await DbContext.Donations.AddAsync(dataDonation, cancellationToken);
             var writeCount = await DbContext.SaveChangesAsync(cancellationToken);

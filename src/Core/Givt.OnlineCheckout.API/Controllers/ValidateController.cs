@@ -2,6 +2,7 @@
 using Givt.OnlineCheckout.Business.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Serilog.Sinks.Http.Logger;
+using System.ComponentModel.DataAnnotations;
 
 namespace Givt.OnlineCheckout.API.Controllers
 {
@@ -15,8 +16,13 @@ namespace Givt.OnlineCheckout.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Validate an email address (basic validation rules and TLD check)
+        /// </summary>
+        /// <param name="email">The email address</param>
+        /// <returns>valid</returns>
         [HttpGet("Email")]
-        public IActionResult Email([FromQuery] string email)
+        public IActionResult Email([Required] [FromQuery] string email)
         {
             var message = EmailAddress.IsValid(email, _logger);
 

@@ -33,7 +33,7 @@ public class GooglePdfService: IPdfService
         var templateId = language switch
         {
             "nl" => _options.DonationConfirmationNL,
-            _ => _options.DonationConfirmationNL
+            _ => _options.DonationConfirmationEN
         };
         var attachmentName = language switch
         {

@@ -20,8 +20,21 @@ public class DonationController : ControllerBase
         _jwtTokenHandler = jwtTokenHandler;
     }
 
+    /// <summary>
+    /// Create a Donation and Payment Intent
+    /// </summary>
+    /// <param name="request">Request json</param>
+    /// <returns>Information about the newly created payment intent</returns>
+    /// <response code="200">
+    /// Stripe Client secret to complete the donation, and a token to fetch or send a report later.
+    /// 
+    ///     {
+    ///         "paymentMethodId" : "string",
+    ///         "token" : "string"
+    ///     }
+    /// </response>
     [HttpPost("intent")]
-    [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK, "application/json")]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
         var command = _mapper.Map<CreateDonationIntentCommand>(request);
