@@ -24,14 +24,5 @@ public class MediumDataConfiguration : IEntityTypeConfiguration<MediumData>
         builder.HasMany(e => e.Texts)
             .WithOne(t => t.Medium)
             .OnDelete(DeleteBehavior.Cascade);
-
-        //builder
-        //    .Property(e => e.Goal)
-        //    .HasMaxLength ... "unlimited"
-
-        //builder
-        //    .Property(e => e.ThankYou)
-        //    .HasMaxLength ... "unlimited"
-
     }
 }
