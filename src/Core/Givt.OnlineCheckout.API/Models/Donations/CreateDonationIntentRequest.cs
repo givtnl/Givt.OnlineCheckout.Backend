@@ -7,6 +7,6 @@ public class CreateDonationIntentRequest
     public string Currency { get; set; }
     public decimal Amount { get; set; }
     public string Medium { get; set; }
-    public PaymentMethod PaymentMethod { get; set; }
+    public string PaymentMethod { get; set; }
     public int TimezoneOffset { get; set; } 
 }
