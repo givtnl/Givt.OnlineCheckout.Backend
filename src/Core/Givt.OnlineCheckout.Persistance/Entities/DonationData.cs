@@ -3,7 +3,7 @@ using Givt.OnlineCheckout.Persistance.Models;
 
 namespace Givt.OnlineCheckout.Persistance.Entities
 {
-    public class DonationData : DataEntityBase<int>
+    public class DonationData : DataEntityBase<long>
     {
         public string Currency { get; set; }
         public decimal Amount { get; set; }

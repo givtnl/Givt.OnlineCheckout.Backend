@@ -32,6 +32,13 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
             builder.Property(x => x.LogoImageLink)
                 .HasMaxLength(100);
 
+            builder.Property(x => x.RSIN)
+                .HasMaxLength(50); // only 9 or 14 needed? 9 + 1 + 2 + 2
+            builder.Property(x => x.HmrcReference)
+                .HasMaxLength(20);
+            builder.Property(x => x.CharityNumber)
+                .HasMaxLength(35);
+
             builder
                 .HasIndex(e => e.Namespace);
         }

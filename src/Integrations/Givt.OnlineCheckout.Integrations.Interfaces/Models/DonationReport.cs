@@ -16,6 +16,10 @@ public class DonationReport
     // donations
     public string OrganisationName { get; set; }
     public string Goal { get; set; }
+    public bool TaxDeductable { get; set; }
+    public string RSIN { get; set; }
+    public string HmrcReference { get; set; }
+    public string CharityNumber { get; set; }
     public string Timestamp { get; set; }
     public string Currency { get; set; }
     public string Amount { get; set; }

@@ -39,6 +39,7 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         StripeConfiguration.StripeClient = new StripeClient(
             _settings.StripeApiKey,
             httpClient: new SystemNetHttpClient(new HttpClient()));
+
         var service = new PaymentIntentService();
         string stripePaymentMethod;
         switch (paymentMethod)
