@@ -3,6 +3,7 @@ using System;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    partial class OnlineCheckoutContextModelSnapshot : ModelSnapshot
+    [Migration("20220419205950_AddTaxInfo")]
+    partial class AddTaxInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,21 +160,27 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumTexts", b =>
                 {
-                    b.Property<long>("MediumId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Goal")
+                        .HasColumnType("text");
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
 
-                    b.Property<string>("Goal")
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                    b.Property<long?>("MediumId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ThankYou")
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("text");
 
-                    b.HasKey("MediumId", "LanguageId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediumId");
 
                     b.ToTable("MediumTexts");
                 });
@@ -246,21 +254,27 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.OrganisationTexts", b =>
                 {
-                    b.Property<long>("OrganisationId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Goal")
+                        .HasColumnType("text");
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
 
-                    b.Property<string>("Goal")
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                    b.Property<long?>("OrganisationId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ThankYou")
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("text");
 
-                    b.HasKey("OrganisationId", "LanguageId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganisationId");
 
                     b.ToTable("OrganisationTexts");
                 });
@@ -296,8 +310,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.MediumData", "Medium")
                         .WithMany("Texts")
                         .HasForeignKey("MediumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Medium");
                 });
@@ -316,8 +329,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", "Organisation")
                         .WithMany("Texts")
                         .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Organisation");
                 });

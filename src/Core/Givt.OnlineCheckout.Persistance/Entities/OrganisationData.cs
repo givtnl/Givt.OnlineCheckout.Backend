@@ -15,5 +15,13 @@ namespace Givt.OnlineCheckout.Persistance.Entities
         public string LogoImageLink { get; set; }
         public PaymentMethod PaymentMethods { get; set; }
         public bool Active { get; set; }
+        public bool TaxDeductable { get; set; }
+
+        // NL
+        public string RSIN { get; set; }
+
+        // UK
+        public string HmrcReference { get; set; }
+        public string CharityNumber { get; set; }
     }
 }

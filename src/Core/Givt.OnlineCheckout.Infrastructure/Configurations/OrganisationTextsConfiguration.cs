@@ -8,14 +8,14 @@ public class OrganisationTextsConfiguration : IEntityTypeConfiguration<Organisat
 {
     public void Configure(EntityTypeBuilder<OrganisationTexts> builder)
     {
+        builder
+            .Property(e => e.Goal)
+            .HasMaxLength(400);
+        builder
+            .Property(e => e.ThankYou)
+            .HasMaxLength(400);
 
-        //builder
-        //    .Property(e => e.Goal)
-        //    .HasMaxLength ... "unlimited"
-
-        //builder
-        //    .Property(e => e.ThankYou)
-        //    .HasMaxLength ... "unlimited"
-
+        builder
+            .HasKey(x => new { x.OrganisationId, x.LanguageId });
     }
 }

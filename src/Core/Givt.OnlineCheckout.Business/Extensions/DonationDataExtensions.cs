@@ -37,9 +37,13 @@ namespace Givt.OnlineCheckout.Business.Extensions
             */
             var organisations = new List<Organisation>();
 
-            var organisation = new Organisation
+            var organisation = new Organisation(donation.Medium.Organisation)
             {
                 Name = donation.Medium.Organisation.Name,
+                TaxDeductable = donation.Medium.Organisation.TaxDeductable,
+                RSIN = donation.Medium.Organisation.RSIN,
+                HmrcReference = donation.Medium.Organisation.HmrcReference,
+                CharityNumber = donation.Medium.Organisation.CharityNumber
                 //TotalAmount = totals
             };
             organisations.Add(organisation);

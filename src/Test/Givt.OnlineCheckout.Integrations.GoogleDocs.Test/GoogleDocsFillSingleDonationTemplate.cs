@@ -8,12 +8,11 @@ namespace Givt.OnlineCheckout.Integrations.GoogleDocs.Test;
 
 public class Tests
 {
-    private GoogleDocsOptions _options;
+    private GoogleDocsOptions _options = new GoogleDocsOptions();
 
     [SetUp]
     public void Setup()
-    {
-        _options = new GoogleDocsOptions();
+    {        
         _options.ApplicationName = "Givt API";
         _options.ServiceAccountEmail = "givtapidocuments@quickstart-1568214171869.iam.gserviceaccount.com";
         _options.PrivateKey =

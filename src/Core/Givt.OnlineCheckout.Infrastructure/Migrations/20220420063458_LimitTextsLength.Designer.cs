@@ -3,6 +3,7 @@ using System;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    partial class OnlineCheckoutContextModelSnapshot : ModelSnapshot
+    [Migration("20220420063458_LimitTextsLength")]
+    partial class LimitTextsLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,6 +170,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)");
 
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ThankYou")
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)");
@@ -255,6 +260,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<string>("Goal")
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ThankYou")
                         .HasMaxLength(400)

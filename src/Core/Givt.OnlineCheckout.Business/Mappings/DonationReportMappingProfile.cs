@@ -16,7 +16,14 @@ namespace Givt.OnlineCheckout.Business.Mappings
             CreateMap<IFileData, GetDonationReportCommandResponse>();
 
             // Business -> Integrations
+            // child mapping
+            CreateMap<OrganisationData, DonationReport>()
+                .ForMember(dst => dst.OrganisationName,
+                    options => options.MapFrom(
+                        (src) => src.Name));
+            // main mapping
             CreateMap<DonationData, DonationReport>()
+                .IncludeMembers(src => src.Medium.Organisation)
                 .ForMember(dst => dst.Locale,
                     options => options.MapFrom(
                         (src, dst, _, context) => context.Items[LanguageTag] as string))
@@ -29,9 +36,6 @@ namespace Givt.OnlineCheckout.Business.Mappings
                 .ForMember(dst => dst.Timestamp,
                     options => options.MapFrom(
                         (src, dest, _, context) => src.GetTimestamp(context.Items[LanguageTag] as string)))
-                .ForMember(dst => dst.Currency,
-                    options => options.MapFrom(
-                        (src) => src.Currency))
                 .ForMember(dst => dst.Amount,
                     options => options.MapFrom(
                         (src) => src.Amount.ToString("F2")));

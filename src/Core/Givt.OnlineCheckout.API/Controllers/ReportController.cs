@@ -40,21 +40,22 @@ public class ReportController : ControllerBase
         CancellationToken cancellationToken)
     {
         _logger.Debug("Get Report/singleDonation {0}", request);
-
-        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
-            var query = _mapper.Map<GetDonationReportCommand>(request, opt => { 
-                opt.Items["TokenHandler"] = _jwtTokenHandler;
-                opt.Items["User"] = HttpContext.User;
-            });
-            var response = await _mediator.Send(query, cancellationToken);
-            return File(response.Content, response.MimeType, response.Filename);
+            var _ = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
         }
         catch (UnauthorizedAccessException uae)
         {
             return Unauthorized(uae.Message);
         }
+        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+        var query = _mapper.Map<GetDonationReportCommand>(request, opt =>
+        {
+            opt.Items["TokenHandler"] = _jwtTokenHandler;
+            opt.Items["User"] = HttpContext.User;
+        });
+        var response = await _mediator.Send(query, cancellationToken);
+        return File(response.Content, response.MimeType, response.Filename);
     }
 
     /// <summary>
@@ -75,7 +76,8 @@ public class ReportController : ControllerBase
         request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
-            var notification = _mapper.Map<SendDonationReportNotification>(request, opt => {
+            var notification = _mapper.Map<SendDonationReportNotification>(request, opt =>
+            {
                 opt.Items["TokenHandler"] = _jwtTokenHandler;
                 opt.Items["User"] = HttpContext.User;
             });
