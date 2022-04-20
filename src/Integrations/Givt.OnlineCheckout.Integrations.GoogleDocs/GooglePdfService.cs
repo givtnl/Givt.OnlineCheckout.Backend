@@ -4,7 +4,7 @@ using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 namespace Givt.OnlineCheckout.Integrations.GoogleDocs;
 
-public class GooglePdfService: IPdfService
+public class GooglePdfService : IPdfService
 {
     private readonly GoogleDocsOptions _options;
     private readonly GoogleDocsService _docsService;
@@ -16,8 +16,8 @@ public class GooglePdfService: IPdfService
         _docsService = new GoogleDocsService(options);
         _driveService = new GoogleDriveService(options);
     }
-    
-    
+
+
     public async Task<IFileData> CreateSinglePaymentReport(DonationReport report, string locale, CancellationToken cancellationToken)
     {
         var parameters = new Dictionary<string, string>
@@ -25,7 +25,11 @@ public class GooglePdfService: IPdfService
             {"receivingOrganisation", report.OrganisationName},
             {"date", report.Timestamp},
             {"currencySymbol", report.Currency},
-            {"amount", report.Amount.ToString(CultureInfo.InvariantCulture)}
+            {"amount", report.Amount.ToString(CultureInfo.InvariantCulture)},
+            {"taxdeductable", report.TaxDeductable.ToString().ToLowerInvariant() },
+            {"rsin", report.RSIN },
+            {"hmrcReference", report.HmrcReference },
+            {"charityNumber", report.CharityNumber }
         };
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment
@@ -40,7 +44,7 @@ public class GooglePdfService: IPdfService
             "nl" => "ontvangstbewijs.pdf",
             _ => "receipt.pdf"
         };
-        var document = await GenerateDocument(parameters , templateId, cancellationToken);
+        var document = await GenerateDocument(parameters, templateId, cancellationToken);
         return new GoogleFile()
         {
             Content = document,
@@ -58,7 +62,7 @@ public class GooglePdfService: IPdfService
         {
             // We fill in the copy so we have a filled document
             await _docsService.FillInAFile(newFileId, parameters, token);
-            
+
             documentContents = _driveService.DownloadFile(newFileId);
         }
         catch (Exception)
@@ -75,6 +79,6 @@ public class GooglePdfService: IPdfService
         return documentContents;
     }
 
-    
-    
+
+
 }
