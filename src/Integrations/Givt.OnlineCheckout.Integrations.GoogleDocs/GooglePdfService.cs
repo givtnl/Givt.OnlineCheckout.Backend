@@ -26,10 +26,22 @@ public class GooglePdfService : IPdfService
             {"date", report.Timestamp},
             {"currencySymbol", report.Currency},
             {"amount", report.Amount.ToString(CultureInfo.InvariantCulture)},
-            {"taxdeductable", report.TaxDeductable.ToString().ToLowerInvariant() },
-            {"rsin", report.RSIN },
-            {"hmrcReference", report.HmrcReference },
-            {"charityNumber", report.CharityNumber }
+            {"taxDeductable", report.TaxDeductable.ToString().ToLowerInvariant() },
+            {"rsin", 
+                String.IsNullOrEmpty(report.RSIN) ? 
+                null :
+                "RSIN: " + report.RSIN + " " 
+            },
+            {"hmrcReference", 
+                String.IsNullOrEmpty(report.HmrcReference ) ?
+                null :
+                "HMRC Reference: " + report.HmrcReference + " " 
+            },
+            {"charityNumber",
+                String.IsNullOrEmpty(report.CharityNumber) ?
+                null :
+                "Charity Number: " + report.CharityNumber + " "
+            }
         };
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment
