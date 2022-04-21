@@ -11,8 +11,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
             builder
                 .Property(e => e.CountryCode)
                 .HasMaxLength(2);
-
-
+            builder
+                .Property(e => e.Currency)
+                .HasMaxLength(3);
             builder
                 .HasIndex(e => e.CountryCode);
         }

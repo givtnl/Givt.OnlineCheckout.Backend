@@ -11,7 +11,6 @@ namespace Givt.OnlineCheckout.Persistance.Entities
         public ICollection<OrganisationTexts> Texts { get; set; }
         public string PaymentProviderAccountReference { get; set; }
         public string Namespace { get; set; }
-        public string Currency { get; set; }
         public string LogoImageLink { get; set; }
         public PaymentMethod PaymentMethods { get; set; }
         public bool Active { get; set; }
