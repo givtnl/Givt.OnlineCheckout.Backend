@@ -10,7 +10,7 @@ public record CreateDonationIntentCommandHandler(ISinglePaymentService SinglePay
         var result = await SinglePaymentService.CreatePaymentIntent(
                 request.Currency,
                 request.Amount,
-                request.Amount * 0.045m,
+                request.Amount * (request.ApplicationFeePercentage / 100) + request.ApplicationFeeFixedAmount,
                 request.Medium.Organisation.PaymentProviderAccountReference,
                 request.PaymentMethod);
 
