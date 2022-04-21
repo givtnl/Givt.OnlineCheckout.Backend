@@ -9,8 +9,10 @@ public class CreateDonationIntentCommand : IRequest<CreateDonationIntentCommandR
 {    
     public string Currency { get; set; }
     public decimal Amount { get; set; }
+    public decimal ApplicationFeePercentage { get; set; }
+    public decimal ApplicationFeeFixedAmount { get; set; }
     public MediumIdType MediumId { get; set; }
-    public Integrations.Interfaces.Models.PaymentMethod PaymentMethod { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
     public int TimezoneOffset { get; set; } 
     
     internal MediumData Medium { get; set; }

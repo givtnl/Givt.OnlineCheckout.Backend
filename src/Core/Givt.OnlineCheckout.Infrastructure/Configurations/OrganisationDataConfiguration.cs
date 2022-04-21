@@ -19,12 +19,6 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
             builder
                 .Property(e => e.Namespace)
                 .HasMaxLength(20);
-
-            builder
-                .Property(e => e.Currency)
-                .HasMaxLength(3);
-
-
             builder.HasMany(e => e.Texts)
                 .WithOne(t => t.Organisation)
                 .OnDelete(DeleteBehavior.Cascade);

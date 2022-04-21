@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Donations;
 using Givt.OnlineCheckout.API.Utils;
+using Givt.OnlineCheckout.Business.ApplicationFee;
 using Givt.OnlineCheckout.Business.Donations;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
@@ -20,6 +21,9 @@ public class DonationMappingProfile : Profile
                 options => options.MapFrom(
                     src => (PaymentMethod)Enum.Parse(typeof(PaymentMethod), src.PaymentMethod, true)
             ));
+
+        CreateMap<GetApplicationFeeQueryResponse, CreateDonationIntentCommand>();
+        
         CreateMap<CreateDonationIntentCommandResponse, CreateDonationIntentResponse>()
             .ForMember(x => x.PaymentMethodId,
                 options => options.MapFrom(

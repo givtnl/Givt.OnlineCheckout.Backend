@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Donations;
 using Givt.OnlineCheckout.API.Utils;
+using Givt.OnlineCheckout.Business.ApplicationFee;
 using Givt.OnlineCheckout.Business.Donations;
+using Givt.OnlineCheckout.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +39,11 @@ public class DonationController : ControllerBase
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK, "application/json")]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
-        var command = _mapper.Map<CreateDonationIntentCommand>(request);
+        
+        var applicationFee = await _mediator.Send(new GetApplicationFeeQuery { MediumIdType = MediumIdType.FromString(request.Medium) });
+        
+        var command = _mapper.MergeInto<CreateDonationIntentCommand>(request, applicationFee);
+
         var model = await _mediator.Send(command);
         var response = _mapper.Map<CreateDonationIntentResponse>(model, opt => { opt.Items["TokenHandler"] = _jwtTokenHandler; });
         return Ok(response);
