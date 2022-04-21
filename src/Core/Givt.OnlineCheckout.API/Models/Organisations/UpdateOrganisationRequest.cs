@@ -1,6 +1,6 @@
 ﻿namespace Givt.OnlineCheckout.API.Models.Organisations
 {
-    public class GetOrganisationRequest
+    public class UpdateOrganisationRequest
     {
         public int OrganisationId { get; set; }
     }

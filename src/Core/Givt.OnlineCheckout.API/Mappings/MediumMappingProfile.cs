@@ -20,6 +20,7 @@ public class MediumMappingProfile : Profile
                 options => options.MapFrom(src => GetPaymentMethodsAsString(src.PaymentMethods)));
     }
 
+    // TODO: check if AutoMapper supports mapping from string <-> PaymentMethod, so we implement those and let AutoMapper do the work for list creation etc.
     private string[] GetPaymentMethodsAsString(IEnumerable<PaymentMethod> paymentMethods)
     {
         var result = new List<string>();

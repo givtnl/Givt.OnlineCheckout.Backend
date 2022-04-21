@@ -1,3 +1,4 @@
+using Auth0.AspNetCore.Authentication;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
@@ -102,7 +103,11 @@ namespace Givt.OnlineCheckout.API
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
-
+            services.AddAuth0WebAppAuthentication(options =>
+            {
+                options.Domain = Configuration["Auth0:Domain"];
+                options.ClientId = Configuration["Auth0:ClientId"];
+            });
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
@@ -151,7 +156,8 @@ namespace Givt.OnlineCheckout.API
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
 
-            app.UseAuthentication(); // To support JWT Bearer tokens
+            app.UseAuthentication(); // To support JWT Bearer tokens, and Auth0
+            app.UseAuthorization(); // Auth0
 
             app.UseCors("EnableAll")
                 .UseMvc();

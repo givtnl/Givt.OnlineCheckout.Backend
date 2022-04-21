@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Organisations;
 using Givt.OnlineCheckout.Business.Models;
-using Givt.OnlineCheckout.Business.Organisations.Queries;
+using Givt.OnlineCheckout.Business.Organisations;
 
 namespace Givt.OnlineCheckout.API.Mappings
 {
@@ -10,9 +10,15 @@ namespace Givt.OnlineCheckout.API.Mappings
         public OrganisationMappingProfile()
         {
             // Application -> Business
-            CreateMap<GetOrganisationRequest, GetOrganisationByMediumIdQuery>();
+            CreateMap<ListOrganisationsRequest, ListOrganisationsQuery>();
+            CreateMap<CreateOrganisationRequest, CreateOrganisationQuery>();
+            CreateMap<GetOrganisationRequest, GetOrganisationQuery>();
+            CreateMap<UpdateOrganisationRequest, UpdateOrganisationQuery>();
             // Business -> Application
-            CreateMap<OrganisationDetailModel, GetOrganisationResponse>();
+            CreateMap<OrganisationModel, OrganisationResponse>();
+            CreateMap<OrganisationModel, CreateOrganisationResponse>();
+            CreateMap<OrganisationModel, GetOrganisationResponse>();
+            CreateMap<OrganisationModel, UpdateOrganisationResponse>();
         }
     }
 }
