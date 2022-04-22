@@ -15,17 +15,7 @@ public static class OrganisationDataExtensions
 
         if (organisation.Country?.PaymentMethods > 0)
             return organisation.Country?.PaymentMethods.MapPaymentMethods();
-        return new List<PaymentMethod>// default set: all known
-        {
-            PaymentMethod.Bancontact,
-            PaymentMethod.Card,
-            PaymentMethod.Ideal,
-            PaymentMethod.Sofort,
-            PaymentMethod.Giropay,
-            PaymentMethod.EPS,
-            PaymentMethod.ApplePay,
-            PaymentMethod.GooglePay,
-        };
+        return new List<PaymentMethod>();
     }
 
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
@@ -46,7 +36,7 @@ public static class OrganisationDataExtensions
         // match on Organisation texts
         result = GetMatchingText(organisationTexts, languageId, languageOnly, propertyInfo);
         if (result != null) return result;
-        
+
         // Look for text in lingua franca
         if (!languageOnly.Equals("en", StringComparison.OrdinalIgnoreCase))
         {

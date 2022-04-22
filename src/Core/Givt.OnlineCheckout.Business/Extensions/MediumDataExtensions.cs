@@ -2,7 +2,6 @@
 using Givt.OnlineCheckout.Persistance.Entities;
 using System.Reflection;
 using integrations = Givt.OnlineCheckout.Integrations.Interfaces.Models;
-using persistance = Givt.OnlineCheckout.Persistance.Enums;
 
 namespace Givt.OnlineCheckout.Business.Extensions;
 
@@ -15,17 +14,8 @@ public static class MediumDataExtensions
 
         if (medium.Organisation?.Country?.PaymentMethods > 0)
             return medium.Organisation?.Country?.PaymentMethods.MapPaymentMethods();
-        return new List<PaymentMethod>// default set: all known
-        {
-            PaymentMethod.Bancontact,
-            PaymentMethod.Card,
-            PaymentMethod.Ideal,
-            PaymentMethod.Sofort,
-            PaymentMethod.Giropay,
-            PaymentMethod.EPS,
-            PaymentMethod.ApplePay,
-            PaymentMethod.GooglePay,
-        };
+        
+        return new List<PaymentMethod>();
     }
 
 

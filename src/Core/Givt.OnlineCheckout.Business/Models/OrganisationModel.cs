@@ -1,6 +1,4 @@
-﻿using Givt.OnlineCheckout.Persistance.Enums;
-
-namespace Givt.OnlineCheckout.Business.Models;
+﻿namespace Givt.OnlineCheckout.Business.Models;
 
 public class OrganisationModel
 {

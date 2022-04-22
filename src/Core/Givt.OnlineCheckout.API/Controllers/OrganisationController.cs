@@ -61,14 +61,16 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         /// <summary>
-        /// Not yet implemented
+        /// Read organisation
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="organisationId">Organisation ID</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}")]
-        public async Task<IActionResult> ReadOrganisation([FromRoute] GetOrganisationRequest request, CancellationToken cancellationToken)
+        [HttpGet("{organisationId:long}")]
+        public async Task<IActionResult> ReadOrganisation([FromRoute] long organisationId, CancellationToken cancellationToken)
         {
-            var query = _mapper.Map<GetOrganisationQuery>(request);
+            var request = new GetOrganisationRequest { OrganisationId = organisationId };
+            var query = _mapper.Map<ReadOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
             var response = _mapper.Map<OrganisationInfo>(model);
             return Ok(response);
