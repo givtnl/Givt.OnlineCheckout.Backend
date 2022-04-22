@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Mediums;
 using Givt.OnlineCheckout.API.Models.Organisations;
-using Givt.OnlineCheckout.Business.Organisations;
+using Givt.OnlineCheckout.Business.QR.Organisations.Create;
+using Givt.OnlineCheckout.Business.QR.Organisations.List;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.List;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.List;
+using Givt.OnlineCheckout.Business.QR.Organisations.Read;
+using Givt.OnlineCheckout.Business.QR.Organisations.Texts.List;
+using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

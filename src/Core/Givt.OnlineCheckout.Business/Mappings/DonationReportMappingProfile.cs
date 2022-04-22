@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.Business.Extensions;
-using Givt.OnlineCheckout.Business.Reports;
+using Givt.OnlineCheckout.Business.QR.Reports.Get;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;

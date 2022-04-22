@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Mediums;
-using Givt.OnlineCheckout.Business.Mediums.Queries;
 using Givt.OnlineCheckout.Business.Models;
+using Givt.OnlineCheckout.Business.QR.Mediums.Check;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 namespace Givt.OnlineCheckout.API.Mappings;

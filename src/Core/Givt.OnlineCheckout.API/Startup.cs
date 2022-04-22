@@ -4,7 +4,7 @@ using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
 using Givt.OnlineCheckout.API.Utils;
 using Givt.OnlineCheckout.Business.Mappings;
-using Givt.OnlineCheckout.Business.Organisations.Queries;
+using Givt.OnlineCheckout.Business.QR.Organisations;
 using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
@@ -50,13 +50,11 @@ namespace Givt.OnlineCheckout.API
             {
                 mc.AddProfiles(new List<Profile>
                 {
-                    new DonationMappingProfile(),
-                    new DonorMappingProfile(),
+                    new DonationMappingProfile(),                    
                     new MediumMappingProfile(),
                     new OrganisationMappingProfile(),
                     new ReportMappingProfile(),
 
-                    new DataDonorMappingProfile(),
                     new DataMediumMappingProfile(),
                     new DataOrganisationMappingProfile(),
                     new DonationReportMappingProfile(),
