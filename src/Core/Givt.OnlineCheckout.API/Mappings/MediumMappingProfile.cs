@@ -15,7 +15,7 @@ public class MediumMappingProfile : Profile
             .ForMember(dst => dst.MediumId, options => options.MapFrom(src => MediumIdType.FromString(src.Code)));
         CreateMap<GetMediumRequest, CheckMediumQuery>()
             .ForMember(dst => dst.MediumId, options => options.MapFrom(src => MediumIdType.FromString(src.Code)));
-        CreateMap<MediumDetailModel, GetMediumResponse>()
+        CreateMap<MediumDetailModelExtended, GetMediumResponse>()
             .ForMember(dst => dst.PaymentMethods,
                 options => options.MapFrom(src => GetPaymentMethodsAsString(src.PaymentMethods)));
     }

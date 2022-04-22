@@ -6,24 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.Organisations;
 
-public class ListOrganisationTextsQueryHandler : IRequestHandler<ListOrganisationTextsQuery, List<LocalisableTextModel>>
+public class ListOrganisationMediumsQueryHandler : IRequestHandler<ListOrganisationMediumsQuery, List<MediumDetailModel>>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
 
-    public ListOrganisationTextsQueryHandler(IMapper mapper, OnlineCheckoutContext context)
+    public ListOrganisationMediumsQueryHandler(IMapper mapper, OnlineCheckoutContext context)
     {
         _mapper = mapper;
         _context = context;
     }
 
-    public async Task<List<LocalisableTextModel>> Handle(ListOrganisationTextsQuery request, CancellationToken cancellationToken)
+    public async Task<List<MediumDetailModel>> Handle(ListOrganisationMediumsQuery request, CancellationToken cancellationToken)
     {
         var data = await _context.Organisations
             .Where(x => x.Id == request.OrganisationId)
-            .SelectMany(x => x.Texts)
+            .SelectMany(x => x.Mediums)
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<List<LocalisableTextModel>>(data);
+        return _mapper.Map<List<MediumDetailModel>>(data);
     }
 }

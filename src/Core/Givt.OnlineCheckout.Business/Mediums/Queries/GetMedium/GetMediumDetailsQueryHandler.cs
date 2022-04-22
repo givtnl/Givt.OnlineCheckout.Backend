@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.Mediums.Queries;
 
-public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuery, MediumDetailModel>
+public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuery, MediumDetailModelExtended>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
@@ -19,7 +19,7 @@ public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuer
         _context = context;
     }
 
-    public async Task<MediumDetailModel> Handle(GetMediumDetailsQuery request, CancellationToken cancellationToken)
+    public async Task<MediumDetailModelExtended> Handle(GetMediumDetailsQuery request, CancellationToken cancellationToken)
     {
         var medium = await _context.Mediums
             .Where(x => x.Medium == request.MediumId.ToString())
@@ -32,6 +32,6 @@ public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuer
         if (medium == null)
             throw new NotFoundException(nameof(MediumIdType), request.MediumId);
 
-        return _mapper.Map<MediumDetailModel>(medium, opt => { opt.Items["Language"] = request.Language; });
+        return _mapper.Map<MediumDetailModelExtended>(medium, opt => { opt.Items["Language"] = request.Language; });
     }
 }

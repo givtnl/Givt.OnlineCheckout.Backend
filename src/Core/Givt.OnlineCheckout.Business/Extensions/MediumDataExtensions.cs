@@ -46,6 +46,8 @@ public static class MediumDataExtensions
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
     public static string GetLocalisedText(this MediumData medium, string propertyName, string languageId)
     {
+        if (medium == null)
+            return null;
         // get the property value through reflection
         var propertyInfo = typeof(LocalisableTexts).GetProperty(propertyName);
         if (propertyInfo == null)

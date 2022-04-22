@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Givt.OnlineCheckout.API.Models.Mediums;
 using Givt.OnlineCheckout.API.Models.Organisations;
 using Givt.OnlineCheckout.Business.Organisations;
 using MediatR;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles = "OrganisationAdmin")]
+    //[Authorize(Roles = "Givt Operator")]
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -156,17 +157,19 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
         #endregion
 
-        /// <summary>
-        /// Not yet implemented
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         #region Organisation->Medium
+        /// <summary>
+        /// Get all mediums for an organisation
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{organisationId}/Medium")]
-        public async Task<IActionResult> ListMediums()
+        public async Task<IActionResult> ListMediums([FromRoute] int organisationId, CancellationToken cancellationToken)
         {
-            // TODO: implement
-            return Ok();
+            var request = new ListOrganisationMediumsRequest { OrganisationId = organisationId };
+            var query = _mapper.Map<ListOrganisationMediumsQuery>(request);
+            var model = await _mediator.Send(query, cancellationToken);
+            var response = _mapper.Map<List<MediumResponse>>(model);
+            return Ok(response);
         }
 
         /// <summary>
@@ -208,12 +211,12 @@ namespace Givt.OnlineCheckout.API.Controllers
         // TODO: decide if Delete is needed
         #endregion
 
+        #region Organisation->Medium->Text
         /// <summary>
         /// Not yet implemented
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        #region Organisation->Medium->Text
         [HttpGet("{organisationId}/Medium/{mediumId}/Text")]
         public async Task<IActionResult> ReadOrganisationTexts(int organisationId, int mediumId)
         {

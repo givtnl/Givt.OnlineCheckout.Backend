@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;

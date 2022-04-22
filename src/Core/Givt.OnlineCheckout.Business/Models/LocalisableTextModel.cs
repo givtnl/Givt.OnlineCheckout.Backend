@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.Business.Organisations;
+﻿namespace Givt.OnlineCheckout.Business.Models;
 
 public class LocalisableTextModel
 {

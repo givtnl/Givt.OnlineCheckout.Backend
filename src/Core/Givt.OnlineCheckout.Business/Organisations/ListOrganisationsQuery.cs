@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Givt.OnlineCheckout.Business.Models;
+using MediatR;
 
 namespace Givt.OnlineCheckout.Business.Organisations;
 
