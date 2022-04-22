@@ -35,27 +35,28 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <response code="400">malformed data</response>
         /// <response code="404">not found</response>
         [HttpGet()]
-        [ProducesResponseType(typeof(List<OrganisationResponse>), StatusCodes.Status200OK, "application/json")]
+        [ProducesResponseType(typeof(List<OrganisationInfo>), StatusCodes.Status200OK, "application/json")]
         public async Task<IActionResult> ListOrganisations([FromQuery] ListOrganisationsRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<ListOrganisationsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<List<OrganisationResponse>>(model);
+            var response = _mapper.Map<List<OrganisationInfo>>(model);
             return Ok(response);
         }
 
         /// <summary>
-        /// Create a new organisation - Not yet implemented
+        /// Create a new organisation
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>The updated organisation data</returns>
         [HttpPost()]
-        public async Task<IActionResult> CreateOrganisation([FromQuery] CreateOrganisationRequest request, CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(OrganisationInfo), StatusCodes.Status200OK, "application/json")]
+        public async Task<IActionResult> CreateOrganisation([FromQuery] OrganisationInfoBase request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<CreateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<OrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationInfo>(model);
             return Ok(response);
         }
 
@@ -69,7 +70,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         {
             var query = _mapper.Map<GetOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<OrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationInfo>(model);
             return Ok(response);
         }
 
@@ -86,7 +87,7 @@ namespace Givt.OnlineCheckout.API.Controllers
                 return BadRequest("Organisation ID mismatch");
             var query = _mapper.Map<UpdateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<OrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationInfo>(model);
             return Ok(response);
         }
 
@@ -106,7 +107,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             var request = new ListOrganisationTextsRequest { OrganisationId = organisationId };
             var query = _mapper.Map<ListOrganisationTextsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<List<LocalisableTextResponse>>(model);
+            var response = _mapper.Map<List<LocalisableTextInfo>>(model);
             return Ok(response);
         }
 
@@ -170,7 +171,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             var request = new ListOrganisationMediumsRequest { OrganisationId = organisationId };
             var query = _mapper.Map<ListOrganisationMediumsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<List<MediumResponse>>(model);
+            var response = _mapper.Map<List<MediumInfo>>(model);
             return Ok(response);
         }
 
@@ -228,7 +229,7 @@ namespace Givt.OnlineCheckout.API.Controllers
             };
             var query = _mapper.Map<ListOrganisationMediumTextsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<List<LocalisableTextResponse>>(model);
+            var response = _mapper.Map<List<LocalisableTextInfo>>(model);
             return Ok(response);
         }
 

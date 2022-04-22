@@ -11,10 +11,10 @@ public static class MediumDataExtensions
     public static IEnumerable<integrations.PaymentMethod> GetPaymentMethods(this MediumData medium)
     {
         if (medium.Organisation?.PaymentMethods > 0)
-            return MapPaymentMethods(medium.Organisation?.PaymentMethods);
+            return medium.Organisation?.PaymentMethods.MapPaymentMethods();
 
         if (medium.Organisation?.Country?.PaymentMethods > 0)
-            return MapPaymentMethods(medium.Organisation?.Country?.PaymentMethods);
+            return medium.Organisation?.Country?.PaymentMethods.MapPaymentMethods();
         return new List<PaymentMethod>// default set: all known
         {
             PaymentMethod.Bancontact,
@@ -28,20 +28,6 @@ public static class MediumDataExtensions
         };
     }
 
-    private static IEnumerable<integrations.PaymentMethod> MapPaymentMethods(persistance.PaymentMethod? paymentMethods)
-    {
-        if (paymentMethods == null)
-            return new List<PaymentMethod>();
-        var businessPaymentMethods = (UInt64)paymentMethods.Value;
-        var apiPaymentMethods = new List<integrations.PaymentMethod>();
-        UInt64 mask = 0x0000000000000001;
-        for (int i = 0; i < sizeof(persistance.PaymentMethod) * 8; i++)
-        {
-            if ((businessPaymentMethods & mask) != 0) { apiPaymentMethods.Add((integrations.PaymentMethod)i); }
-            mask <<= 1;
-        }
-        return apiPaymentMethods;
-    }
 
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
     public static string GetLocalisedText(this MediumData medium, string propertyName, string languageId)

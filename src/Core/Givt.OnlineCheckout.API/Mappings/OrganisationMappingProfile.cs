@@ -13,7 +13,7 @@ public class OrganisationMappingProfile : Profile
     {
         // Application -> Business
         CreateMap<ListOrganisationsRequest, ListOrganisationsQuery>();
-        CreateMap<CreateOrganisationRequest, CreateOrganisationQuery>();
+        CreateMap<OrganisationInfoBase, CreateOrganisationQuery>();
         CreateMap<GetOrganisationRequest, GetOrganisationQuery>();
         CreateMap<UpdateOrganisationRequest, UpdateOrganisationQuery>();
 
@@ -25,10 +25,10 @@ public class OrganisationMappingProfile : Profile
 
 
         // Business -> Application
-        CreateMap<OrganisationModel, OrganisationResponse>();
+        CreateMap<OrganisationModel, OrganisationInfo>();
 
-        CreateMap<LocalisableTextModel, LocalisableTextResponse>();
-        CreateMap<MediumDetailModel, MediumResponse>();
+        CreateMap<LocalisableTextModel, LocalisableTextInfo>();
+        CreateMap<MediumDetailModel, MediumInfo>();
     }
 
 }

@@ -1,9 +1,11 @@
-﻿namespace Givt.OnlineCheckout.Business.Models;
+﻿using Givt.OnlineCheckout.Persistance.Enums;
+
+namespace Givt.OnlineCheckout.Business.Models;
 
 public class OrganisationModel
 {
     public long Id { get; set; }
-    public long ConcurrencyToken{get; set; }
+    public uint ConcurrencyToken{get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public string PaymentProviderAccountReference { get; set; }
@@ -19,5 +21,4 @@ public class OrganisationModel
     // UK
     public string HmrcReference { get; set; }
     public string CharityNumber { get; set; }
-
 }
