@@ -22,6 +22,7 @@ public class ListOrganisationMediumsQueryHandler : IRequestHandler<ListOrganisat
         var data = await _context.Organisations
             .Where(x => x.Id == request.OrganisationId)
             .SelectMany(x => x.Mediums)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         return _mapper.Map<List<MediumDetailModel>>(data);

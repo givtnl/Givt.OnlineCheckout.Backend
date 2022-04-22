@@ -213,15 +213,21 @@ namespace Givt.OnlineCheckout.API.Controllers
 
         #region Organisation->Medium->Text
         /// <summary>
-        /// Not yet implemented
+        /// Get all localised texts for a medium of an organisation
         /// </summary>
-        /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("{organisationId}/Medium/{mediumId}/Text")]
-        public async Task<IActionResult> ReadOrganisationTexts(int organisationId, int mediumId)
+        public async Task<IActionResult> ListMediumTexts(int organisationId, string mediumId, CancellationToken cancellationToken)
         {
-            // TODO: implement
-            return Ok();
+            var request = new ListOrganisationMediumTextsRequest
+            {
+                OrganisationId = organisationId,
+                MediumId = mediumId
+            };
+            var query = _mapper.Map<ListOrganisationMediumTextsQuery>(request);
+            var model = await _mediator.Send(query, cancellationToken);
+            var response = _mapper.Map<List<LocalisableTextResponse>>(model);
+            return Ok(response);
         }
 
         /// <summary>

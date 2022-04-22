@@ -35,5 +35,6 @@ public class DataOrganisationMappingProfile : Profile
                     src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
                 )
             );
+        CreateMap<MediumTexts, LocalisableTextModel>();
     }
 }

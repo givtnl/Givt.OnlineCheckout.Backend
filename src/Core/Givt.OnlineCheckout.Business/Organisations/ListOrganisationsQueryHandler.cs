@@ -34,7 +34,9 @@ public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQu
             query = query.Skip(((int)request.Start.Value) - 1);
         query = query.Take((int)request.PageSize);
 
-        var data = await query.ToListAsync(cancellationToken);
+        var data = await query
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         return _mapper.Map<List<OrganisationModel>>(data);
     }

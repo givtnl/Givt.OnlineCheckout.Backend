@@ -21,28 +21,14 @@ public class OrganisationMappingProfile : Profile
 
         CreateMap<ListOrganisationMediumsRequest, ListOrganisationMediumsQuery>();
 
+        CreateMap<ListOrganisationMediumTextsRequest, ListOrganisationMediumTextsQuery>();
+
+
         // Business -> Application
         CreateMap<OrganisationModel, OrganisationResponse>();
 
         CreateMap<LocalisableTextModel, LocalisableTextResponse>();
-        CreateMap<MediumDetailModel, MediumResponse>()
-            //.ForMember(dst => dst.Amounts,
-            //    options => options.MapFrom(
-            //        src => GetAmountsArray(src)
-            //    )
-            //)
-            ;
+        CreateMap<MediumDetailModel, MediumResponse>();
     }
 
-    //private object GetAmountsArray(MediumDetailModel src)
-    //{
-    //    if (src.Amounts != null)
-    //    {
-    //        return src.Amounts
-    //            .Split(',', StringSplitOptions.None)
-    //            .Select(str => decimal.Parse(str, CultureInfo.InvariantCulture))
-    //            .ToList();
-    //    }
-    //    return Array.Empty<decimal>();
-    //}
 }
