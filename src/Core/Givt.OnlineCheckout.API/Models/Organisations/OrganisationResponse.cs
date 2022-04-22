@@ -1,7 +1,9 @@
 ﻿namespace Givt.OnlineCheckout.API.Models.Organisations;
 
 public class OrganisationResponse
-{    public long Id { get; set; }
+{
+    public long Id { get; set; }
+    public long ConcurrencyToken { get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public string PaymentProviderAccountReference { get; set; }

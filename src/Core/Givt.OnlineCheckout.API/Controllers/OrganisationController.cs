@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles = "Givt Operator")]
+    // TODO: enable authentication/authorisation by uncommenting the line below
+    //[Authorize(Roles = "Givt Operator")] 
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -28,7 +29,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// List Organisations
         /// </summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken"></param>
         /// <returns>A page of organisations</returns>
         /// <response code="200">organisations</response>
         /// <response code="400">malformed data</response>
@@ -44,10 +45,11 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         /// <summary>
-        /// Not yet implemented
+        /// Create a new organisation - Not yet implemented
         /// </summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken"></param>
+        /// <returns>The updated organisation data</returns>
         [HttpPost()]
         public async Task<IActionResult> CreateOrganisation([FromQuery] CreateOrganisationRequest request, CancellationToken cancellationToken)
         {

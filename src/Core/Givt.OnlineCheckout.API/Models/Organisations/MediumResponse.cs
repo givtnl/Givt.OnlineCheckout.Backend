@@ -2,6 +2,7 @@
 
 public class MediumResponse
 {
+    public long ConcurrencyToken { get; set; }
     public long OrganisationId { get; set; }
     public string Medium { get; set; }
     public decimal[] Amounts { get; set; }

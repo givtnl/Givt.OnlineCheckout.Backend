@@ -9,6 +9,13 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<OrganisationData> builder)
         {
             builder
+                .Property(e => e.ConcurrencyToken)
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .ValueGeneratedOnAddOrUpdate()
+                .IsConcurrencyToken();
+
+            builder
                 .Property(e => e.Name)
                 .HasMaxLength(35);
 

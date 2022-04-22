@@ -3,11 +3,11 @@
 public class OrganisationModel
 {
     public long Id { get; set; }
+    public long ConcurrencyToken{get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public string PaymentProviderAccountReference { get; set; }
     public string Namespace { get; set; }
-    public string Currency { get; set; }
     public string LogoImageLink { get; set; }
     public IEnumerable<string> PaymentMethods { get; set; }
     public bool Active { get; set; }

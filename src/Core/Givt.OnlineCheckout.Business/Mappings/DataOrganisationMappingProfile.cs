@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
-using Givt.OnlineCheckout.Business.Organisations;
 using Givt.OnlineCheckout.Persistance.Entities;
 using System.Globalization;
 
@@ -15,10 +14,9 @@ public class DataOrganisationMappingProfile : Profile
         CreateMap<OrganisationData, OrganisationDetailModel>();
         CreateMap<OrganisationData, OrganisationModel>()
             .ForMember(
-                x => x.Currency,
-                options => options.MapFrom(
-                    src => src.Country.Currency
-            ))
+                dst => dst.Country,
+                options => options.MapFrom(src => src.Country.CountryCode)
+             )
             .ForMember(
                 x => x.PaymentMethods,
                 options => options.MapFrom(
