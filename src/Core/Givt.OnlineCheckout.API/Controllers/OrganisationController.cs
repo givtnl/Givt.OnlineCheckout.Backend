@@ -27,7 +27,6 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// List Organisations
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <returns>A page of organisations</returns>
         /// <response code="200">organisations</response>
@@ -44,30 +43,45 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost()]
         public async Task<IActionResult> CreateOrganisation([FromQuery] CreateOrganisationRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<CreateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<CreateOrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationResponse>(model);
             return Ok(response);
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{organisationId}")]
         public async Task<IActionResult> ReadOrganisation([FromRoute] GetOrganisationRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<GetOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<GetOrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationResponse>(model);
             return Ok(response);
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("{organisationId}")]
         public async Task<IActionResult> UpdateOrganisation([FromRoute] int organisationId, [FromBody] UpdateOrganisationRequest request, CancellationToken cancellationToken)
         {
             var query = _mapper.Map<UpdateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<UpdateOrganisationResponse>(model);
+            var response = _mapper.Map<OrganisationResponse>(model);
             return Ok(response);
         }
 
@@ -75,6 +89,12 @@ namespace Givt.OnlineCheckout.API.Controllers
         #endregion
 
         #region Organisation->Text
+
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{organisationId}/Text")]
         public async Task<IActionResult> ListOrganisationTexts(int organisationId)
         {
@@ -82,6 +102,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("{organisationId}/Text/{languageId}")]
         public async Task<IActionResult> CreateOrganisationText(int organisationId, string languageId)
         {
@@ -89,6 +114,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{organisationId}/Text/{languageId}")]
         public async Task<IActionResult> ReadOrganisationText(int organisationId, string languageId)
         {
@@ -96,6 +126,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("{organisationId}/Text/{languageId}")]
         public async Task<IActionResult> UpdateOrganisationTexts(int organisationId, string languageId)
         {
@@ -103,6 +138,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpDelete("{organisationId}/Text/{languageId}")]
         public async Task<IActionResult> DeleteOrganisationTexts(int organisationId, string languageId)
         {
@@ -111,6 +151,11 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         #region Organisation->Medium
         [HttpGet("{organisationId}/Medium")]
         public async Task<IActionResult> ListMediums()
@@ -119,6 +164,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("{organisationId}/Medium")]
         public async Task<IActionResult> CreateMedium()
         {
@@ -126,6 +176,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{organisationId}/Medium/{mediumId}")]
         public async Task<IActionResult> ReadMedium(int organisationId, int mediumId)
         {
@@ -133,6 +188,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("{organisationId}/Medium/{mediumId}")]
         public async Task<IActionResult> UpdateMedium(int organisationId, int mediumId)
         {
@@ -143,6 +203,11 @@ namespace Givt.OnlineCheckout.API.Controllers
         // TODO: decide if Delete is needed
         #endregion
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         #region Organisation->Medium->Text
         [HttpGet("{organisationId}/Medium/{mediumId}/Text")]
         public async Task<IActionResult> ReadOrganisationTexts(int organisationId, int mediumId)
@@ -151,6 +216,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("{organisationId}/Medium/{mediumId}/Text/{languageId}")]
         public async Task<IActionResult> CreateOrganisationText(int organisationId, int mediumId, string languageId)
         {
@@ -158,6 +228,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{organisationId}/Medium/{mediumId}/Text/{languageId}")]
         public async Task<IActionResult> ReadOrganisationText(int organisationId, int mediumId, string languageId)
         {
@@ -165,6 +240,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("{organisationId}/Medium/{mediumId}/Text/{languageId}")]
         public async Task<IActionResult> UpdateOrganisationTexts(int organisationId, int mediumId, string languageId)
         {
@@ -172,6 +252,11 @@ namespace Givt.OnlineCheckout.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpDelete("{organisationId}/Medium/{mediumId}/Text/{languageId}")]
         public async Task<IActionResult> DeleteOrganisationTexts(int organisationId, int mediumId, string languageId)
         {
