@@ -14,8 +14,13 @@ namespace Givt.OnlineCheckout.API.Mappings
             CreateMap<CreateOrganisationRequest, CreateOrganisationQuery>();
             CreateMap<GetOrganisationRequest, GetOrganisationQuery>();
             CreateMap<UpdateOrganisationRequest, UpdateOrganisationQuery>();
+
+            CreateMap<ListOrganisationTextsRequest, ListOrganisationTextsQuery>();
+
             // Business -> Application
             CreateMap<OrganisationModel, OrganisationResponse>();
+
+            CreateMap<LocalisableTextModel, LocalisableTextResponse>();
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Givt.OnlineCheckout.API.Controllers
         [ProducesResponseType(typeof(List<OrganisationResponse>), StatusCodes.Status200OK, "application/json")]
         public async Task<IActionResult> ListOrganisations([FromQuery] ListOrganisationsRequest request, CancellationToken cancellationToken)
         {
-
             var query = _mapper.Map<ListOrganisationsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
             var response = _mapper.Map<List<OrganisationResponse>>(model);
@@ -74,11 +73,14 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <summary>
         /// Not yet implemented
         /// </summary>
+        /// <param name="organisationId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{organisationId}")]
         public async Task<IActionResult> UpdateOrganisation([FromRoute] int organisationId, [FromBody] UpdateOrganisationRequest request, CancellationToken cancellationToken)
         {
+            if (organisationId != request.OrganisationId)
+                return BadRequest("Organisation ID mismatch");
             var query = _mapper.Map<UpdateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
             var response = _mapper.Map<OrganisationResponse>(model);
@@ -91,15 +93,18 @@ namespace Givt.OnlineCheckout.API.Controllers
         #region Organisation->Text
 
         /// <summary>
-        /// Not yet implemented
+        /// Get all localised texts for an organisation
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="organisationId">Organisation Identifier</param>
         /// <returns></returns>
         [HttpGet("{organisationId}/Text")]
-        public async Task<IActionResult> ListOrganisationTexts(int organisationId)
+        public async Task<IActionResult> ListOrganisationTexts(int organisationId, CancellationToken cancellationToken)
         {
-            // TODO: implement
-            return Ok();
+            var request = new ListOrganisationTextsRequest { OrganisationId = organisationId };
+            var query = _mapper.Map<ListOrganisationTextsQuery>(request);
+            var model = await _mediator.Send(query, cancellationToken);
+            var response = _mapper.Map<List<LocalisableTextResponse>>(model);
+            return Ok(response);
         }
 
         /// <summary>

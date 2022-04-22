@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.Organisations;
 
-public class ListOrganisationQueryHandler : IRequestHandler<ListOrganisationsQuery, List<OrganisationModel>>
+public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQuery, List<OrganisationModel>>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
 
-    public ListOrganisationQueryHandler(IMapper mapper, OnlineCheckoutContext context)
+    public ListOrganisationsQueryHandler(IMapper mapper, OnlineCheckoutContext context)
     {
         _mapper = mapper;
         _context = context;

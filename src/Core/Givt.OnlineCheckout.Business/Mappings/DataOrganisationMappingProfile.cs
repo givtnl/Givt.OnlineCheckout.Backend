@@ -24,5 +24,6 @@ public class DataOrganisationMappingProfile : Profile
                     src => src.GetPaymentMethods()
             ))
             ;
+        CreateMap<OrganisationTexts, LocalisableTextModel>();
     }
 }
