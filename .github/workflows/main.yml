@@ -32,8 +32,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/onlinecheckout-api:production
-        env:
-          ConnectionStrings__AzureAppConfiguration: ${{ secrets.AZURE_APP_CONFIGURATION_DEBUG }}
       
   notify:
     name: Notify on Slack
