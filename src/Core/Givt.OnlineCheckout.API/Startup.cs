@@ -1,4 +1,4 @@
-using Auth0.AspNetCore.Authentication;
+//using Auth0.AspNetCore.Authentication;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
@@ -101,11 +101,11 @@ namespace Givt.OnlineCheckout.API
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
-            services.AddAuth0WebAppAuthentication(options =>
-            {
-                options.Domain = Configuration["Auth0:Domain"];
-                options.ClientId = Configuration["Auth0:ClientId"];
-            });
+            //services.AddAuth0WebAppAuthentication(options =>
+            //{
+            //    options.Domain = Configuration["Auth0:Domain"];
+            //    options.ClientId = Configuration["Auth0:ClientId"];
+            //});
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
