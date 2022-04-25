@@ -21,8 +21,7 @@ public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQu
     public async Task<List<OrganisationModel>> Handle(ListOrganisationsQuery request, CancellationToken cancellationToken)
     {
         // setup
-        IQueryable<OrganisationData> query = _context.Organisations
-            .Include(o => o.Country);
+        IQueryable<OrganisationData> query = _context.Organisations;
         // filter
         if (!String.IsNullOrEmpty(request.Filter))
             query = query.Where(x => x.Name.Contains(request.Filter));
