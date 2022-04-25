@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Donations;
 using Givt.OnlineCheckout.API.Utils;
-using Givt.OnlineCheckout.Business.ApplicationFee;
-using Givt.OnlineCheckout.Business.Donations;
 using Givt.OnlineCheckout.Business.Models;
+using Givt.OnlineCheckout.Business.QR.ApplicationFee.Get;
+using Givt.OnlineCheckout.Business.QR.Donations.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

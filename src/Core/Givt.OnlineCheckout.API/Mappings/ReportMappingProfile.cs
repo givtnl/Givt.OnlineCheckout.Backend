@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Reports;
 using Givt.OnlineCheckout.API.Utils;
-using Givt.OnlineCheckout.Business.Reports;
+using Givt.OnlineCheckout.Business.QR.Reports.Get;
+using Givt.OnlineCheckout.Business.QR.Reports.Send;
 using System.Security.Claims;
 
 namespace Givt.OnlineCheckout.API.Mappings;

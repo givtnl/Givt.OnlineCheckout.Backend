@@ -9,6 +9,13 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<OrganisationData> builder)
         {
             builder
+                .Property(e => e.ConcurrencyToken)
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .ValueGeneratedOnAddOrUpdate()
+                .IsConcurrencyToken();
+
+            builder
                 .Property(e => e.Name)
                 .HasMaxLength(35);
 
@@ -32,6 +39,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .HasMaxLength(20);
             builder.Property(x => x.CharityNumber)
                 .HasMaxLength(35);
+
+            builder
+                .HasOne(x => x.Country)
+                .WithMany()
+                .HasForeignKey(x => x.CountryCode);
+
 
             builder
                 .HasIndex(e => e.Namespace);

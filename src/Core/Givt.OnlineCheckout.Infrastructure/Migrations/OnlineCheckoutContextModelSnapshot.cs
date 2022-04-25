@@ -24,11 +24,9 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.CountryData", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("CountryCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
 
                     b.Property<decimal>("ApplicationFeeFixedAmount")
                         .HasColumnType("numeric");
@@ -36,9 +34,11 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<decimal>("ApplicationFeePercentage")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("CountryCode")
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Currency")
                         .HasMaxLength(3)
@@ -53,9 +53,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<decimal>("PaymentMethods")
                         .HasColumnType("numeric(20,0)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryCode");
+                    b.HasKey("CountryCode");
 
                     b.ToTable("Countries");
                 });
@@ -70,6 +68,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
+
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Currency")
                         .HasMaxLength(3)
@@ -117,6 +121,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -146,6 +156,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -173,6 +189,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
+
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Goal")
                         .HasMaxLength(400)
@@ -202,8 +224,14 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
 
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("integer");
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("character varying(2)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -243,7 +271,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CountryCode");
 
                     b.HasIndex("Namespace");
 
@@ -257,6 +285,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
+
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Goal")
                         .HasMaxLength(400)
@@ -312,7 +346,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                 {
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.CountryData", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CountryCode");
 
                     b.Navigation("Country");
                 });

@@ -5,6 +5,7 @@ namespace Givt.OnlineCheckout.Persistance.Entities
 {
     public class OrganisationData : DataEntityBase<long>
     {
+        public string CountryCode { get; set; }
         public CountryData Country { get; set; }
         public IEnumerable<MediumData> Mediums { get; set; }
         public string Name { get; set; }

@@ -2,7 +2,6 @@
 using Givt.OnlineCheckout.Persistance.Entities;
 using System.Reflection;
 using integrations = Givt.OnlineCheckout.Integrations.Interfaces.Models;
-using persistance = Givt.OnlineCheckout.Persistance.Enums;
 
 namespace Givt.OnlineCheckout.Business.Extensions;
 
@@ -11,41 +10,20 @@ public static class MediumDataExtensions
     public static IEnumerable<integrations.PaymentMethod> GetPaymentMethods(this MediumData medium)
     {
         if (medium.Organisation?.PaymentMethods > 0)
-            return MapPaymentMethods(medium.Organisation?.PaymentMethods);
+            return medium.Organisation?.PaymentMethods.MapPaymentMethods();
 
         if (medium.Organisation?.Country?.PaymentMethods > 0)
-            return MapPaymentMethods(medium.Organisation?.Country?.PaymentMethods);
-        return new List<PaymentMethod>// default set: all known
-        {
-            PaymentMethod.Bancontact,
-            PaymentMethod.Card,
-            PaymentMethod.Ideal,
-            PaymentMethod.Sofort,
-            PaymentMethod.Giropay,
-            PaymentMethod.EPS,
-            PaymentMethod.ApplePay,
-            PaymentMethod.GooglePay,
-        };
+            return medium.Organisation?.Country?.PaymentMethods.MapPaymentMethods();
+        
+        return new List<PaymentMethod>();
     }
 
-    private static IEnumerable<integrations.PaymentMethod> MapPaymentMethods(persistance.PaymentMethod? paymentMethods)
-    {
-        if (paymentMethods == null)
-            return new List<PaymentMethod>();
-        var businessPaymentMethods = (UInt64)paymentMethods.Value;
-        var apiPaymentMethods = new List<integrations.PaymentMethod>();
-        UInt64 mask = 0x0000000000000001;
-        for (int i = 0; i < sizeof(persistance.PaymentMethod) * 8; i++)
-        {
-            if ((businessPaymentMethods & mask) != 0) { apiPaymentMethods.Add((integrations.PaymentMethod)i); }
-            mask <<= 1;
-        }
-        return apiPaymentMethods;
-    }
 
     // Select the best matching text on locale from the medium, fall back to texts defined for the organisation
     public static string GetLocalisedText(this MediumData medium, string propertyName, string languageId)
     {
+        if (medium == null)
+            return null;
         // get the property value through reflection
         var propertyInfo = typeof(LocalisableTexts).GetProperty(propertyName);
         if (propertyInfo == null)
