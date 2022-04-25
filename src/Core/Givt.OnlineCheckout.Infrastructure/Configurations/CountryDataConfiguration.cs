@@ -8,6 +8,9 @@ public class CountryDataConfiguration : IEntityTypeConfiguration<CountryData>
 {
     public void Configure(EntityTypeBuilder<CountryData> builder)
     {
+        builder.HasKey(
+            e => e.CountryCode);
+
         builder
             .Property(e => e.ConcurrencyToken)
             .HasColumnName("xmin")
@@ -21,7 +24,5 @@ public class CountryDataConfiguration : IEntityTypeConfiguration<CountryData>
         builder
             .Property(e => e.Currency)
             .HasMaxLength(3);
-        builder
-            .HasIndex(e => e.CountryCode);
     }
 }

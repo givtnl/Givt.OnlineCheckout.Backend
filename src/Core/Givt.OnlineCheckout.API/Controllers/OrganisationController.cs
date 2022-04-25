@@ -17,7 +17,7 @@ namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
     // TODO: enable authentication/authorisation by uncommenting the line below
-    //[Authorize(Roles = "Givt Operator")] 
+    //[Authorize(Roles = "Site Admin,Givt Operator")] 
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -83,7 +83,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         /// <summary>
-        /// Not yet implemented
+        /// Update organisation
         /// </summary>
         /// <param name="organisationId"></param>
         /// <param name="request"></param>
@@ -91,7 +91,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         [HttpPut("{organisationId}")]
         public async Task<IActionResult> UpdateOrganisation([FromRoute] int organisationId, [FromBody] UpdateOrganisationRequest request, CancellationToken cancellationToken)
         {
-            if (organisationId != request.OrganisationId)
+            if (organisationId != request.Id)
                 return BadRequest("Organisation ID mismatch");
             var query = _mapper.Map<UpdateOrganisationQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
@@ -100,6 +100,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         // TODO: decide if Delete is needed
+
         #endregion
 
         #region Organisation->Text

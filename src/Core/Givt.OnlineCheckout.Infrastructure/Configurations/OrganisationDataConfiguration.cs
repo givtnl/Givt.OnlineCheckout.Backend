@@ -41,6 +41,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .HasMaxLength(35);
 
             builder
+                .HasOne(x => x.Country)
+                .WithMany()
+                .HasForeignKey(x => x.CountryCode);
+
+
+            builder
                 .HasIndex(e => e.Namespace);
         }
     }
