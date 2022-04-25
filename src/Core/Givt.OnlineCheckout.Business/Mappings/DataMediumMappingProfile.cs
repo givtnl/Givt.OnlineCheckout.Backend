@@ -23,6 +23,11 @@ public class DataMediumMappingProfile : Profile
                     src => src.Organisation.Name
                     ))
             .ForMember(
+                x => x.Country,
+                options => options.MapFrom(
+                    src => src.Organisation.CountryCode
+                    ))
+            .ForMember(
                 x => x.PaymentMethods,
                 options => options.MapFrom(
                     src => src.GetPaymentMethods()
