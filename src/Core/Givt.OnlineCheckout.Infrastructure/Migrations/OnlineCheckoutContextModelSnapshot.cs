@@ -24,15 +24,25 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.CountryData", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<string>("CountryCode")
                         .HasMaxLength(2)
                         .HasColumnType("character varying(2)");
+
+                    b.Property<decimal>("ApplicationFeeFixedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ApplicationFeePercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("Currency")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -43,23 +53,27 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<decimal>("PaymentMethods")
                         .HasColumnType("numeric(20,0)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryCode");
+                    b.HasKey("CountryCode");
 
                     b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.DonationData", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
+
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Currency")
                         .HasMaxLength(3)
@@ -107,6 +121,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -136,14 +156,17 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Goal")
-                        .HasColumnType("text");
 
                     b.Property<string>("Medium")
                         .HasMaxLength(33)
@@ -151,9 +174,6 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.Property<long>("OrganisationId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("ThankYou")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -164,27 +184,27 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.MediumTexts", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Goal")
-                        .HasColumnType("text");
+                    b.Property<long>("MediumId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
 
-                    b.Property<long?>("MediumId")
-                        .HasColumnType("bigint");
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("Goal")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
 
                     b.Property<string>("ThankYou")
-                        .HasColumnType("text");
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("MediumId");
+                    b.HasKey("MediumId", "LanguageId");
 
                     b.ToTable("MediumTexts");
                 });
@@ -200,18 +220,28 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("integer");
+                    b.Property<string>("CharityNumber")
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
 
-                    b.Property<string>("Currency")
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("character varying(2)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HmrcReference")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("LogoImageLink")
                         .HasMaxLength(100)
@@ -232,9 +262,16 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("RSIN")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("TaxDeductable")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CountryCode");
 
                     b.HasIndex("Namespace");
 
@@ -243,27 +280,27 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
             modelBuilder.Entity("Givt.OnlineCheckout.Persistance.Entities.OrganisationTexts", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Goal")
-                        .HasColumnType("text");
+                    b.Property<long>("OrganisationId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LanguageId")
                         .HasColumnType("text");
 
-                    b.Property<long?>("OrganisationId")
-                        .HasColumnType("bigint");
+                    b.Property<uint>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("Goal")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
 
                     b.Property<string>("ThankYou")
-                        .HasColumnType("text");
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrganisationId");
+                    b.HasKey("OrganisationId", "LanguageId");
 
                     b.ToTable("OrganisationTexts");
                 });
@@ -299,7 +336,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.MediumData", "Medium")
                         .WithMany("Texts")
                         .HasForeignKey("MediumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Medium");
                 });
@@ -308,7 +346,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                 {
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.CountryData", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CountryCode");
 
                     b.Navigation("Country");
                 });
@@ -318,7 +356,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.HasOne("Givt.OnlineCheckout.Persistance.Entities.OrganisationData", "Organisation")
                         .WithMany("Texts")
                         .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Organisation");
                 });

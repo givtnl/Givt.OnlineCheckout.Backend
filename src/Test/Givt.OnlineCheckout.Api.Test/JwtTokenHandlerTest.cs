@@ -34,7 +34,7 @@ namespace Givt.OnlineCheckout.Api.Test
         [Test]
         public void PreserveTransactionReference()
         {
-            const string transactionReference = "txref_0123456789_0123456789_0123456789_0123456789";
+            const string transactionReference = "pi_3KqHOOLgFatYzb8p34aLCNhh";
             var handler = new JwtTokenHandler(_logger, _options);
             var tokenString = handler.GetBearerToken(transactionReference);
 

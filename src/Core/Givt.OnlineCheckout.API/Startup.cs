@@ -1,9 +1,10 @@
+//using Auth0.AspNetCore.Authentication;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
 using Givt.OnlineCheckout.API.Utils;
 using Givt.OnlineCheckout.Business.Mappings;
-using Givt.OnlineCheckout.Business.Organisations.Queries;
+using Givt.OnlineCheckout.Business.QR.Organisations;
 using Givt.OnlineCheckout.Infrastructure.Behaviors;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Infrastructure.Loggers;
@@ -49,13 +50,11 @@ namespace Givt.OnlineCheckout.API
             {
                 mc.AddProfiles(new List<Profile>
                 {
-                    new DonationMappingProfile(),
-                    new DonorMappingProfile(),
+                    new DonationMappingProfile(),                    
                     new MediumMappingProfile(),
                     new OrganisationMappingProfile(),
                     new ReportMappingProfile(),
 
-                    new DataDonorMappingProfile(),
                     new DataMediumMappingProfile(),
                     new DataOrganisationMappingProfile(),
                     new DonationReportMappingProfile(),
@@ -102,7 +101,11 @@ namespace Givt.OnlineCheckout.API
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
-
+            //services.AddAuth0WebAppAuthentication(options =>
+            //{
+            //    options.Domain = Configuration["Auth0:Domain"];
+            //    options.ClientId = Configuration["Auth0:ClientId"];
+            //});
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
@@ -149,10 +152,10 @@ namespace Givt.OnlineCheckout.API
             app.UseSwaggerUI((options) =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-
             });
 
-            app.UseAuthentication(); // To support JWT Bearer tokens
+            app.UseAuthentication(); // To support JWT Bearer tokens, and Auth0
+            app.UseAuthorization(); // Auth0
 
             app.UseCors("EnableAll")
                 .UseMvc();
@@ -160,7 +163,12 @@ namespace Givt.OnlineCheckout.API
 
         public void ConfigureOptions(IServiceCollection services)
         {
-            services.AddAzureAppConfiguration();
+            services.AddAzureAppConfiguration(); 
+            services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
         }
     }
 }

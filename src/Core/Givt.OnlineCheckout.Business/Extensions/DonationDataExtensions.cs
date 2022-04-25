@@ -37,9 +37,13 @@ namespace Givt.OnlineCheckout.Business.Extensions
             */
             var organisations = new List<Organisation>();
 
-            var organisation = new Organisation
+            var organisation = new Organisation(donation.Medium.Organisation)
             {
                 Name = donation.Medium.Organisation.Name,
+                TaxDeductable = donation.Medium.Organisation.TaxDeductable,
+                RSIN = donation.Medium.Organisation.RSIN,
+                HmrcReference = donation.Medium.Organisation.HmrcReference,
+                CharityNumber = donation.Medium.Organisation.CharityNumber
                 //TotalAmount = totals
             };
             organisations.Add(organisation);
@@ -47,7 +51,7 @@ namespace Givt.OnlineCheckout.Business.Extensions
             organisation.Goals = goals;
             var goal = new Goal
             {
-                Name = donation.Medium.Goal,
+                Name = donation.Medium.GetLocalisedText(nameof(LocalisableTexts.Goal), language),
                 //TotalAmount = totals,
                 Donations = new List<Donation>()
             };

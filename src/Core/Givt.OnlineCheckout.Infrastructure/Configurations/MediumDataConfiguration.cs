@@ -9,6 +9,13 @@ public class MediumDataConfiguration : IEntityTypeConfiguration<MediumData>
     public void Configure(EntityTypeBuilder<MediumData> builder)
     {
         builder
+            .Property(e => e.ConcurrencyToken)
+            .HasColumnName("xmin")
+            .HasColumnType("xid")
+            .ValueGeneratedOnAddOrUpdate()
+            .IsConcurrencyToken();
+
+        builder
             .HasOne(x => x.Organisation)
             .WithMany(x => x.Mediums)
             .HasForeignKey(x => x.OrganisationId);
@@ -24,14 +31,5 @@ public class MediumDataConfiguration : IEntityTypeConfiguration<MediumData>
         builder.HasMany(e => e.Texts)
             .WithOne(t => t.Medium)
             .OnDelete(DeleteBehavior.Cascade);
-
-        //builder
-        //    .Property(e => e.Goal)
-        //    .HasMaxLength ... "unlimited"
-
-        //builder
-        //    .Property(e => e.ThankYou)
-        //    .HasMaxLength ... "unlimited"
-
     }
 }

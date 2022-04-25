@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Reports;
 using Givt.OnlineCheckout.API.Utils;
-using Givt.OnlineCheckout.Business.Reports;
+using Givt.OnlineCheckout.Business.QR.Reports.Get;
+using Givt.OnlineCheckout.Business.QR.Reports.Send;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,15 @@ public class ReportController : ControllerBase
         _jwtTokenHandler = jwtTokenHandler;
     }
 
+    /// <summary>
+    /// Get donation report for a donation.
+    /// Bearer token is needed for authentication and identification of the transaction.
+    /// </summary>
+    /// <param name="request">Request json</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Report file</returns>
+    /// <response code="200">report</response>
+    /// <response code="401">no valid transaction reference given</response>
     [HttpGet("singleDonation")]
     [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK, "application/octet-stream")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -31,22 +41,31 @@ public class ReportController : ControllerBase
         CancellationToken cancellationToken)
     {
         _logger.Debug("Get Report/singleDonation {0}", request);
-
-        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
-            var query = _mapper.Map<GetDonationReportCommand>(request, opt => { 
-                opt.Items["TokenHandler"] = _jwtTokenHandler;
-                opt.Items["User"] = HttpContext.User;
-            });
-            var response = await _mediator.Send(query, cancellationToken);
-            return File(response.Content, response.MimeType, response.Filename);
+            var _ = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
         }
         catch (UnauthorizedAccessException uae)
         {
             return Unauthorized(uae.Message);
         }
+        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+        var query = _mapper.Map<GetDonationReportCommand>(request, opt =>
+        {
+            opt.Items["TokenHandler"] = _jwtTokenHandler;
+            opt.Items["User"] = HttpContext.User;
+        });
+        var response = await _mediator.Send(query, cancellationToken);
+        return File(response.Content, response.MimeType, response.Filename);
     }
+
+    /// <summary>
+    /// Sends a donation report for a donation to an email address. 
+    /// Bearer token is needed for authentication and identification of the transaction.
+    /// </summary>
+    /// <param name="request">Request json</param>
+    /// <response code="200">report is sent</response>
+    /// <response code="401">no valid transaction reference given</response>
 
     [HttpPost("singleDonation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,7 +77,8 @@ public class ReportController : ControllerBase
         request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         try
         {
-            var notification = _mapper.Map<SendDonationReportNotification>(request, opt => {
+            var notification = _mapper.Map<SendDonationReportNotification>(request, opt =>
+            {
                 opt.Items["TokenHandler"] = _jwtTokenHandler;
                 opt.Items["User"] = HttpContext.User;
             });

@@ -11,7 +11,7 @@ public class DataMediumMappingProfile : Profile
     public const string LanguageTag = "Language";
     public DataMediumMappingProfile()
     {
-        CreateMap<MediumData, MediumDetailModel>()
+        CreateMap<MediumData, MediumDetailModelExtended>()
             .ForMember(
                 x => x.Amounts,
                 options => options.MapFrom(
@@ -30,7 +30,7 @@ public class DataMediumMappingProfile : Profile
             .ForMember(
                 x => x.Currency,
                 options => options.MapFrom(
-                    src => src.Organisation.Currency
+                    src => src.Organisation.Country.Currency
                 ))
             // select best Goal and ThankYou texts based on dst.Locale
             .ForMember(
