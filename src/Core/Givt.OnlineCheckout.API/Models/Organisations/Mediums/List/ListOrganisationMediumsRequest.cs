@@ -2,6 +2,6 @@
 {
     public class ListOrganisationMediumsRequest
     {
-        public int OrganisationId { get; set; }
+        public long OrganisationId { get; set; }
     }
 }

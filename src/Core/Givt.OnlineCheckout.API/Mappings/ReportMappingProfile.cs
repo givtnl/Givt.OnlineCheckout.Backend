@@ -9,8 +9,6 @@ namespace Givt.OnlineCheckout.API.Mappings;
 
 public class ReportMappingProfile : Profile
 {
-    public const string S_TOKENHANDLER = "TokenHandler";
-    public const string S_USER = "User";
     public ReportMappingProfile()
     {
         CreateMap<GetDonationReportRequest, GetDonationReportCommand>()
@@ -19,7 +17,7 @@ public class ReportMappingProfile : Profile
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
-                        (context.Items[S_TOKENHANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[S_USER] as ClaimsPrincipal)
+                        (context.Items[Keys.TOKENHANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[Keys.USER] as ClaimsPrincipal)
                 ));
 
         CreateMap<GetDonationReportCommandResponse, GetDonationReportResponse>();
@@ -31,7 +29,7 @@ public class ReportMappingProfile : Profile
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
-                        (context.Items[S_TOKENHANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[S_USER] as ClaimsPrincipal)
+                        (context.Items[Keys.TOKEN_HANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[Keys.USER] as ClaimsPrincipal)
                 ));
     }
 }
