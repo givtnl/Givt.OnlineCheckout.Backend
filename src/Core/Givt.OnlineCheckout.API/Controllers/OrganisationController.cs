@@ -97,6 +97,8 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <param name="organisationId">Organisation Identifier</param>
         /// <param name="request"></param>
         /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="401">Concurrent update conflict</response>
         [HttpPut("{organisationId:long}")]
         public async Task<IActionResult> UpdateOrganisation(
             [FromRoute] long organisationId, 
@@ -182,7 +184,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         /// <summary>
-        /// Not yet implenmented - Update texts in a certain language for an organisation
+        /// Update texts in a certain language for an organisation
         /// </summary>
         /// <param name="organisationId">Organisation Identifier</param>
         /// <param name="languageId">Language Identifier for these texts, e.g. en-GB</param>
@@ -193,7 +195,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         public async Task<IActionResult> UpdateOrganisationTexts(
             [FromRoute] long organisationId,
             [FromRoute] string languageId,
-            [FromBody] CreateOrganisationTextsRequest request,
+            [FromBody] UpdateOrganisationTextsRequest request,
             CancellationToken cancellationToken)
         {
             var command = _mapper.Map<UpdateOrganisationTextsCommand>(request, opt =>

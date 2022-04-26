@@ -7,5 +7,5 @@ public class UpdateOrganisationTextsCommand : LocalisableTextsCore, IRequest<Upd
 {
     public int OrganisationId { get; set; }
     public string LanguageId { get; set; }
-
+    public uint ConcurrencyToken { get; set; }
 }
