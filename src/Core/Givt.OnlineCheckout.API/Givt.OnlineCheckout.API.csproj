@@ -36,4 +36,14 @@
       <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\Organisations\Create\" />
+      <Folder Include="Models\Organisations\Mediums\Create\" />
+      <Folder Include="Models\Organisations\Mediums\Get\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Delete\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Get\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Update\" />
+      <Folder Include="Models\Organisations\Mediums\Update\" />
+    </ItemGroup>
+
 </Project>

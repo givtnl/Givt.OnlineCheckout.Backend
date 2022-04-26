@@ -52,8 +52,8 @@ public class ReportController : ControllerBase
         request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
         var query = _mapper.Map<GetDonationReportCommand>(request, opt =>
         {
-            opt.Items["TokenHandler"] = _jwtTokenHandler;
-            opt.Items["User"] = HttpContext.User;
+            opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
+            opt.Items[Keys.USER] = HttpContext.User;
         });
         var response = await _mediator.Send(query, cancellationToken);
         return File(response.Content, response.MimeType, response.Filename);
@@ -79,8 +79,8 @@ public class ReportController : ControllerBase
         {
             var notification = _mapper.Map<SendDonationReportNotification>(request, opt =>
             {
-                opt.Items["TokenHandler"] = _jwtTokenHandler;
-                opt.Items["User"] = HttpContext.User;
+                opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
+                opt.Items[Keys.USER] = HttpContext.User;
             });
             await _mediator.Publish(notification, CancellationToken.None); // decouple from HTTP server cancellations etc.
             return Ok();
