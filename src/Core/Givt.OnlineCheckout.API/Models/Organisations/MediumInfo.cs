@@ -1,6 +1,7 @@
 ﻿namespace Givt.OnlineCheckout.API.Models.Mediums;
 
-public class MediumInfo : MediumInfoBase
+public class MediumInfo : MediumInfoCore
 {
+    public long OrganisationId { get; set; }
     public uint ConcurrencyToken { get; set; }
 }

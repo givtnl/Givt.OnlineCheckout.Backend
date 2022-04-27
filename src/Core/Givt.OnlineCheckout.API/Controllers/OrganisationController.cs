@@ -6,6 +6,7 @@ using Givt.OnlineCheckout.API.Models.Organisations.List;
 using Givt.OnlineCheckout.API.Utils;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.List;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.List;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.List;
@@ -98,10 +99,10 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">OK</response>
-        /// <response code="401">Concurrent update conflict</response>
+        /// <response code="409">Concurrent update conflict</response>
         [HttpPut("{organisationId:long}")]
         public async Task<IActionResult> UpdateOrganisation(
-            [FromRoute] long organisationId, 
+            [FromRoute] long organisationId,
             [FromBody] UpdateOrganisationRequest request, CancellationToken cancellationToken)
         {
             if (organisationId != request.Id)
@@ -149,11 +150,12 @@ namespace Givt.OnlineCheckout.API.Controllers
             [FromBody] CreateOrganisationTextsRequest request,
             CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<CreateOrganisationTextsCommand>(request, opt =>
+            var command = new CreateOrganisationTextsCommand
             {
-                opt.Items[Keys.ORGANISATION_ID] = organisationId;
-                opt.Items[Keys.LANGUAGE_ID] = languageId;
-            });
+                OrganisationId = organisationId,
+                LanguageId = languageId,
+            };
+            _mapper.Map(request, command);
             var model = await _mediator.Send(command, cancellationToken);
             var response = _mapper.Map<CreateOrganisationTextsResponse>(model);
 
@@ -191,6 +193,8 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <param name="request">The texts</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="409">Concurrent update conflict</response>
         [HttpPut("{organisationId:long}/Text/{languageId}")]
         public async Task<IActionResult> UpdateOrganisationTexts(
             [FromRoute] long organisationId,
@@ -198,11 +202,12 @@ namespace Givt.OnlineCheckout.API.Controllers
             [FromBody] UpdateOrganisationTextsRequest request,
             CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<UpdateOrganisationTextsCommand>(request, opt =>
+            var command = new UpdateOrganisationTextsCommand
             {
-                opt.Items[Keys.ORGANISATION_ID] = organisationId;
-                opt.Items[Keys.LANGUAGE_ID] = languageId;
-            });
+                OrganisationId = organisationId,
+                LanguageId = languageId
+            };
+            _mapper.Map(request, command);
             var model = await _mediator.Send(command, cancellationToken);
             var response = _mapper.Map<UpdateOrganisationTextsResponse>(model);
 
@@ -242,7 +247,10 @@ namespace Givt.OnlineCheckout.API.Controllers
         [HttpGet("{organisationId:long}/Medium")]
         public async Task<IActionResult> ListMediums([FromRoute] long organisationId, CancellationToken cancellationToken)
         {
-            var request = new ListOrganisationMediumsRequest { OrganisationId = organisationId };
+            var request = new ListOrganisationMediumsRequest
+            {
+                OrganisationId = organisationId
+            };
             var query = _mapper.Map<ListOrganisationMediumsQuery>(request);
             var model = await _mediator.Send(query, cancellationToken);
             var response = _mapper.Map<List<MediumInfo>>(model);
@@ -250,42 +258,51 @@ namespace Givt.OnlineCheckout.API.Controllers
         }
 
         /// <summary>
-        /// Not yet implemented
+        /// Create a Medium for an Organisation
         /// </summary>
+        /// <param name="organisationId"></param>
         /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost("{organisationId:long}/Medium")]
-        public async Task<IActionResult> CreateMedium()
+        public async Task<IActionResult> CreateMedium(
+            [FromRoute] long organisationId,
+            [FromBody] MediumInfoCore request,
+            CancellationToken cancellationToken)
         {
-            // TODO: implement
-            return Ok();
+            var query = new CreateOrganisationMediumQuery
+            {
+                OrganisationId = organisationId
+            };
+            _mapper.Map(request, query);
+            var model = await _mediator.Send(query, cancellationToken);
+            var response = _mapper.Map<MediumInfo>(model);
+            return Ok(response);
         }
 
-        /// <summary>
-        /// Not yet implemented
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+
         [HttpGet("{organisationId:long}/Medium/{mediumId}")]
-        public async Task<IActionResult> ReadMedium(long organisationId, int mediumId)
+        public async Task<IActionResult> ReadMedium(
+            [FromRoute] long organisationId,
+            [FromRoute] string mediumId,
+            CancellationToken cancellationToken)
         {
             // TODO: implement
             return Ok();
         }
 
-        /// <summary>
-        /// Not yet implemented
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [HttpPut("{organisationId:long}/Medium/{mediumId}")]
-        public async Task<IActionResult> UpdateMedium(long organisationId, int mediumId)
+        public async Task<IActionResult> UpdateMedium(
+            [FromRoute] long organisationId,
+            [FromRoute] string mediumId,
+            [FromBody] MediumInfo request, // todo: change to a class that does not contain organisation id
+            CancellationToken cancellationToken)
         {
             // TODO: implement
             return Ok();
         }
 
-        // TODO: decide if Delete is needed
+        //  Delete is not (yet) needed
         #endregion
 
         #region Organisation->Medium->Text
@@ -327,12 +344,13 @@ namespace Givt.OnlineCheckout.API.Controllers
             [FromBody] CreateOrganisationTextsRequest request,
             CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<CreateOrganisationMediumTextsCommand>(request, opt =>
+            var command = new CreateOrganisationMediumTextsCommand
             {
-                opt.Items[Keys.ORGANISATION_ID] = organisationId;
-                opt.Items[Keys.MEDIUM_ID] = mediumId;
-                opt.Items[Keys.LANGUAGE_ID] = languageId;
-            });
+                OrganisationId = organisationId,
+                MediumId = mediumId,
+                LanguageId = languageId
+            };
+            _mapper.Map(request, command);
             var model = await _mediator.Send(command, cancellationToken);
             var response = _mapper.Map<CreateOrganisationMediumTextsResponse>(model);
             return Ok(response);
@@ -344,7 +362,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("{organisationId:long}/Medium/{mediumId}/Text/{languageId}")]
-        public async Task<IActionResult> ReadOrganisationMediumText(long organisationId, int mediumId, string languageId)
+        public async Task<IActionResult> ReadMediumText(long organisationId, int mediumId, string languageId)
         {
             // TODO: implement
             return Ok();

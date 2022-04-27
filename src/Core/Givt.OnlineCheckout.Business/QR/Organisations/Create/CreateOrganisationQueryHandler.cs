@@ -35,23 +35,12 @@ public class CreateOrganisationQueryHandler : IRequestHandler<CreateOrganisation
         if (country == null)
             throw new ArgumentException(nameof(request.Country));
 
-        // setup data
-        var data = new OrganisationData
-        {
-            Country = country,
-            Name = request.Name.Trim(),
-            PaymentProviderAccountReference = request.PaymentProviderAccountReference?.Trim(),
-            Namespace = request.Namespace,
-            LogoImageLink = request.LogoImageLink?.Trim(),
-            PaymentMethods = request.PaymentMethods.MapPaymentMethods(),
-            Active = request.Active,
-            TaxDeductable = request.TaxDeductable,
-            RSIN = request.RSIN,
-            HmrcReference = request.HmrcReference,
-            CharityNumber = request.CharityNumber
-        };
+        // store and return
+        var data = _mapper.Map<OrganisationData>(request);
         _context.Organisations.Add(data);
         var res = _context.SaveChanges();
+        // TODO: remove this hack. 
+        data.Country = null; // Reset to return actual PaymentMethods on the ORganisation Object
         return _mapper.Map<OrganisationModel>(data);
     }
 }

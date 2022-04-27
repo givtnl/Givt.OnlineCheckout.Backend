@@ -17,7 +17,7 @@ public class ReportMappingProfile : Profile
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
-                        (context.Items[Keys.TOKENHANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[Keys.USER] as ClaimsPrincipal)
+                        (context.Items[Keys.TOKEN_HANDLER] as JwtTokenHandler)?.GetTransactionReference(context.Items[Keys.USER] as ClaimsPrincipal)
                 ));
 
         CreateMap<GetDonationReportCommandResponse, GetDonationReportResponse>();
