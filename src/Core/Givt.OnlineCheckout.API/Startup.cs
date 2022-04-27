@@ -137,9 +137,9 @@ namespace Givt.OnlineCheckout.API
                     }));
         }
 
-        public void Configure(IApplicationBuilder app, IHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, ILog logger)
         {
-            Console.WriteLine($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
+            logger.Information($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
 
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())

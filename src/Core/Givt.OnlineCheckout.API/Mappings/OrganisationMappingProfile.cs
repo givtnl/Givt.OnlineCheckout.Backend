@@ -42,7 +42,6 @@ public class OrganisationMappingProfile : Profile
             .ForMember(dst => dst.LanguageId,
                 options => options.MapFrom((src, _, _, context) => (string)context.Items[Keys.LANGUAGE_ID]));
 
-
         CreateMap<ListOrganisationMediumsRequest, ListOrganisationMediumsQuery>();
 
         CreateMap<ListOrganisationMediumTextsRequest, ListOrganisationMediumTextsQuery>();
@@ -62,7 +61,8 @@ public class OrganisationMappingProfile : Profile
 
         CreateMap<LocalisableTextModel, LocalisableTextsResponse>();
         CreateMap<CreateOrganisationTextsResult, CreateOrganisationTextsResponse>();
-        CreateMap<ReadOrganisationTextsResult, GetOrganisationTextsResponse> ();
+        CreateMap<ReadOrganisationTextsResult, GetOrganisationTextsResponse>();
+        CreateMap<UpdateOrganisationTextsResult, UpdateOrganisationTextsResponse>();
 
         CreateMap<MediumDetailModel, MediumInfo>();
     }
