@@ -46,14 +46,18 @@ public class GooglePdfService : IPdfService
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment
         var language = cultureInfo.TwoLetterISOLanguageName;
+        var region = new RegionInfo(cultureInfo.LCID).TwoLetterISORegionName;
         var templateId = language switch
         {
             "nl" => _options.DonationConfirmationNL,
+            "en" => region.ToUpper() == "GB" ? _options.DonationConfirmationGB : _options.DonationConfirmationEN,
+            "de" => _options.DonationConfirmationDE,
             _ => _options.DonationConfirmationEN
         };
         var attachmentName = language switch
         {
             "nl" => "ontvangstbewijs.pdf",
+            "de" => "erhalt.pdf",
             _ => "receipt.pdf"
         };
         var document = await GenerateDocument(parameters, templateId, cancellationToken);
