@@ -3,11 +3,11 @@ using MediatR.Pipeline;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Create;
 
-public class CreateOrganisationQueryLogoPreHandler : IRequestPreProcessor<CreateOrganisationCommand>
+public class CreateOrganisationCommandLogoPreHandler : IRequestPreProcessor<CreateOrganisationCommand>
 {
     private readonly IFileStorage _fileStorage;
 
-    public CreateOrganisationQueryLogoPreHandler(IFileStorage fileStorage)
+    public CreateOrganisationCommandLogoPreHandler(IFileStorage fileStorage)
     {
         _fileStorage = fileStorage;
     }

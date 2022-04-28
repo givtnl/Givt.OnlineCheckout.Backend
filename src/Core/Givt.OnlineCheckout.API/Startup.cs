@@ -102,7 +102,7 @@ namespace Givt.OnlineCheckout.API
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = jwtOptions.Issuer,
-                        ValidAudience = jwtOptions.Audience, // ???
+                        ValidAudience = jwtOptions.Audience, // TODO: decide if we want this
                         IssuerSigningKey = key,
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
