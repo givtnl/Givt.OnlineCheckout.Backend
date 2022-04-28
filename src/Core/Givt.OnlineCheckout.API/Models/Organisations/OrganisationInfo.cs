@@ -1,7 +1,9 @@
-﻿namespace Givt.OnlineCheckout.API.Models.Organisations;
+﻿using Givt.OnlineCheckout.Business.Models;
 
-public class OrganisationInfo: OrganisationInfoBase
+namespace Givt.OnlineCheckout.API.Models.Organisations;
+
+public class OrganisationInfo : OrganisationInfoCore, IConcurrency
 {
-    public long Id { get; set; }
+    public long OrganisationId { get; set; }
     public uint ConcurrencyToken { get; set; }
 }

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.List;
 
-public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQuery, List<OrganisationModel>>
+public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQuery, List<OrganisationDetailModel>>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
@@ -19,7 +19,7 @@ public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQu
         _context = context;
     }
 
-    public async Task<List<OrganisationModel>> Handle(ListOrganisationsQuery request, CancellationToken cancellationToken)
+    public async Task<List<OrganisationDetailModel>> Handle(ListOrganisationsQuery request, CancellationToken cancellationToken)
     {
         // setup
         IQueryable<OrganisationData> query = _context.Organisations;
@@ -38,6 +38,6 @@ public class ListOrganisationsQueryHandler : IRequestHandler<ListOrganisationsQu
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<List<OrganisationModel>>(data);
+        return _mapper.Map<List<OrganisationDetailModel>>(data);
     }
 }

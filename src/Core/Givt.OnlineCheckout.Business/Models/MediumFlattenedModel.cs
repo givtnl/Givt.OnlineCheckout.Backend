@@ -2,7 +2,7 @@
 
 namespace Givt.OnlineCheckout.Business.Models;
 
-public class MediumDetailModelExtended
+public class MediumFlattenedModel
 {
     public string OrganisationName { get; set; }
     public string Country { get; set; }

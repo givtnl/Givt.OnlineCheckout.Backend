@@ -11,7 +11,7 @@ public class DataMediumMappingProfile : Profile
     public const string LanguageTag = "Language";
     public DataMediumMappingProfile()
     {
-        CreateMap<MediumData, MediumDetailModelExtended>()
+        CreateMap<MediumData, MediumFlattenedModel>()
             .ForMember(
                 x => x.Amounts,
                 options => options.MapFrom(

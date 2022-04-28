@@ -18,11 +18,4 @@
     <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
     <ProjectReference Include="..\Givt.OnlineCheckout.Persistance\Givt.OnlineCheckout.Persistance.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="QR\Organisations\Mediums\Read\" />
-    <Folder Include="QR\Organisations\Mediums\Texts\Read\" />
-    <Folder Include="QR\Organisations\Mediums\Texts\Delete\" />
-    <Folder Include="QR\Organisations\Mediums\Update\" />
-  </ItemGroup>
 </Project>

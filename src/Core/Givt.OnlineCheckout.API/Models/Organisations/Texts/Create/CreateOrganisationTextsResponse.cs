@@ -1,6 +1,5 @@
 ﻿namespace Givt.OnlineCheckout.API.Models.Organisations;
 
-public class CreateOrganisationTextsResponse : LocalisableTextsResponse
+public class CreateOrganisationTextsResponse : LocalisableTextsInfo
 {
-    public int OrganisationId { get; set; }
 }
