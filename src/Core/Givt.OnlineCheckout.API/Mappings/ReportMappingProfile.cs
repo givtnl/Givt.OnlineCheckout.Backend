@@ -12,8 +12,8 @@ public class ReportMappingProfile : Profile
     public ReportMappingProfile()
     {
         CreateMap<GetDonationReportRequest, GetDonationReportCommand>()
-            .ForMember(x => x.Language, 
-                options => options.MapFrom(src => src.Locale))
+            .ForMember(x => x.CurrentCulture, 
+                options => options.MapFrom(src => src.CurrentCulture))
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
@@ -24,8 +24,8 @@ public class ReportMappingProfile : Profile
 
 
         CreateMap<SendDonationReportRequest, SendDonationReportNotification>()
-            .ForMember(x => x.Language, 
-                options => options.MapFrom(src => src.Locale))
+            .ForMember(x => x.CurrentCulture, 
+                options => options.MapFrom(src => src.CurrentCulture))
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
