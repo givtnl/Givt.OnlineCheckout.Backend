@@ -1,4 +1,4 @@
-//using Auth0.AspNetCore.Authentication;
+using Auth0.AspNetCore.Authentication;
 using AutoMapper;
 using Givt.OnlineCheckout.API.Filters;
 using Givt.OnlineCheckout.API.Mappings;
@@ -24,6 +24,8 @@ using System.Reflection;
 using System.Text;
 using Givt.OnlineCheckout.Integrations.AzureFileStorage;
 using ReportMappingProfile = Givt.OnlineCheckout.API.Mappings.ReportMappingProfile;
+using Microsoft.AspNetCore.Authorization;
+using Givt.OnlineCheckout.API.MiddleWare;
 
 namespace Givt.OnlineCheckout.API
 {
@@ -51,7 +53,7 @@ namespace Givt.OnlineCheckout.API
             {
                 mc.AddProfiles(new List<Profile>
                 {
-                    new DonationMappingProfile(),                    
+                    new DonationMappingProfile(),
                     new MediumMappingProfile(),
                     new OrganisationMappingProfile(),
                     new ReportMappingProfile(),
@@ -79,7 +81,7 @@ namespace Givt.OnlineCheckout.API
 
             services.Configure<AzureBlobStorageOptions>(Configuration.GetSection(AzureBlobStorageOptions.SectionName))
                 .AddSingleton(sp => sp.GetRequiredService<IOptions<AzureBlobStorageOptions>>().Value);
-            
+
             services.AddMediatR(
                 typeof(GetOrganisationByMediumIdQuery).Assembly,            // Givt.OnlineCheckout.Business
                 typeof(ISinglePaymentNotification).Assembly,                // Givt.OnlineCheckout.Integrations.Interfaces
@@ -105,11 +107,20 @@ namespace Givt.OnlineCheckout.API
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
-            //services.AddAuth0WebAppAuthentication(options =>
-            //{
-            //    options.Domain = Configuration["Auth0:Domain"];
-            //    options.ClientId = Configuration["Auth0:ClientId"];
-            //});
+            services
+                .AddAuth0WebAppAuthentication(options =>
+                {
+                    options.Domain = Configuration["Auth0:Domain"];
+                    options.ClientId = Configuration["Auth0:ClientId"];
+                });
+            services.AddAuthorization(options =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
+                    JwtBearerDefaults.AuthenticationScheme, "Auth0");
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
             services.AddSingleton<IFileStorage, AzureFileStorage>();
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
@@ -154,7 +165,7 @@ namespace Givt.OnlineCheckout.API
             }
             var supportedCultures = new[] { "en-US", "en-GB", "nl-NL", "en-NL", "nl-BE", "en-BE", "de-DE" };
 
-            app.UseRequestLocalization(options => 
+            app.UseRequestLocalization(options =>
                 options
                     .AddSupportedCultures(supportedCultures)
             ); // => This is for localizing the resources from the client
@@ -167,6 +178,7 @@ namespace Givt.OnlineCheckout.API
 
             app.UseAuthentication(); // To support JWT Bearer tokens, and Auth0
             app.UseAuthorization(); // Auth0
+            app.UseMiddleware<MultipleSchemaAuthenticationMiddleware>();
 
             app.UseCors("EnableAll")
                 .UseMvc();
@@ -174,7 +186,7 @@ namespace Givt.OnlineCheckout.API
 
         public void ConfigureOptions(IServiceCollection services)
         {
-            services.AddAzureAppConfiguration(); 
+            services.AddAzureAppConfiguration();
             services.AddSwaggerGen(options =>
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
