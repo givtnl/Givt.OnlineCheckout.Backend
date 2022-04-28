@@ -35,7 +35,7 @@ namespace Givt.OnlineCheckout.Business.Mappings
                         (src, dest, _, context) => src.GetGoal(context.Items[LanguageTag] as string)))
                 .ForMember(dst => dst.Timestamp,
                     options => options.MapFrom(
-                        (src, dest, _, context) => src.GetTimestamp(context.Items[LanguageTag] as string)))
+                        (src, _, _, _) => src.TransactionDate))
                 .ForMember(dst => dst.Amount,
                     options => options.MapFrom(
                         (src) => src.Amount.ToString("F2")));

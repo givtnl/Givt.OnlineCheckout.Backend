@@ -152,6 +152,12 @@ namespace Givt.OnlineCheckout.API
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            var supportedCultures = new[] { "en-US", "en-GB", "nl-NL", "nl-EN", "be-NL", "be-EN", "de-DE" };
+
+            app.UseRequestLocalization(options => 
+                options
+                    .AddSupportedCultures(supportedCultures)
+            ); // => This is for localizing the resources from the client
 
             app.UseSwagger();
             app.UseSwaggerUI((options) =>

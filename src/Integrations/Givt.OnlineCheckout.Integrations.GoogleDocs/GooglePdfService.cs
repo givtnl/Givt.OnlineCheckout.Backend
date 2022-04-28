@@ -18,19 +18,16 @@ public class GooglePdfService : IPdfService
     }
 
 
-    public async Task<IFileData> CreateSinglePaymentReport(DonationReport report, string locale, CancellationToken cancellationToken)
+    public async Task<IFileData> CreateSinglePaymentReport(DonationReport report, CultureInfo cultureInfo, CancellationToken cancellationToken)
     {
+        var currSymbol = GetCurrencySymbol(report.Currency);
+
         var parameters = new Dictionary<string, string>
         {
-            {"receivingOrganisation", report.OrganisationName},
-            {"date", report.Timestamp},
-            {"currencySymbol", report.Currency},
-            {"amount", report.Amount.ToString(CultureInfo.InvariantCulture)},
-            {"taxDeductable", report.TaxDeductable.ToString().ToLowerInvariant() },
-            {"rsin", 
-                String.IsNullOrEmpty(report.RSIN) ? 
-                null :
-                "RSIN: " + report.RSIN + " " 
+            {"OrganisationName", report.OrganisationName},
+            {"DateGenerated", report.Timestamp.ToString(cultureInfo)},
+            {"DonationAmount", $"{currSymbol}{report.Amount.ToString("N2" ,cultureInfo)}"},
+            {"RSIN", report.RSIN 
             },
             {"hmrcReference", 
                 String.IsNullOrEmpty(report.HmrcReference ) ?
@@ -41,11 +38,14 @@ public class GooglePdfService : IPdfService
                 String.IsNullOrEmpty(report.CharityNumber) ?
                 null :
                 "Charity Number: " + report.CharityNumber + " "
-            }
+            },
+            {"PaymentMethod", report.PaymentMethod},
+            {"CampaignName", report.Goal},
+            {"CampaignThankYouSentence", report.ThankYou},
         };
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment
-        var language = locale.Split('-').First();
+        var language = cultureInfo.TwoLetterISOLanguageName;
         var templateId = language switch
         {
             "nl" => _options.DonationConfirmationNL,
@@ -63,6 +63,25 @@ public class GooglePdfService : IPdfService
             Filename = attachmentName,
             MimeType = "application/pdf"
         };
+    }
+
+    private string GetCurrencySymbol(string ISOCurrencySymbol)
+    {
+        return CultureInfo
+            .GetCultures(CultureTypes.AllCultures)
+            .Where(c => !c.IsNeutralCulture)
+            .Select(culture => {
+                try{
+                    return new RegionInfo(culture.Name);
+                }
+                catch
+                {
+                    return null;
+                }
+            })
+            .Where(ri => ri!=null && ri.ISOCurrencySymbol == ISOCurrencySymbol.ToUpper())
+            .Select(ri => ri.CurrencySymbol)
+            .FirstOrDefault();
     }
 
     private async Task<byte[]> GenerateDocument(Dictionary<string, string> parameters, string documentId, CancellationToken token)

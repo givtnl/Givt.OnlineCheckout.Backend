@@ -1,10 +1,11 @@
-﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
+﻿using System.Globalization;
+using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 namespace Givt.OnlineCheckout.Integrations.Interfaces;
 
 public interface IPdfService
 {
-   Task<IFileData> CreateSinglePaymentReport(DonationReport report ,string locale, CancellationToken cancellationToken);
+   Task<IFileData> CreateSinglePaymentReport(DonationReport report, CultureInfo cultureInfo, CancellationToken cancellationToken);
 }
 
 public interface IFileData
