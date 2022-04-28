@@ -1,4 +1,5 @@
-﻿using Givt.OnlineCheckout.Persistance.Enums;
+﻿using System.Globalization;
+using Givt.OnlineCheckout.Persistance.Enums;
 using Givt.OnlineCheckout.Persistance.Models;
 
 namespace Givt.OnlineCheckout.Persistance.Entities

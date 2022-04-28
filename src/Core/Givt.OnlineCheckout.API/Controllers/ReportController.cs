@@ -80,7 +80,7 @@ public class ReportController : ControllerBase
         _logger.Debug("Post Report/singleDonation {0}", request);
 
         var requestCulture = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-        request.CurrentCulture = requestCulture?.RequestCulture.UICulture; // This defaults to 'en' :) nice feature
+        request.CurrentCulture = requestCulture?.RequestCulture.Culture; // This defaults to 'en' :) nice feature
         
         try
         {
