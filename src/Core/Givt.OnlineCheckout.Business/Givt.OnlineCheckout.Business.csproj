@@ -20,16 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="QR\Organisations\Mediums\Create\" />
     <Folder Include="QR\Organisations\Mediums\Read\" />
-    <Folder Include="QR\Organisations\Mediums\Texts\Create\" />
     <Folder Include="QR\Organisations\Mediums\Texts\Read\" />
     <Folder Include="QR\Organisations\Mediums\Texts\Delete\" />
-    <Folder Include="QR\Organisations\Mediums\Texts\Update\" />
     <Folder Include="QR\Organisations\Mediums\Update\" />
-    <Folder Include="QR\Organisations\Texts\Create\" />
-    <Folder Include="QR\Organisations\Texts\Delete\" />
-    <Folder Include="QR\Organisations\Texts\Read\" />
-    <Folder Include="QR\Organisations\Texts\Update\" />
   </ItemGroup>
 </Project>

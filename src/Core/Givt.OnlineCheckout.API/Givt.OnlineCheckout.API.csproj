@@ -29,11 +29,22 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.AzureFileStorage\Givt.OnlineCheckout.Integrations.AzureFileStorage.csproj" />
       <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.GoogleDocs\Givt.OnlineCheckout.Integrations.GoogleDocs.csproj" />
       <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.Postmark\Givt.OnlineCheckout.Integrations.Postmark.csproj" />
       <ProjectReference Include="..\..\Integrations\Givt.OnlineCheckout.Integrations.Stripe\Givt.OnlineCheckout.Integrations.Stripe.csproj" />
       <ProjectReference Include="..\Givt.OnlineCheckout.Business\Givt.OnlineCheckout.Business.csproj" />
       <ProjectReference Include="..\Givt.OnlineCheckout.Infrastructure\Givt.OnlineCheckout.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\Organisations\Create\" />
+      <Folder Include="Models\Organisations\Mediums\Create\" />
+      <Folder Include="Models\Organisations\Mediums\Get\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Delete\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Get\" />
+      <Folder Include="Models\Organisations\Mediums\Texts\Update\" />
+      <Folder Include="Models\Organisations\Mediums\Update\" />
     </ItemGroup>
 
 </Project>

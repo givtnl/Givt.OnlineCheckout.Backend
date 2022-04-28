@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.QR.Reports.Get;
 using Givt.OnlineCheckout.Integrations.Interfaces;
@@ -35,7 +36,7 @@ namespace Givt.OnlineCheckout.Business.Mappings
                         (src, dest, _, context) => src.GetGoal(context.Items[LanguageTag] as string)))
                 .ForMember(dst => dst.Timestamp,
                     options => options.MapFrom(
-                        (src, dest, _, context) => src.GetTimestamp(context.Items[LanguageTag] as string)))
+                        (src, _, _, _) => src.TransactionDate))
                 .ForMember(dst => dst.Amount,
                     options => options.MapFrom(
                         (src) => src.Amount.ToString("F2")));
@@ -44,11 +45,15 @@ namespace Givt.OnlineCheckout.Business.Mappings
             CreateMap<DonationData, DonationsReport>()
                     .ForMember(dst => dst.Organisations,
                         options => options.MapFrom(
-                            (src, dest, _, context) => src.GetOrganisations(context.Items[LanguageTag] as string))
+                            (src, dest, _, context) => src.GetOrganisations((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName))
+                    )
+                    .ForMember(dst => dst.CampaignName,
+                        options => options.MapFrom(
+                            (src, dest, _, context) => src.GetOrganisations((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName).First().Goals.First().Name)     // Campaign info => This is for now like this, because we only send mails for one campaign
                     )
                     .ForMember(dst => dst.Locale,
                         options => options.MapFrom(
-                            (src, dst, _, context) => context.Items[LanguageTag] as string));
+                            (src, dst, _, context) => (context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName));
         }
 
     }

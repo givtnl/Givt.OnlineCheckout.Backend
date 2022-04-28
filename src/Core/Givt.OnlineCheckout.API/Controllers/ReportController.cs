@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using Givt.OnlineCheckout.API.Models.Reports;
 using Givt.OnlineCheckout.API.Utils;
 using Givt.OnlineCheckout.Business.QR.Reports.Get;
 using Givt.OnlineCheckout.Business.QR.Reports.Send;
 using MediatR;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Givt.OnlineCheckout.API.Controllers;
@@ -49,11 +51,14 @@ public class ReportController : ControllerBase
         {
             return Unauthorized(uae.Message);
         }
-        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+
+        var requestCulture = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+        request.CurrentCulture = requestCulture?.RequestCulture.Culture; // This defaults to 'en' :) nice feature
+            
         var query = _mapper.Map<GetDonationReportCommand>(request, opt =>
         {
-            opt.Items["TokenHandler"] = _jwtTokenHandler;
-            opt.Items["User"] = HttpContext.User;
+            opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
+            opt.Items[Keys.USER] = HttpContext.User;
         });
         var response = await _mediator.Send(query, cancellationToken);
         return File(response.Content, response.MimeType, response.Filename);
@@ -74,13 +79,15 @@ public class ReportController : ControllerBase
     {
         _logger.Debug("Post Report/singleDonation {0}", request);
 
-        request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+        var requestCulture = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+        request.CurrentCulture = requestCulture?.RequestCulture.Culture; // This defaults to 'en' :) nice feature
+        
         try
         {
             var notification = _mapper.Map<SendDonationReportNotification>(request, opt =>
             {
-                opt.Items["TokenHandler"] = _jwtTokenHandler;
-                opt.Items["User"] = HttpContext.User;
+                opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
+                opt.Items[Keys.USER] = HttpContext.User;
             });
             await _mediator.Publish(notification, CancellationToken.None); // decouple from HTTP server cancellations etc.
             return Ok();

@@ -22,6 +22,7 @@ using Serilog.Sinks.Http.Logger;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
+using Givt.OnlineCheckout.Integrations.AzureFileStorage;
 using ReportMappingProfile = Givt.OnlineCheckout.API.Mappings.ReportMappingProfile;
 
 namespace Givt.OnlineCheckout.API
@@ -76,6 +77,9 @@ namespace Givt.OnlineCheckout.API
             services.Configure<GoogleDocsOptions>(Configuration.GetSection(GoogleDocsOptions.SectionName))
                 .AddSingleton(sp => sp.GetRequiredService<IOptions<GoogleDocsOptions>>().Value);
 
+            services.Configure<AzureBlobStorageOptions>(Configuration.GetSection(AzureBlobStorageOptions.SectionName))
+                .AddSingleton(sp => sp.GetRequiredService<IOptions<AzureBlobStorageOptions>>().Value);
+            
             services.AddMediatR(
                 typeof(GetOrganisationByMediumIdQuery).Assembly,            // Givt.OnlineCheckout.Business
                 typeof(ISinglePaymentNotification).Assembly,                // Givt.OnlineCheckout.Integrations.Interfaces
@@ -106,6 +110,7 @@ namespace Givt.OnlineCheckout.API
             //    options.Domain = Configuration["Auth0:Domain"];
             //    options.ClientId = Configuration["Auth0:ClientId"];
             //});
+            services.AddSingleton<IFileStorage, AzureFileStorage>();
 
             services.AddDbContext<OnlineCheckoutContext>(options =>
             {
@@ -137,9 +142,9 @@ namespace Givt.OnlineCheckout.API
                     }));
         }
 
-        public void Configure(IApplicationBuilder app, IHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, ILog logger)
         {
-            Console.WriteLine($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
+            logger.Information($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
 
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
@@ -147,6 +152,12 @@ namespace Givt.OnlineCheckout.API
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            var supportedCultures = new[] { "en-US", "en-GB", "nl-NL", "en-NL", "nl-BE", "en-BE", "de-DE" };
+
+            app.UseRequestLocalization(options => 
+                options
+                    .AddSupportedCultures(supportedCultures)
+            ); // => This is for localizing the resources from the client
 
             app.UseSwagger();
             app.UseSwaggerUI((options) =>

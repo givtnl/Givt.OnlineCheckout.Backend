@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{DC206A
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Givt.OnlineCheckout.Integrations.AzureFileStorage", "src\Integrations\Givt.OnlineCheckout.Integrations.AzureFileStorage\Givt.OnlineCheckout.Integrations.AzureFileStorage.csproj", "{5D48795F-0B4A-46BB-B321-F25CD3C9727C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{E400FC6C-817D-43FD-AE0C-9CBDCBD5D785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E400FC6C-817D-43FD-AE0C-9CBDCBD5D785}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E400FC6C-817D-43FD-AE0C-9CBDCBD5D785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D48795F-0B4A-46BB-B321-F25CD3C9727C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D48795F-0B4A-46BB-B321-F25CD3C9727C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D48795F-0B4A-46BB-B321-F25CD3C9727C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D48795F-0B4A-46BB-B321-F25CD3C9727C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{164BC417-3BF0-406D-AFFF-C40D138AD3E7} = {BA8DF6A2-56B5-4C02-86D0-A27A05CA1DA0}
 		{A80306C5-262F-4BBE-8641-E9ABF9E33846} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 		{E400FC6C-817D-43FD-AE0C-9CBDCBD5D785} = {BA8DF6A2-56B5-4C02-86D0-A27A05CA1DA0}
+		{5D48795F-0B4A-46BB-B321-F25CD3C9727C} = {7554BAC9-5A6E-4026-9A8C-10F2EC72D20B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0D29C95-59B5-45EA-A94C-E7075E2ADE54}

@@ -31,7 +31,7 @@ public class DonationMappingProfile : Profile
             ))
             .ForMember(x => x.Token,
                 options => options.MapFrom(
-                    (src, dst, _, context) => (context.Items["TokenHandler"] as JwtTokenHandler)?.GetBearerToken(src.TransactionReference)
+                    (src, dst, _, context) => (context.Items[Keys.TOKEN_HANDLER] as JwtTokenHandler)?.GetBearerToken(src.TransactionReference)
             ));
     }
 }

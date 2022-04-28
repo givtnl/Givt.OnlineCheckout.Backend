@@ -26,10 +26,10 @@ public record SendDonationReportNotificationHandler(
         var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
         // Google Docs expects this
-        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
+        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.CurrentCulture; });
         // the Postmark template expects this
-        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Language; });
-        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.Language, cancellationToken);
+        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.CurrentCulture; });
+        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.CurrentCulture, cancellationToken);
 
         var email = new BaseEmailModel
         {
