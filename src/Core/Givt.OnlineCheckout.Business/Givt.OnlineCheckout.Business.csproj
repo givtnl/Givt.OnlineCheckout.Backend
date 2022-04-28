@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="QR\Organisations\Mediums\Create\" />
     <Folder Include="QR\Organisations\Mediums\Read\" />
     <Folder Include="QR\Organisations\Mediums\Texts\Read\" />
     <Folder Include="QR\Organisations\Mediums\Texts\Delete\" />

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
+using Givt.OnlineCheckout.Business.QR.Organisations.Create;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Read;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Update;
@@ -43,6 +45,19 @@ public class DataOrganisationMappingProfile : Profile
         CreateMap<MediumTexts, LocalisableTextModel>();
 
         // Business -> Domain
+        CreateMap<CreateOrganisationQuery, OrganisationData>()
+            .ForMember(
+                dst => dst.Country,
+                options => options.Ignore())
+            .ForMember(
+                dst => dst.CountryCode,
+                options => options.MapFrom(src => src.Country)
+             )
+            .ForMember(
+                x => x.PaymentMethods,
+                options => options.MapFrom(
+                    src => src.PaymentMethods.MapPaymentMethods())
+            );
         CreateMap<UpdateOrganisationQuery, OrganisationData>()
             .ForMember(
                 dst => dst.Country,
@@ -55,6 +70,13 @@ public class DataOrganisationMappingProfile : Profile
                 x => x.PaymentMethods,
                 options => options.MapFrom(
                     src => src.PaymentMethods.MapPaymentMethods())
+            );
+        
+        CreateMap<CreateOrganisationMediumQuery, MediumData>()
+            .ForMember(
+                dst => dst.Amounts,
+                options => options.MapFrom(
+                    src => string.Join(',', src.Amounts))
             );
 
         CreateMap<CreateOrganisationTextsCommand, OrganisationTexts>();
