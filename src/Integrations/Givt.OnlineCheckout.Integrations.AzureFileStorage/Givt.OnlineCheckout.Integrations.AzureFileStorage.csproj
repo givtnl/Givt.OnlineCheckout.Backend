@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Givt.OnlineCheckout.Integrations.Interfaces\Givt.OnlineCheckout.Integrations.Interfaces.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.4" />
+    </ItemGroup>
+
+</Project>
