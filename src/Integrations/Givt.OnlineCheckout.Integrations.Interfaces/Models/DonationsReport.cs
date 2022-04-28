@@ -12,6 +12,9 @@ public class DonationsReport
     public string PostalCode { get; set; }
     public string City { get; set; }
     public string Country { get; set; }
+    
+    // Campaign info => This is for now like this, because we only send mails for one campaign
+    public string CampaignName { get; set; }
 
     // donations
     public IEnumerable<Organisation> Organisations { get; set; }
