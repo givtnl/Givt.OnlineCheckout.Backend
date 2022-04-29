@@ -42,9 +42,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    // TODO: enable authentication/authorisation by uncommenting the line below
-    //[Authorize(Roles = "Site Admin,Givt Operator")]
-    //User from Retool / Auth0 should have a Claim with the Auth0 Client ID:   "sub": "I1Z0tWPS6SUhPhmtPHo6bL0Nds4kyMfW@clients",
+    // TODO: enable authentication/authorisation by uncommenting the line below    
+    //[Authorize(Policy = "Retool")]
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;

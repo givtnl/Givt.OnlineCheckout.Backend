@@ -111,7 +111,7 @@ namespace Givt.OnlineCheckout.API
                 .AddJwtBearer("Auth0", options =>
                  {
                      options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
-                     options.Audience = Configuration["Auth0:ApiID"]; // https://donate-api.givtapp.net = Auth0's Api Identifier                     
+                     options.Audience = Configuration["Auth0:Audience"]; // https://donate-api.givtapp.net = Auth0's Api Identifier                     
                  });
             services.AddAuthorization(options =>
             {
@@ -119,6 +119,7 @@ namespace Givt.OnlineCheckout.API
                     JwtBearerDefaults.AuthenticationScheme, "Auth0");
                 defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+                options.AddPolicy("Retool", policy => policy.RequireClaim("sub", new string[] { Configuration["Auth0:ClientId"] + "@clients" }));
             });
 
             services.AddSingleton<IFileStorage, AzureFileStorage>();
