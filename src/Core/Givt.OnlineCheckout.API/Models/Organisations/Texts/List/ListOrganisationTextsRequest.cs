@@ -1,4 +1,4 @@
-﻿namespace Givt.OnlineCheckout.API.Models.Organisations.List
+﻿namespace Givt.OnlineCheckout.API.Models.Organisations.Texts.List
 {
     public class ListOrganisationTextsRequest 
     {

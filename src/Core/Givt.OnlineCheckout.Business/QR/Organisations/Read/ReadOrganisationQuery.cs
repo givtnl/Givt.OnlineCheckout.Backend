@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Read;
 
-public class ReadOrganisationQuery : IRequest<OrganisationModel>
+public class ReadOrganisationQuery : IRequest<OrganisationDetailModel>
 {
     public long OrganisationId { get; set; }
 }

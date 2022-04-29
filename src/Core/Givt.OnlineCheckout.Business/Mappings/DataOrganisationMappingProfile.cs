@@ -3,6 +3,10 @@ using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Create;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Create;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Read;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
+using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Read;
 using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Update;
@@ -17,8 +21,12 @@ public class DataOrganisationMappingProfile : Profile
     public DataOrganisationMappingProfile()
     {
         // Domain -> Business
-        CreateMap<OrganisationData, OrganisationDetailModel>();
-        CreateMap<OrganisationData, OrganisationModel>()
+        CreateMap<OrganisationData, OrganisationFlattenedModel>();
+        CreateMap<OrganisationData, OrganisationDetailModel>()
+            .ForMember(
+                dst => dst.OrganisationId,
+                options => options.MapFrom(src => src.Id)
+             )
             .ForMember(
                 dst => dst.Country,
                 options => options.MapFrom(src => src.CountryCode)
@@ -42,10 +50,15 @@ public class DataOrganisationMappingProfile : Profile
                     src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
                 )
             );
+        
+
         CreateMap<MediumTexts, LocalisableTextModel>();
+        CreateMap<MediumTexts, CreateOrganisationMediumTextsResult>();
+        CreateMap<MediumTexts, ReadOrganisationMediumTextsResult>();
+        CreateMap<MediumTexts, UpdateOrganisationMediumTextsResult>();
 
         // Business -> Domain
-        CreateMap<CreateOrganisationQuery, OrganisationData>()
+        CreateMap<CreateOrganisationCommand, OrganisationData>()
             .ForMember(
                 dst => dst.Country,
                 options => options.Ignore())
@@ -58,7 +71,10 @@ public class DataOrganisationMappingProfile : Profile
                 options => options.MapFrom(
                     src => src.PaymentMethods.MapPaymentMethods())
             );
-        CreateMap<UpdateOrganisationQuery, OrganisationData>()
+        CreateMap<UpdateOrganisationCommand, OrganisationData>()
+            .ForMember(
+                dst => dst.Id,
+                options => options.MapFrom(src => src.OrganisationId))
             .ForMember(
                 dst => dst.Country,
                 options => options.Ignore())
@@ -72,14 +88,27 @@ public class DataOrganisationMappingProfile : Profile
                     src => src.PaymentMethods.MapPaymentMethods())
             );
         
-        CreateMap<CreateOrganisationMediumQuery, MediumData>()
+        CreateMap<CreateOrganisationMediumCommand, MediumData>()
             .ForMember(
                 dst => dst.Amounts,
                 options => options.MapFrom(
                     src => string.Join(',', src.Amounts))
             );
+        CreateMap<UpdateOrganisationMediumCommand, MediumData>()
+            .ForMember(dst => dst.OrganisationId, options => options.Ignore()) // protect from changes
+            .ForMember(dst => dst.Medium, options => options.Ignore()) // protect from changes
+            .ForMember(
+                dst => dst.Amounts,
+                options => options.MapFrom(
+                    src => string.Join(',', src.Amounts))
+            );            
 
         CreateMap<CreateOrganisationTextsCommand, OrganisationTexts>();
         CreateMap<UpdateOrganisationTextsCommand, OrganisationTexts>();
+
+        CreateMap<CreateOrganisationMediumTextsCommand, MediumTexts>()
+            .ForMember(dst => dst.MediumId, options => options.Ignore());
+        CreateMap<UpdateOrganisationMediumTextsCommand, MediumTexts>()
+            .ForMember(dst => dst.MediumId, options => options.Ignore());
     }
 }

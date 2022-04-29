@@ -1,6 +1,6 @@
 ﻿using Givt.OnlineCheckout.Business.Models;
 
-namespace Givt.OnlineCheckout.API.Models.Organisations;
+namespace Givt.OnlineCheckout.API.Models.Organisations.Texts.Update;
 
 public class UpdateOrganisationTextsRequest : LocalisableTextsCore
 {

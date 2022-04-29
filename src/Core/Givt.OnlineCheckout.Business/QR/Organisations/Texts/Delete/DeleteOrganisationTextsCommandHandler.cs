@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Givt.OnlineCheckout.Business.Exceptions;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
@@ -19,9 +20,16 @@ public class DeleteOrganisationTextsCommandHandler : IRequestHandler<DeleteOrgan
 
     public async Task<bool> Handle(DeleteOrganisationTextsCommand request, CancellationToken cancellationToken)
     {
-        var data = _mapper.Map<OrganisationTexts>(request);
-        _context.Add(data).State= EntityState.Deleted;
+        var data = await _context.Set<OrganisationTexts>()
+            .Where(t => t.LanguageId == request.LanguageId && t.OrganisationId == request.OrganisationId)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (data == null)
+            throw new NotFoundException(nameof(OrganisationTexts), request);
+
+        data.ConcurrencyToken = request.ConcurrencyToken;
+        _context.Remove(data);
         await _context.SaveChangesAsync(cancellationToken);
         return true;
+
     }
 }

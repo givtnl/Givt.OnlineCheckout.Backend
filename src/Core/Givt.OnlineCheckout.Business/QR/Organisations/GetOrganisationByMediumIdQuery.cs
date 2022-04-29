@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations;
 
-public class GetOrganisationByMediumIdQuery : IRequest<OrganisationDetailModel>
+public class GetOrganisationByMediumIdQuery : IRequest<OrganisationFlattenedModel>
 {
     public MediumIdType MediumId { get; set; }
 }
 
-public class GetOrganisationByMediumIdQueryHandler : IRequestHandler<GetOrganisationByMediumIdQuery, OrganisationDetailModel>
+public class GetOrganisationByMediumIdQueryHandler : IRequestHandler<GetOrganisationByMediumIdQuery, OrganisationFlattenedModel>
 {
     public IMapper Mapper { get; }
     public OnlineCheckoutContext Context { get; }
@@ -21,9 +21,9 @@ public class GetOrganisationByMediumIdQueryHandler : IRequestHandler<GetOrganisa
         Context = context;
     }
 
-    public async Task<OrganisationDetailModel> Handle(GetOrganisationByMediumIdQuery request, CancellationToken cancellationToken)
+    public async Task<OrganisationFlattenedModel> Handle(GetOrganisationByMediumIdQuery request, CancellationToken cancellationToken)
     {
-        return Mapper.Map<OrganisationDetailModel>(
+        return Mapper.Map<OrganisationFlattenedModel>(
             await Context.Organisations.FirstOrDefaultAsync(x => x.Namespace == request.MediumId, cancellationToken)
         );
     }

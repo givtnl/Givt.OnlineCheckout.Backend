@@ -27,13 +27,13 @@ namespace Givt.OnlineCheckout.Business.Mappings
                 .IncludeMembers(src => src.Medium.Organisation)
                 .ForMember(dst => dst.Locale,
                     options => options.MapFrom(
-                        (src, dst, _, context) => context.Items[LanguageTag] as string))
+                        (src, dst, _, context) => (context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName))
                 .ForMember(dst => dst.OrganisationName,
                     options => options.MapFrom(
                         (src) => src.Medium.Organisation.Name))
                 .ForMember(dst => dst.Goal,
                     options => options.MapFrom(
-                        (src, dest, _, context) => src.GetGoal(context.Items[LanguageTag] as string)))
+                        (src, dest, _, context) => src.GetGoal((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName)))
                 .ForMember(dst => dst.Timestamp,
                     options => options.MapFrom(
                         (src, _, _, _) => src.TransactionDate))

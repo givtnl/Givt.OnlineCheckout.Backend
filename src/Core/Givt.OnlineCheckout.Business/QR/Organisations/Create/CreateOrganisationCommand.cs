@@ -3,6 +3,6 @@ using MediatR;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Create;
 
-public class CreateOrganisationQuery: OrganisationModel, IRequest<OrganisationModel>
+public class CreateOrganisationCommand: OrganisationCoreModel, IRequest<OrganisationDetailModel>
 {
 }

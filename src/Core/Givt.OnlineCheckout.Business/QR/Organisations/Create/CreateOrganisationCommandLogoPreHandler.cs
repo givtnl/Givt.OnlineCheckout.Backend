@@ -3,16 +3,17 @@ using MediatR.Pipeline;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Create;
 
-public class CreateOrganisationQueryLogoPreHandler : IRequestPreProcessor<CreateOrganisationQuery>
+public class CreateOrganisationCommandLogoPreHandler : IRequestPreProcessor<CreateOrganisationCommand>
 {
     private readonly IFileStorage _fileStorage;
 
-    public CreateOrganisationQueryLogoPreHandler(IFileStorage fileStorage)
+    public CreateOrganisationCommandLogoPreHandler(IFileStorage fileStorage)
     {
         _fileStorage = fileStorage;
     }
-    public async Task Process(CreateOrganisationQuery request, CancellationToken cancellationToken)
+    public async Task Process(CreateOrganisationCommand request, CancellationToken cancellationToken)
     {
+        // TODO: validation
         var imageBytes = Convert.FromBase64String(request.LogoImageLink);
         await using var ms = new MemoryStream(imageBytes);
         await _fileStorage.UploadFile("public", $"cdn/goc-logo/{request.PaymentProviderAccountReference}.png", ms, null, cancellationToken);

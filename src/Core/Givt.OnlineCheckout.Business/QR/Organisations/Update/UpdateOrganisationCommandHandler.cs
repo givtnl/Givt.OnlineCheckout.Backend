@@ -7,22 +7,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Update;
 
-public class UpdateOrganisationQueryHandler : IRequestHandler<UpdateOrganisationQuery, OrganisationModel>
+public class UpdateOrganisationCommandHandler : IRequestHandler<UpdateOrganisationCommand, OrganisationDetailModel>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
 
-    public UpdateOrganisationQueryHandler(IMapper mapper, OnlineCheckoutContext context)
+    public UpdateOrganisationCommandHandler(IMapper mapper, OnlineCheckoutContext context)
     {
         _mapper = mapper;
         _context = context;
     }
 
-    public async Task<OrganisationModel> Handle(UpdateOrganisationQuery request, CancellationToken cancellationToken)
+    public async Task<OrganisationDetailModel> Handle(UpdateOrganisationCommand request, CancellationToken cancellationToken)
     {
+        // TODO: validation
         var data = _mapper.Map<OrganisationData>(request);
         _context.Add(data).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken);
-        return _mapper.Map<OrganisationModel>(data);
+        return _mapper.Map<OrganisationDetailModel>(data);
     }
 }
