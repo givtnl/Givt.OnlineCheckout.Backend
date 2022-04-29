@@ -1,8 +1,7 @@
-﻿namespace Givt.OnlineCheckout.API.Models.Organisations
+﻿namespace Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.List;
+
+public class ListOrganisationMediumTextsRequest
 {
-    public class ListOrganisationMediumTextsRequest
-    {
-        public long OrganisationId { get; set; }
-        public string MediumId { get; set; }
-    }
+    public long OrganisationId { get; set; }
+    public string MediumId { get; set; }
 }

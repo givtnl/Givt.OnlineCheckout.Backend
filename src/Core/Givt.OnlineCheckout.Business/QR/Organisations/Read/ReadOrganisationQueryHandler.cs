@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Read;
 
-public class ReadOrganisationQueryHandler : IRequestHandler<ReadOrganisationQuery, OrganisationModel>
+public class ReadOrganisationQueryHandler : IRequestHandler<ReadOrganisationQuery, OrganisationDetailModel>
 {
     private readonly IMapper _mapper;
     private readonly OnlineCheckoutContext _context;
@@ -17,13 +17,13 @@ public class ReadOrganisationQueryHandler : IRequestHandler<ReadOrganisationQuer
         _context = context;
     }
 
-    public async Task<OrganisationModel> Handle(ReadOrganisationQuery request, CancellationToken cancellationToken)
+    public async Task<OrganisationDetailModel> Handle(ReadOrganisationQuery request, CancellationToken cancellationToken)
     {
         var data = await _context.Organisations
-            .Where(x => x.Id == request.OrganisationId)            
+            .Where(o => o.Id == request.OrganisationId)            
             .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
 
-        return _mapper.Map<OrganisationModel>(data);
+        return _mapper.Map<OrganisationDetailModel>(data);
     }
 }

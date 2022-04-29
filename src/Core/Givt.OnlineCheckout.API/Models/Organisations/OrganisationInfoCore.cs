@@ -1,6 +1,6 @@
 ﻿namespace Givt.OnlineCheckout.API.Models.Organisations;
 
-public class OrganisationInfoBase
+public class OrganisationInfoCore
 {
     public string Country { get; set; }
     public string Name { get; set; }

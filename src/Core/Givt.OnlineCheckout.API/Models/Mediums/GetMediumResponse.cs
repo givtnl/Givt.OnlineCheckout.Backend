@@ -6,9 +6,9 @@ public class GetMediumResponse
     public string Country { get; set; }
     public string OrganisationLogoLink { get; set; }
     public string Goal { get; set; }
+    public string ThankYou { get; set; }
     public string[] PaymentMethods { get; set; }
     public string Currency { get; set; }
     public decimal[] Amounts { get; set; }
-    public string ThankYou { get; set; }
 
 }

@@ -1,6 +1,8 @@
-﻿namespace Givt.OnlineCheckout.API.Models.Organisations;
+﻿using Givt.OnlineCheckout.Business.Models;
 
-public class GetOrganisationTextsResponse : LocalisableTextsResponse
+namespace Givt.OnlineCheckout.API.Models.Organisations;
+
+public class GetOrganisationTextsResponse : LocalisableTextsInfoCore, IConcurrency
 {
-    public int OrganisationId { get; set; }
+    public uint ConcurrencyToken { get; set; }
 }

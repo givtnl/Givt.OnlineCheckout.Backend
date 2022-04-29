@@ -1,9 +1,7 @@
 ﻿namespace Givt.OnlineCheckout.Business.Models;
 
-public class OrganisationModel
+public class OrganisationCoreModel
 {
-    public long Id { get; set; }
-    public uint ConcurrencyToken{get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public string PaymentProviderAccountReference { get; set; }
