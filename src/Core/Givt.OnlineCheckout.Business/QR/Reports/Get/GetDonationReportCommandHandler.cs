@@ -16,8 +16,6 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, IMa
             .Include(d => d.Medium)
             .ThenInclude(m => m.Texts)
             .Include(d => d.Medium)
-            .ThenInclude(m => m.Organisation)
-            .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         // TODO: if required, find/create DonorData by email, and link to this donation

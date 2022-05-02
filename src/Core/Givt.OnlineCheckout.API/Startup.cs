@@ -119,7 +119,7 @@ namespace Givt.OnlineCheckout.API
                     JwtBearerDefaults.AuthenticationScheme, "Auth0");
                 defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
-                options.AddPolicy("Retool", policy => policy.RequireClaim("sub", new string[] { Configuration["Auth0:ClientId"] + "@clients" }));
+                options.AddPolicy("Retool", policy => policy.RequireClaim("sub", Configuration["Auth0:ClientId"] + "@clients"));
             });
 
             services.AddSingleton<IFileStorage, AzureFileStorage>();

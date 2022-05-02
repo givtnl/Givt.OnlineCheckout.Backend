@@ -26,8 +26,6 @@ public class GetMediumDetailsQueryHandler : IRequestHandler<GetMediumDetailsQuer
             .Include(m => m.Texts)
             .Include(m => m.Organisation)
             .ThenInclude(o => o.Country)
-            .Include(m => m.Organisation)
-            .ThenInclude(o => o.Texts)
             .SingleOrDefaultAsync(cancellationToken);
         if (medium == null)
             throw new NotFoundException(nameof(MediumIdType), request.MediumId);

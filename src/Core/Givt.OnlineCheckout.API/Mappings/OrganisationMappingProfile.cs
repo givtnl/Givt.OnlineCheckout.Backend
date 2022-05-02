@@ -12,11 +12,6 @@ using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.Get;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.List;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Update;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Create;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Delete;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Get;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.List;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Update;
 using Givt.OnlineCheckout.API.Models.Organisations.Update;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
@@ -31,11 +26,6 @@ using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Read;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Read;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Create;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Delete;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.List;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Read;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
@@ -51,12 +41,6 @@ public class OrganisationMappingProfile : Profile
         CreateMap<GetOrganisationRequest, ReadOrganisationQuery>();
         CreateMap<OrganisationInfoCore, CreateOrganisationCommand>();
         CreateMap<UpdateOrganisationRequest, UpdateOrganisationCommand>();
-
-        CreateMap<ListOrganisationTextsRequest, ListOrganisationTextsQuery>();
-        CreateMap<CreateOrganisationTextsRequest, CreateOrganisationTextsCommand>();
-        CreateMap<GetOrganisationTextsRequest, ReadOrganisationTextsQuery>();
-        CreateMap<UpdateOrganisationTextsRequest, UpdateOrganisationTextsCommand>();
-        CreateMap<DeleteOrganisationTextsRequest, DeleteOrganisationTextsCommand>();
 
         CreateMap<ListOrganisationMediumsRequest, ListOrganisationMediumsQuery>();
         CreateMap<CreateOrganisationMediumRequest, CreateOrganisationMediumCommand>();
@@ -78,10 +62,7 @@ public class OrganisationMappingProfile : Profile
         CreateMap<OrganisationDetailModel, GetOrganisationResponse>();
         CreateMap<OrganisationDetailModel, UpdateOrganisationResponse>();
 
-        CreateMap<LocalisableTextModel, LocalisableTextsInfo>();
-        CreateMap<CreateOrganisationTextsResult, CreateOrganisationTextsResponse>();
-        CreateMap<ReadOrganisationTextsResult, GetOrganisationTextsResponse>();
-        CreateMap<UpdateOrganisationTextsResult, UpdateOrganisationTextsResponse>();
+        CreateMap<MediumTextModel, MediumTextsInfo>();
 
         CreateMap<MediumDetailModel, MediumInfo>();
         CreateMap<MediumDetailModel, CreateOrganisationMediumResponse>();
