@@ -37,7 +37,12 @@ public class DataMediumMappingProfile : Profile
                 options => options.MapFrom(
                     src => src.Organisation.Country.Currency
                 ))
-            // select best Goal and ThankYou texts based on dst.Locale
+            // select best Title, Goal and ThankYou texts based on dst.Locale
+            .ForMember(
+                x => x.Title,
+                options => options.MapFrom(
+                    (src, dest, _, context) => src.GetLocalisedText(nameof(MediumTexts.Title), context.Items[LanguageTag] as string)
+                ))
             .ForMember(
                 x => x.Goal,
                 options => options.MapFrom(

@@ -17,7 +17,7 @@ public class MediumTextsConfiguration : IEntityTypeConfiguration<MediumTexts>
 
         builder
             .Property(e => e.Title)
-            .HasMaxLength(35);
+            .HasMaxLength(200);
         builder
             .Property(e => e.Goal)
             .HasMaxLength(400);
