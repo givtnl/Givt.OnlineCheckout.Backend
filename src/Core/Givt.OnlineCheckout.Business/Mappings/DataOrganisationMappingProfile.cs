@@ -7,9 +7,6 @@ using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Read;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Create;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Read;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using Givt.OnlineCheckout.Persistance.Entities;
 using System.Globalization;
@@ -38,11 +35,6 @@ public class DataOrganisationMappingProfile : Profile
             ))
             ;
 
-        CreateMap<OrganisationTexts, LocalisableTextModel>();
-        CreateMap<OrganisationTexts, CreateOrganisationTextsResult>();
-        CreateMap<OrganisationTexts, ReadOrganisationTextsResult>();
-        CreateMap<OrganisationTexts, UpdateOrganisationTextsResult>();
-
         CreateMap<MediumData, MediumDetailModel>()
             .ForMember(
                 dst => dst.Amounts,
@@ -52,7 +44,7 @@ public class DataOrganisationMappingProfile : Profile
             );
         
 
-        CreateMap<MediumTexts, LocalisableTextModel>();
+        CreateMap<MediumTexts, MediumTextModel>();
         CreateMap<MediumTexts, CreateOrganisationMediumTextsResult>();
         CreateMap<MediumTexts, ReadOrganisationMediumTextsResult>();
         CreateMap<MediumTexts, UpdateOrganisationMediumTextsResult>();
@@ -102,9 +94,6 @@ public class DataOrganisationMappingProfile : Profile
                 options => options.MapFrom(
                     src => string.Join(',', src.Amounts))
             );            
-
-        CreateMap<CreateOrganisationTextsCommand, OrganisationTexts>();
-        CreateMap<UpdateOrganisationTextsCommand, OrganisationTexts>();
 
         CreateMap<CreateOrganisationMediumTextsCommand, MediumTexts>()
             .ForMember(dst => dst.MediumId, options => options.Ignore());

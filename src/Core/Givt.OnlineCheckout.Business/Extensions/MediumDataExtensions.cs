@@ -25,7 +25,7 @@ public static class MediumDataExtensions
         if (medium == null)
             return null;
         // get the property value through reflection
-        var propertyInfo = typeof(LocalisableTexts).GetProperty(propertyName);
+        var propertyInfo = typeof(MediumTexts).GetProperty(propertyName);
         if (propertyInfo == null)
             return null;
 
@@ -35,13 +35,9 @@ public static class MediumDataExtensions
 
         string result;
 
-        var mediumTexts = medium.Texts.ToList<LocalisableTexts>();
+        var mediumTexts = medium.Texts.ToList<MediumTexts>();
         // match on Medium texts
         result = GetMatchingText(mediumTexts, languageId, languageOnly, propertyInfo);
-        if (result != null) return result;
-        // match on Organisation texts
-        var organisationTexts = medium.Organisation.Texts.ToList<LocalisableTexts>();
-        result = GetMatchingText(organisationTexts, languageId, languageOnly, propertyInfo);
         if (result != null) return result;
 
         // Look for text in lingua franca
@@ -50,25 +46,20 @@ public static class MediumDataExtensions
             // match on Medium texts on default language "en" only
             result = GetMatchingText(mediumTexts, "en", propertyInfo);
             if (result != null) return result;
-            // match on Organisation texts on default language "en" only
-            result = GetMatchingText(organisationTexts, "en", propertyInfo);
-            if (result != null) return result;
         }
 
         // Still desperately seeking... match any text
         result = GetAnyText(mediumTexts, propertyInfo);
         if (result != null) return result;
-        result = GetAnyText(organisationTexts, propertyInfo);
-        if (result != null) return result;
 
         return String.Empty;
     }
 
-    private static string GetMatchingText(IList<LocalisableTexts> texts, string languageId, string languageOnly, PropertyInfo propertyInfo)
+    private static string GetMatchingText(IList<MediumTexts> texts, string languageId, string languageOnly, PropertyInfo propertyInfo)
     {
         if (texts?.Count > 0)
         {
-            LocalisableTexts match = null;
+            MediumTexts match = null;
             // exact match on language AND region 
             match = texts
                 .Where(t => t.LanguageId.Equals(languageId, StringComparison.OrdinalIgnoreCase))
@@ -79,11 +70,11 @@ public static class MediumDataExtensions
         return GetMatchingText(texts, languageOnly, propertyInfo);
     }
 
-    private static string GetMatchingText(ICollection<LocalisableTexts> texts, string language, PropertyInfo propertyInfo)
+    private static string GetMatchingText(ICollection<MediumTexts> texts, string language, PropertyInfo propertyInfo)
     {
         if (texts?.Count > 0)
         {
-            LocalisableTexts match = null;
+            MediumTexts match = null;
             // language only
             match = texts
                 .Where(t => t.LanguageId.Equals(language, StringComparison.OrdinalIgnoreCase))
@@ -101,7 +92,7 @@ public static class MediumDataExtensions
         return null;
     }
 
-    private static string GetAnyText(ICollection<LocalisableTexts> texts, PropertyInfo propertyInfo)
+    private static string GetAnyText(ICollection<MediumTexts> texts, PropertyInfo propertyInfo)
     {
         if (texts?.Count > 0)
         {

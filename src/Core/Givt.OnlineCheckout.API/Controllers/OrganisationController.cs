@@ -12,10 +12,6 @@ using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.Get;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.List;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.API.Models.Organisations.Mediums.Update;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Create;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Get;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.List;
-using Givt.OnlineCheckout.API.Models.Organisations.Texts.Update;
 using Givt.OnlineCheckout.API.Models.Organisations.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.List;
@@ -29,11 +25,6 @@ using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Read;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Read;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Create;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Delete;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.List;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Read;
-using Givt.OnlineCheckout.Business.QR.Organisations.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,8 +33,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    // TODO: enable authentication/authorisation by uncommenting the line below
-    //[Authorize(Roles = "Site Admin,Givt Operator")]
+    [Authorize(Policy = "Retool")]
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -153,149 +143,44 @@ namespace Givt.OnlineCheckout.API.Controllers
         //  Delete is not (yet) needed
 
         #endregion
-
-        #region Organisation->Text
+                
+        #region Organisation->Logo               
 
         /// <summary>
-        /// Get all localised texts for an organisation
+        /// Add a logo for an organisation - not yet implemented
         /// </summary>
-        /// <param name="organisationId">Organisation Identifier</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>The texts registered to this organisation</returns>
-        /// <response code="200">OK</response>
-        /// <response code="404">Not found</response>
-        [HttpGet("{organisationId:long}/Text")]
-        [ProducesResponseType(typeof(ListOrganisationTextsResponse), StatusCodes.Status200OK, "application/json")]
-        public async Task<IActionResult> ListOrganisationTexts(
+        [HttpPost("{organisationId:long}/Logo")]
+        public async Task<IActionResult> CreateOrganisationLogo(
             [FromRoute] long organisationId,
             CancellationToken cancellationToken)
         {
-            var request = new ListOrganisationTextsRequest
-            {
-                OrganisationId = organisationId
-            };
-            var query = _mapper.Map<ListOrganisationTextsQuery>(request);
-            var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<ListOrganisationTextsResponse>(model);
-            return Ok(response);
+            //var imageBytes = Convert.FromBase64String(request.LogoImageLink);
+            //await using var ms = new MemoryStream(imageBytes);
+            //await _fileStorage.UploadFile("public", $"cdn/goc-logo/{request.PaymentProviderAccountReference}.png", ms, null, cancellationToken);
+            //request.LogoImageLink = $"https://givtstorage.blob.core.windows.net/public/cdn/goc-logo/{request.PaymentProviderAccountReference}.png";
+            return Ok();
         }
 
         /// <summary>
-        /// Create texts in a certain language for an organisation
+        /// Update a logo for an organisation - not yet implemented
         /// </summary>
-        /// <param name="organisationId">Organisation Identifier</param>
-        /// <param name="languageId">Language Identifier</param>
-        /// <param name="request">The texts (core data)</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>Representation of the stored data</returns>
-        [HttpPost("{organisationId:long}/Text/{languageId}")]
-        [ProducesResponseType(typeof(CreateOrganisationTextsResponse), StatusCodes.Status201Created, "application/json")]
-        public async Task<IActionResult> CreateOrganisationTexts(
+        [HttpPut("{organisationId:long}/Logo")]
+        public async Task<IActionResult> UpdateOrganisationLogo(
             [FromRoute] long organisationId,
-            [FromRoute] string languageId,
-            [FromBody] CreateOrganisationTextsRequest request,
             CancellationToken cancellationToken)
         {
-            var command = new CreateOrganisationTextsCommand
-            {
-                OrganisationId = organisationId,
-                LanguageId = languageId,
-            };
-            _mapper.Map(request, command);
-            var model = await _mediator.Send(command, cancellationToken);
-            var response = _mapper.Map<CreateOrganisationTextsResponse>(model);
-            return CreatedAtRoute(
-                nameof(ReadOrganisationText),
-                new
-                {
-                    organisationId,
-                    languageId = response.LanguageId
-                },
-                response);
+            return Ok();
         }
 
         /// <summary>
-        /// Get texts in a certain language for an organisation
+        /// Delete logo for an organisation - not yet implemented
         /// </summary>
-        /// <param name="organisationId">Organisation Identifier</param>
-        /// <param name="languageId">Language Identifier for these texts, e.g. en-GB</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>Representation of the stored data</returns>
-        /// <response code="200">OK</response>
-        /// <response code="404">Not found</response>
-        [HttpGet("{organisationId:long}/Text/{languageId}", Name = nameof(ReadOrganisationText))]
-        [ProducesResponseType(typeof(GetOrganisationTextsResponse), StatusCodes.Status200OK, "application/json")]
-        public async Task<IActionResult> ReadOrganisationText(
+        [HttpDelete("{organisationId:long}/Logo")]
+        public async Task<IActionResult> DeleteOrganisationLogo(
             [FromRoute] long organisationId,
-            [FromRoute] string languageId,
             CancellationToken cancellationToken)
         {
-            var request = new GetOrganisationTextsRequest
-            {
-                OrganisationId = organisationId,
-                LanguageId = languageId
-            };
-            var query = _mapper.Map<ReadOrganisationTextsQuery>(request);
-            var model = await _mediator.Send(query, cancellationToken);
-            var response = _mapper.Map<GetOrganisationTextsResponse>(model);
-            if (response == null)
-                return NotFound();
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Update texts in a certain language for an organisation
-        /// </summary>
-        /// <param name="organisationId">Organisation Identifier</param>
-        /// <param name="languageId">Language Identifier for these texts, e.g. en-GB</param>
-        /// <param name="request">The texts</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        /// <response code="200">OK</response>
-        /// <response code="409">Concurrent update conflict</response>
-        [HttpPut("{organisationId:long}/Text/{languageId}")]
-        [ProducesResponseType(typeof(UpdateOrganisationTextsResponse), StatusCodes.Status200OK, "application/json")]
-        public async Task<IActionResult> UpdateOrganisationTexts(
-            [FromRoute] long organisationId,
-            [FromRoute] string languageId,
-            [FromBody] UpdateOrganisationTextsRequest request,
-            CancellationToken cancellationToken)
-        {
-            var command = new UpdateOrganisationTextsCommand
-            {
-                OrganisationId = organisationId,
-                LanguageId = languageId
-            };
-            _mapper.Map(request, command);
-            var model = await _mediator.Send(command, cancellationToken);
-            var response = _mapper.Map<UpdateOrganisationTextsResponse>(model);
-
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Delete texts in a certain language for an organisation
-        /// </summary>
-        /// <param name="organisationId">ID of the organisation</param>
-        /// <param name="languageId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [HttpDelete("{organisationId:long}/Text/{languageId}")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK, "application/json")]
-        public async Task<IActionResult> DeleteOrganisationTexts(
-            [FromRoute] long organisationId,
-            [FromRoute] string languageId,
-            CancellationToken cancellationToken)
-        {
-            var command = new DeleteOrganisationTextsCommand
-            {
-                OrganisationId = organisationId,
-                LanguageId = languageId
-            };
-            var success = await _mediator.Send(command, cancellationToken);
-            if (success)
-                return Ok();
-            return NotFound();
+            return Ok();
         }
         #endregion
 
@@ -409,7 +294,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         //  Delete is not (yet) needed
         #endregion
 
-        #region Organisation->Medium->Text
+        #region Organisation->Medium->Texts
         /// <summary>
         /// Get all localised texts for a medium of an organisation
         /// </summary>

@@ -16,6 +16,9 @@ public class MediumTextsConfiguration : IEntityTypeConfiguration<MediumTexts>
             .IsConcurrencyToken();
 
         builder
+            .Property(e => e.Title)
+            .HasMaxLength(35);
+        builder
             .Property(e => e.Goal)
             .HasMaxLength(400);
         builder

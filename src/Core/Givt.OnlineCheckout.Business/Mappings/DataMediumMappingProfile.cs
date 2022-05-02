@@ -41,12 +41,12 @@ public class DataMediumMappingProfile : Profile
             .ForMember(
                 x => x.Goal,
                 options => options.MapFrom(
-                    (src, dest, _, context) => src.GetLocalisedText(nameof(LocalisableTexts.Goal), context.Items[LanguageTag] as string)
+                    (src, dest, _, context) => src.GetLocalisedText(nameof(MediumTexts.Goal), context.Items[LanguageTag] as string)
                 ))
             .ForMember(
                 x => x.ThankYou,
                 options => options.MapFrom(
-                    (src, dest, _, context) => src.GetLocalisedText(nameof(LocalisableTexts.ThankYou), context.Items[LanguageTag] as string)
+                    (src, dest, _, context) => src.GetLocalisedText(nameof(MediumTexts.ThankYou), context.Items[LanguageTag] as string)
                 ))
             .ForMember(x => x.OrganisationLogoLink,
                 options => options.MapFrom(

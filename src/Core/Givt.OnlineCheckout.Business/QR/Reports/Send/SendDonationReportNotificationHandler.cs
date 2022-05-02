@@ -51,7 +51,6 @@ public record SendDonationReportNotificationHandler(
             .ThenInclude(m => m.Texts)
             .Include(d => d.Medium)
             .ThenInclude(m => m.Organisation)
-            .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == transactionReference)
             .FirstOrDefaultAsync(cancellationToken);
     }

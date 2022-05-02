@@ -2,7 +2,8 @@
 
 namespace Givt.OnlineCheckout.API.Models.Organisations;
 
-public class GetOrganisationTextsResponse : LocalisableTextsInfoCore, IConcurrency
+public class MediumTextsInfo : MediumTextsInfoCore, IConcurrency
 {
     public uint ConcurrencyToken { get; set; }
+    public string LanguageId { get; set; }
 }

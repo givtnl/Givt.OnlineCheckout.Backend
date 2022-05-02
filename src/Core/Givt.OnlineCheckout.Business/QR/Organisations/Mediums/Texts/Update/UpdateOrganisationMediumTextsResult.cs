@@ -2,7 +2,7 @@
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 
-public class UpdateOrganisationMediumTextsResult : LocalisableTextModel
+public class UpdateOrganisationMediumTextsResult : MediumTextModel
 {
     public int OrganisationId { get; set; }
     public string MediumId { get; set; }

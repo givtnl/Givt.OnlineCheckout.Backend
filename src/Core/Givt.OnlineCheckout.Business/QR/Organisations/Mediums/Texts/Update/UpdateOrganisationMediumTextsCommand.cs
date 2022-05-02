@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 
-public class UpdateOrganisationMediumTextsCommand : LocalisableTextsCore, IConcurrency, IRequest<UpdateOrganisationMediumTextsResult>
+public class UpdateOrganisationMediumTextsCommand : MediumTextsCore, IConcurrency, IRequest<UpdateOrganisationMediumTextsResult>
 {
     public long OrganisationId { get; set; }
     public string MediumId { get; set; }
