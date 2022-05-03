@@ -6,6 +6,13 @@ namespace Givt.OnlineCheckout.Business.Extensions
 {
     public static class DonationDataExtensions
     {
+        public static string GetTitle(this DonationData donation, string language)
+        {
+            if (String.IsNullOrEmpty(language?.Replace('_', '-')?.Split('-')?.FirstOrDefault()))
+                language = "en";
+
+            return donation.Medium.GetLocalisedText(nameof(MediumTexts.Title), language);
+        }
         public static string GetGoal(this DonationData donation, string language)
         {
             if (String.IsNullOrEmpty(language?.Replace('_', '-')?.Split('-')?.FirstOrDefault()))
@@ -51,6 +58,7 @@ namespace Givt.OnlineCheckout.Business.Extensions
             organisation.Goals = goals;
             var goal = new Goal
             {
+                Title = donation.Medium.GetLocalisedText(nameof(MediumTexts.Title), language),
                 Name = donation.Medium.GetLocalisedText(nameof(MediumTexts.Goal), language),
                 //TotalAmount = totals,
                 Donations = new List<Donation>()

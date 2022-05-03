@@ -29,7 +29,7 @@ namespace Givt.OnlineCheckout.API
                                 .Select(ConfigKeyCommonPrefix + KeyFilter.Any, hostingContext.HostingEnvironment.EnvironmentName)
                                 .Select(ConfigKeyAppPrefix + KeyFilter.Any, null)
                                 .Select(ConfigKeyAppPrefix + KeyFilter.Any, hostingContext.HostingEnvironment.EnvironmentName)
-                                // order of .TrimKeyPrefix() is important too, as existing key names will survice collisions. So first one takes precedence.
+                                // order of .TrimKeyPrefix() is important too, as existing key names will survive collisions. So first one takes precedence.
                                 .TrimKeyPrefix(ConfigKeyAppPrefix) 
                                 .TrimKeyPrefix(ConfigKeyCommonPrefix)
                                 ;
