@@ -33,7 +33,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Givt.OnlineCheckout.API.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Policy = "Retool")]
+    [Authorize(Policy = "Retool")]
     public class OrganisationController : ControllerBase
     {
         private readonly IMapper _mapper;
