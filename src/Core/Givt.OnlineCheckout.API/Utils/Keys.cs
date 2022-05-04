@@ -4,5 +4,7 @@
     {
         public static readonly string TOKEN_HANDLER = "TokenHandler";
         public static readonly string USER = "User";
+        public static readonly string CULTURE = "Culture";
+
     }
 }

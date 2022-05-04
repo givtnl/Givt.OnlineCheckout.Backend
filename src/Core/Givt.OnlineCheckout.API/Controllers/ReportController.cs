@@ -52,13 +52,13 @@ public class ReportController : ControllerBase
             return Unauthorized(uae.Message);
         }
 
-        var requestCulture = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-        request.CurrentCulture = requestCulture?.RequestCulture.Culture; // This defaults to 'en' :) nice feature
-            
+        var culture = FindCulture(request.Language, HttpContext);
+
         var query = _mapper.Map<GetDonationReportCommand>(request, opt =>
         {
             opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
             opt.Items[Keys.USER] = HttpContext.User;
+            opt.Items[Keys.CULTURE] = culture;
         });
         var response = await _mediator.Send(query, cancellationToken);
         return File(response.Content, response.MimeType, response.Filename);
@@ -79,15 +79,15 @@ public class ReportController : ControllerBase
     {
         _logger.Debug("Post Report/singleDonation {0}", request);
 
-        var requestCulture = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-        request.CurrentCulture = requestCulture?.RequestCulture.Culture; // This defaults to 'en' :) nice feature
-        
+        var culture = FindCulture(request.Language, HttpContext);
+
         try
         {
             var notification = _mapper.Map<SendDonationReportNotification>(request, opt =>
             {
                 opt.Items[Keys.TOKEN_HANDLER] = _jwtTokenHandler;
                 opt.Items[Keys.USER] = HttpContext.User;
+                opt.Items[Keys.CULTURE] = culture;
             });
             await _mediator.Publish(notification, CancellationToken.None); // decouple from HTTP server cancellations etc.
             return Ok();
@@ -98,4 +98,23 @@ public class ReportController : ControllerBase
         }
     }
 
+    private CultureInfo FindCulture(string language, HttpContext httpContext)
+    {
+        CultureInfo culture = null;
+        if (!String.IsNullOrWhiteSpace(language))
+        {
+            try { culture = CultureInfo.GetCultureInfo(language); }
+            catch (CultureNotFoundException) { }
+        }
+
+        if (culture == null)
+        {
+            var requestCultureFeature = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+            culture = requestCultureFeature?.RequestCulture.Culture; // This usually defaults to 'en'
+        }
+
+        if (culture == null || culture == CultureInfo.InvariantCulture)
+            culture = new CultureInfo("en-GB");
+        return culture;
+    }
 }

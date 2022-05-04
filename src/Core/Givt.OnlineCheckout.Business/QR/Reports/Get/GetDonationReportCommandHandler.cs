@@ -19,8 +19,8 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, IMa
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         // TODO: if required, find/create DonorData by email, and link to this donation
-        var donationReport = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = request.CurrentCulture; });
-        var fileData = await pdfService.CreateSinglePaymentReport(donationReport, request.CurrentCulture, cancellationToken);
+        var donationReport = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = request.Culture; });
+        var fileData = await pdfService.CreateSinglePaymentReport(donationReport, request.Culture, cancellationToken);
         return mapper.Map<GetDonationReportCommandResponse>(fileData);
     }
 }
