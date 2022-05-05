@@ -10,5 +10,5 @@ public class GetMediumRequest
     public string Code { get; set; }
         
     [Description("Language/Region for texts. Defaults to AcceptLanguage, otherwise 'en'")]
-    public string Locale { get; set; }
+    public string Language { get; set; }
 }
