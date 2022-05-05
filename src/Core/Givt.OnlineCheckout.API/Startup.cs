@@ -26,6 +26,7 @@ using Givt.OnlineCheckout.Integrations.AzureFileStorage;
 using ReportMappingProfile = Givt.OnlineCheckout.API.Mappings.ReportMappingProfile;
 using Microsoft.AspNetCore.Authorization;
 using Givt.OnlineCheckout.API.MiddleWare;
+using System.Security.Claims;
 
 namespace Givt.OnlineCheckout.API
 {
@@ -106,19 +107,19 @@ namespace Givt.OnlineCheckout.API
                         IssuerSigningKey = key,
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
-                });
-            services
-                .AddAuth0WebAppAuthentication(options =>
-                {
-                    options.Domain = Configuration["Auth0:Domain"];
-                    options.ClientId = Configuration["Auth0:ClientId"];
-                });
+                })
+                .AddJwtBearer("Auth0", options =>
+                 {
+                     options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                     options.Audience = Configuration["Auth0:Audience"]; // https://donate-api.givtapp.net = Auth0's Api Identifier                     
+                 });
             services.AddAuthorization(options =>
             {
                 var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
                     JwtBearerDefaults.AuthenticationScheme, "Auth0");
                 defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+                options.AddPolicy("Retool", policy => policy.RequireClaim("sub", Configuration["Auth0:ClientId"] + "@clients"));
             });
 
             services.AddSingleton<IFileStorage, AzureFileStorage>();

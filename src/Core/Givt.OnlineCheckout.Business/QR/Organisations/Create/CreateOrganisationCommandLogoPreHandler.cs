@@ -13,10 +13,11 @@ public class CreateOrganisationCommandLogoPreHandler : IRequestPreProcessor<Crea
     }
     public async Task Process(CreateOrganisationCommand request, CancellationToken cancellationToken)
     {
-        // TODO: validation
-        var imageBytes = Convert.FromBase64String(request.LogoImageLink);
-        await using var ms = new MemoryStream(imageBytes);
-        await _fileStorage.UploadFile("public", $"cdn/goc-logo/{request.PaymentProviderAccountReference}.png", ms, null, cancellationToken);
-        request.LogoImageLink = $"https://givtstorage.blob.core.windows.net/public/cdn/goc-logo/{request.PaymentProviderAccountReference}.png";
+        // Let's do this properly next sprint
+        //// TODO: validation
+        //var imageBytes = Convert.FromBase64String(request.LogoImageLink);
+        //await using var ms = new MemoryStream(imageBytes);
+        //await _fileStorage.UploadFile("public", $"cdn/goc-logo/{request.PaymentProviderAccountReference}.png", ms, null, cancellationToken);
+        //request.LogoImageLink = $"https://givtstorage.blob.core.windows.net/public/cdn/goc-logo/{request.PaymentProviderAccountReference}.png";
     }
 }

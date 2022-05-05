@@ -31,6 +31,9 @@ namespace Givt.OnlineCheckout.Business.Mappings
                 .ForMember(dst => dst.OrganisationName,
                     options => options.MapFrom(
                         (src) => src.Medium.Organisation.Name))
+                .ForMember(dst => dst.Title,
+                    options => options.MapFrom(
+                        (src, dest, _, context) => src.GetTitle((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName)))
                 .ForMember(dst => dst.Goal,
                     options => options.MapFrom(
                         (src, dest, _, context) => src.GetGoal((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName)))
@@ -49,7 +52,7 @@ namespace Givt.OnlineCheckout.Business.Mappings
                     )
                     .ForMember(dst => dst.CampaignName,
                         options => options.MapFrom(
-                            (src, dest, _, context) => src.GetOrganisations((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName).First().Goals.First().Name)     // Campaign info => This is for now like this, because we only send mails for one campaign
+                            (src, dest, _, context) => src.GetOrganisations((context.Items[LanguageTag] as CultureInfo)?.TwoLetterISOLanguageName).First().Goals.First().Title)     // Campaign info => This is for now like this, because we only send mails for one campaign
                     )
                     .ForMember(dst => dst.Locale,
                         options => options.MapFrom(

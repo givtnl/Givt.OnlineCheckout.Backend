@@ -26,10 +26,10 @@ public record SendDonationReportNotificationHandler(
         var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
         // Google Docs expects this
-        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.CurrentCulture; });
+        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Culture; });
         // the Postmark template expects this
-        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.CurrentCulture; });
-        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.CurrentCulture, cancellationToken);
+        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Culture; });
+        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.Culture, cancellationToken);
 
         var email = new BaseEmailModel
         {
@@ -51,7 +51,6 @@ public record SendDonationReportNotificationHandler(
             .ThenInclude(m => m.Texts)
             .Include(d => d.Medium)
             .ThenInclude(m => m.Organisation)
-            .ThenInclude(o => o.Texts)
             .Where(d => d.TransactionReference == transactionReference)
             .FirstOrDefaultAsync(cancellationToken);
     }

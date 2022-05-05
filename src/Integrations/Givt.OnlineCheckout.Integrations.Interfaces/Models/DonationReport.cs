@@ -15,6 +15,7 @@ public class DonationReport
 
     // donations
     public string OrganisationName { get; set; }
+    public string Title { get; set; }
     public string Goal { get; set; }
     public string ThankYou { get; set; }
     public bool TaxDeductable { get; set; }

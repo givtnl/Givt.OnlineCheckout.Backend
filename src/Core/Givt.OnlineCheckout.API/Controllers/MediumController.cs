@@ -63,7 +63,7 @@ namespace Givt.OnlineCheckout.API.Controllers
         {
             try
             {
-                request.Locale = LanguageUtils.GetLanguageId(request.Locale, HttpContext.Request.Headers.AcceptLanguage, "en");
+                request.Language = LanguageUtils.GetLanguageId(request.Language, HttpContext.Request.Headers.AcceptLanguage, "en");
 
                 var query = _mapper.Map<GetMediumDetailsQuery>(request);
                 var model = await _mediator.Send(query, cancellationToken);
