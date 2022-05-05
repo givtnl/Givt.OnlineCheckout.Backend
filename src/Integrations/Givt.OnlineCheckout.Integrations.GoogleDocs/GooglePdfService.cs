@@ -27,12 +27,12 @@ public class GooglePdfService : IPdfService
             {"OrganisationName", report.OrganisationName},
             {"DateGenerated", report.Timestamp.ToString(cultureInfo)},
             {"DonationAmount", $"{currSymbol}{report.Amount.ToString("N2" ,cultureInfo)}"},
-            {"RSIN", report.RSIN 
+            {"RSIN", report.RSIN
             },
-            {"hmrcReference", 
+            {"hmrcReference",
                 String.IsNullOrEmpty(report.HmrcReference ) ?
                 null :
-                "HMRC Reference: " + report.HmrcReference + " " 
+                "HMRC Reference: " + report.HmrcReference + " "
             },
             {"charityNumber",
                 String.IsNullOrEmpty(report.CharityNumber) ?
@@ -46,7 +46,9 @@ public class GooglePdfService : IPdfService
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment
         var language = cultureInfo.TwoLetterISOLanguageName;
-        var region = new RegionInfo(cultureInfo.LCID).TwoLetterISORegionName;
+        var region = String.Empty;
+        try { region = new RegionInfo(cultureInfo.LCID).TwoLetterISORegionName; }
+        catch { /* the default language-Region is "en", this does not have a region code */ }
         var templateId = language switch
         {
             "nl" => _options.DonationConfirmationNL,
@@ -74,8 +76,10 @@ public class GooglePdfService : IPdfService
         return CultureInfo
             .GetCultures(CultureTypes.AllCultures)
             .Where(c => !c.IsNeutralCulture)
-            .Select(culture => {
-                try{
+            .Select(culture =>
+            {
+                try
+                {
                     return new RegionInfo(culture.Name);
                 }
                 catch
@@ -83,7 +87,7 @@ public class GooglePdfService : IPdfService
                     return null;
                 }
             })
-            .Where(ri => ri!=null && ri.ISOCurrencySymbol == ISOCurrencySymbol.ToUpper())
+            .Where(ri => ri != null && ri.ISOCurrencySymbol == ISOCurrencySymbol.ToUpper())
             .Select(ri => ri.CurrencySymbol)
             .FirstOrDefault();
     }

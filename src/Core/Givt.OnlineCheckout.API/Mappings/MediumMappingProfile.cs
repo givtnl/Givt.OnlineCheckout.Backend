@@ -11,7 +11,6 @@ public class MediumMappingProfile : Profile
     public MediumMappingProfile()
     {
         CreateMap<GetMediumRequest, GetMediumDetailsQuery>()
-            .ForMember(dst => dst.Language, options => options.MapFrom(src => src.Locale))
             .ForMember(dst => dst.MediumId, options => options.MapFrom(src => MediumIdType.FromString(src.Code)));
         CreateMap<GetMediumRequest, CheckMediumQuery>()
             .ForMember(dst => dst.MediumId, options => options.MapFrom(src => MediumIdType.FromString(src.Code)));

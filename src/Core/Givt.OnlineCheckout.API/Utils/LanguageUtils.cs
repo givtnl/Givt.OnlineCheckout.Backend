@@ -15,7 +15,7 @@ public static class LanguageUtils
 
 
         // Multiple types, weighted with the quality value syntax:
-        // Accept-Language: fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5
+        // Accept-Language: fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5        
         var headerVal = acceptLanguage.FirstOrDefault();
         if (!String.IsNullOrWhiteSpace(overrideVal))
         {
