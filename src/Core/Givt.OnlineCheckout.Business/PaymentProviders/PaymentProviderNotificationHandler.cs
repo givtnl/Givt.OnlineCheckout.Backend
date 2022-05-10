@@ -1,4 +1,5 @@
-﻿using Givt.OnlineCheckout.Infrastructure.DbContexts;
+﻿using Givt.OnlineCheckout.Business.Extensions;
+using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
@@ -59,6 +60,9 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
             {
                 donation.Status = DonationStatus.Succeeded;
                 donation.TransactionDate = notification.TransactionDate;
+                donation.PaymentMethod = new List<string> { notification.PaymentMethod }.AsEnumerable().MapPaymentMethods();
+                donation.Fingerprint = notification.Fingerprint;
+                
                 Log.Debug("Donation with transaction reference '{0}' set to status {1}",
                     new object[] { notification.TransactionReference, donation.Status });
             }
