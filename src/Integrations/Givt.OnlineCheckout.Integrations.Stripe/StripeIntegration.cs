@@ -31,7 +31,11 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         _log = log;
     }
 
-    public async Task<ISinglePaymentServicePaymentIntent> CreatePaymentIntent(string currency, decimal amount, decimal applicationFee, string accountId, PaymentMethod paymentMethod)
+    public async Task<ISinglePaymentServicePaymentIntent> CreatePaymentIntent(
+        string currency, decimal amount,
+        decimal applicationFee,
+        string description,
+        string accountId, PaymentMethod paymentMethod)
     {
         _log.Debug("Creating a Stripe Payment Intent: currency='{0}', amount='{1}', applicationFee='{2}', accountId='{3}', paymentMethod={4}",
             new object[] { currency, amount, applicationFee, accountId, paymentMethod });
@@ -64,11 +68,12 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         {
             Currency = currency.ToLowerInvariant(),
             Amount = Convert.ToInt64(amount * 100),
+            Description = description,
             TransferData = new PaymentIntentTransferDataOptions() { Destination = accountId },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
             PaymentMethodTypes = new List<string> { stripePaymentMethod }
         };
-        
+
         var stopwatch = new Stopwatch();
         stopwatch.Start();
         var paymentIntent = await service.CreateAsync(createOptions);
