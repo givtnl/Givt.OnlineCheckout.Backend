@@ -2,7 +2,6 @@
 using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
-using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.Mappings;
 
@@ -12,11 +11,6 @@ public class DataMediumMappingProfile : Profile
     public DataMediumMappingProfile()
     {
         CreateMap<MediumData, MediumFlattenedModel>()
-            .ForMember(
-                x => x.Amounts,
-                options => options.MapFrom(
-                    src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
-                    ))
             .ForMember(
                 x => x.OrganisationName,
                 options => options.MapFrom(

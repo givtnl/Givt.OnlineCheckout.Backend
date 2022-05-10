@@ -1,17 +1,15 @@
 ﻿namespace Givt.OnlineCheckout.Persistance.Enums;
 
-[Flags]
-public enum PaymentMethod : UInt64
+public enum PaymentMethod
 {
-    Bancontact  = 0x0000000000000001, // Bank redirect. BE / EUR
-    Card        = 0x0000000000000002, // credit or debit. Global, 135+ currencies
-    Ideal       = 0x0000000000000004, // Bank redirect. NL / EUR
-    Sofort      = 0x0000000000000008, // Bank redirect. AT, BE, DE, IT, NL, ES / EUR (acquired by Klarna)
-    Giropay     = 0x0000000000000010, // Bank redirect. DE / EUR
-    EPS         = 0x0000000000000020, // Bank redirect. AT / EUR
-    ApplePay    = 0x0000000000000040, // "global", 135+ currencies
-    GooglePay   = 0x0000000000000080, // "global", 135+ currencies
-    All = 0xFFFFFFFFFFFFFFFF
+    Bancontact  = 0, // Bank redirect. BE / EUR
+    Card        = 1, // credit or debit. Global, 135+ currencies
+    Ideal       = 2, // Bank redirect. NL / EUR
+    Sofort      = 3, // Bank redirect. AT, BE, DE, IT, NL, ES / EUR (acquired by Klarna)
+    Giropay     = 4, // Bank redirect. DE / EUR
+    EPS         = 5, // Bank redirect. AT / EUR
+    ApplePay    = 6, // "global", 135+ currencies
+    GooglePay   = 7, // "global", 135+ currencies
 }
 // Other stuff supported by Stripe:
 

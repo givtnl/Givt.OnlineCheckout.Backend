@@ -1,4 +1,5 @@
-﻿using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Infrastructure.Converters;
+using Givt.OnlineCheckout.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,7 +27,10 @@ public class MediumDataConfiguration : IEntityTypeConfiguration<MediumData>
 
         builder
             .Property(e => e.Amounts)
-            .HasMaxLength(50);
+            .HasConversion(AmountsConverter.GetConverter())
+            .HasMaxLength(50)
+            .Metadata.SetValueComparer(AmountsConverter.GetComparer());
+
 
         builder.HasMany(e => e.Texts)
             .WithOne(t => t.Medium)

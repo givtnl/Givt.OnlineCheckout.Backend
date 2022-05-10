@@ -8,6 +8,6 @@ public enum PaymentMethod
     Sofort = 3,     // idem
     Giropay = 4,    // idem
     EPS = 5,        // idem
-    ApplePay = 6,
-    GooglePay = 7,
+    ApplePay = 6,   // idem
+    GooglePay = 7,  // idem
 }
