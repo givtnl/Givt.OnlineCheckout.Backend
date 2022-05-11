@@ -155,7 +155,7 @@ namespace Givt.OnlineCheckout.API
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILog logger)
         {
             logger.Information($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
-            logger.Debug("Ah yeeet this is a test");
+            logger.Information("Ah yeeet this is a test");
 
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
