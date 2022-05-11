@@ -39,7 +39,8 @@ public class DonationController : ControllerBase
     [ProducesResponseType(typeof(CreateDonationIntentResponse), StatusCodes.Status200OK, "application/json")]
     public async Task<IActionResult> CreatePaymentIntent([FromBody] CreateDonationIntentRequest request)
     {
-        
+        request.Language = LanguageUtils.GetLanguageId(request.Language, HttpContext.Request.Headers.AcceptLanguage, "en");
+
         var applicationFee = await _mediator.Send(new GetApplicationFeeQuery { MediumIdType = MediumIdType.FromString(request.Medium) });
         
         var command = _mapper.MergeInto<CreateDonationIntentCommand>(request, applicationFee);
