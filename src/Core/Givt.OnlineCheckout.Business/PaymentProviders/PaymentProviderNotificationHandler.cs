@@ -30,7 +30,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         if (notification is not ISinglePaymentNotification spNotification)
             return;
 
-        _log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
+        _log.Information("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
         // load the matching donation
         var donation = await _context.Donations
             .Where(donation => donation.TransactionReference == spNotification.TransactionReference)
@@ -62,7 +62,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         await _context.SaveChangesAsync(cancellationToken);
         
         if (!notification.Processing)
-            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
+            _log.Information("Donation with transaction reference '{0}' set to status {1}",
                 new object[] { notification.TransactionReference, donation.Status });
     }
 
