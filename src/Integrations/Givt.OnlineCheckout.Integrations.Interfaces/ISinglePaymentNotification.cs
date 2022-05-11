@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
+using MediatR;
 
 namespace Givt.OnlineCheckout.Integrations.Interfaces;
 
@@ -6,7 +7,7 @@ public interface ISinglePaymentNotification : INotification
 {
     string TransactionReference { get; }
     DateTime? TransactionDate { get; }
-    string PaymentMethod { get; }
+    PaymentMethod PaymentMethod { get; }
     string Fingerprint { get; }
     bool Processing { get; }
     bool Succeeded { get; }

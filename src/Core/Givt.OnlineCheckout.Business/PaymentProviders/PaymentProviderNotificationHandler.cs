@@ -54,34 +54,28 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         // update donation status
         if (notification.Processing)
             donation.Status = DonationStatus.Processing;
-        else if (notification.Succeeded)
-        {
-            if (donation.Status != DonationStatus.Succeeded)
-            {
-                donation.Status = DonationStatus.Succeeded;
-                donation.TransactionDate = notification.TransactionDate;
-                donation.PaymentMethod = new List<string> { notification.PaymentMethod }.AsEnumerable().MapPaymentMethods();
-                donation.Fingerprint = notification.Fingerprint;
-                
-                Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                    new object[] { notification.TransactionReference, donation.Status });
-            }
-        }
         else if (notification.Cancelled)
-        {
             donation.Status = DonationStatus.Cancelled;
-            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { notification.TransactionReference, donation.Status });
-        }
         else if (notification.Failed)
-        {
             donation.Status = DonationStatus.PaymentFailed;
-            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { notification.TransactionReference, donation.Status });
-        }
-
+        else if (notification.Succeeded)
+            HandleNotificationSucceeded(notification, donation);
+        
         // write changes
         await _context.SaveChangesAsync(cancellationToken);
+        
+        if (!notification.Processing)
+            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
+                new object[] { notification.TransactionReference, donation.Status });
     }
 
+    private static void HandleNotificationSucceeded(ISinglePaymentNotification notification, DonationData donation)
+    {
+        if (donation.Status == DonationStatus.Succeeded) return;
+        
+        donation.Status = DonationStatus.Succeeded;
+        donation.TransactionDate = notification.TransactionDate;
+        donation.PaymentMethod = (PaymentMethod)notification.PaymentMethod;
+        donation.Fingerprint = notification.Fingerprint;
+    }
 }

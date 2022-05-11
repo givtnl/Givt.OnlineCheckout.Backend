@@ -6,20 +6,60 @@ public static class PaymentIntentExtensions
 {
     public static string GetPaymentMethod(this PaymentIntent paymentIntent)
     {
-        return paymentIntent.Charges.SingleOrDefault()?.PaymentMethodDetails.Type;
+        return paymentIntent.Charges.Any() && paymentIntent.Charges.Count() == 1 ? paymentIntent.Charges.Single().PaymentMethodDetails.Type : "";
     }
 
     public static string GetFingerprint(this PaymentIntent paymentIntent)
     {
+        if (string.IsNullOrEmpty(paymentIntent.GetPaymentMethod())) return string.Empty;
+        
+        var paymentMethodDetails = paymentIntent.GetSinglePaymentMethodDetail();
+            
         return paymentIntent.GetPaymentMethod().ToLower() switch
         {
-            "ideal" => paymentIntent.Charges.Single().PaymentMethodDetails.Ideal.IbanLast4,
-            "bancontact" => paymentIntent.Charges.Single().PaymentMethodDetails.Bancontact.IbanLast4,
-            "sofort" => paymentIntent.Charges.Single().PaymentMethodDetails.Sofort.IbanLast4,
-            "card" => paymentIntent.Charges.Single().PaymentMethodDetails.Card.Last4,
-            "googlepay" => paymentIntent.Charges.Single().PaymentMethodDetails.Card.Fingerprint,
-            "applepay" => paymentIntent.Charges.Single().PaymentMethodDetails.Card.Fingerprint,
+            "ideal" => GetIdealFingerprint(paymentMethodDetails),
+            "bancontact" => GetBancontactFingerprint(paymentMethodDetails),
+            "sofort" => GetSofortFingerprint(paymentMethodDetails),
+            "card" => GetCardFingerprint(paymentMethodDetails),
+            "googlepay" => GetGooglePayFingerprint(paymentMethodDetails),
+            "applepay" => GetApplePayFingerprint(paymentMethodDetails),
             _ => string.Empty
         };
+
+    }
+
+    private static ChargePaymentMethodDetails GetSinglePaymentMethodDetail(this PaymentIntent paymentIntent)
+    {
+        return paymentIntent.Charges.Single().PaymentMethodDetails;
+    }
+
+    private static string GetIdealFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Ideal.IbanLast4;
+    }
+
+    private static string GetBancontactFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Bancontact.IbanLast4;
+    }
+
+    private static string GetSofortFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Sofort.IbanLast4;
+    }
+
+    private static string GetCardFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Card.Last4;
+    }
+
+    private static string GetGooglePayFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Card.Fingerprint;
+    }
+
+    private static string GetApplePayFingerprint(this ChargePaymentMethodDetails chargePaymentMethodDetails)
+    {
+        return chargePaymentMethodDetails.Card.Fingerprint;
     }
 }
