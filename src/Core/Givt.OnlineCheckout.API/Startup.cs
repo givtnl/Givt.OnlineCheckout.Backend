@@ -45,9 +45,7 @@ namespace Givt.OnlineCheckout.API
         {
             ConfigureOptions(services);
 
-            var log = new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]);
-            services.AddSingleton<ILog, LogitHttpLogger>(x => log);
-            services.AddSingleton(log.SerilogLogger);
+            services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddSingleton(new MapperConfiguration(mc =>
@@ -157,6 +155,7 @@ namespace Givt.OnlineCheckout.API
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILog logger)
         {
             logger.Information($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
+            logger.Debug("Ah yeeet this is a test");
 
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
