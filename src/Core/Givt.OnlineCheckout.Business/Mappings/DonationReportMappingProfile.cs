@@ -42,7 +42,10 @@ namespace Givt.OnlineCheckout.Business.Mappings
                         (src, _, _, _) => src.TransactionDate))
                 .ForMember(dst => dst.Amount,
                     options => options.MapFrom(
-                        (src) => src.Amount.ToString("F2")));
+                        (src) => src.Amount.ToString("F2")))
+                .ForMember(dst => dst.PaymentMethod,
+                    options => options.MapFrom(
+                        (src) => $"{src.PaymentMethod} with {src.Fingerprint}"));
 
 
             CreateMap<DonationData, DonationsReport>()
