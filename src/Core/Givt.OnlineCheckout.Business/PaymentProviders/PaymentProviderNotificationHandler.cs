@@ -1,11 +1,10 @@
-﻿using Givt.OnlineCheckout.Business.Extensions;
-using Givt.OnlineCheckout.Infrastructure.DbContexts;
+﻿using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.Business.PaymentProviders;
 
@@ -13,14 +12,12 @@ namespace Givt.OnlineCheckout.Business.PaymentProviders;
 public class PaymentProviderNotificationHandler<TPaymentNotification> : INotificationHandler<TPaymentNotification>
     where TPaymentNotification : ISinglePaymentNotification
 {
-    private readonly ILogger _log;
+    private readonly ILog _log;
     //private readonly IConfiguration _configuration;
     private readonly OnlineCheckoutContext _context;
     //private readonly IMediator _mediator;
-
-    public ILogger Log => _log;
-
-    public PaymentProviderNotificationHandler(ILogger log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
+    
+    public PaymentProviderNotificationHandler(ILog log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
     {
         _log = log;
         //_configuration = config;
@@ -33,14 +30,14 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         if (notification is not ISinglePaymentNotification spNotification)
             return;
 
-        Log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
+        _log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
         // load the matching donation
         var donation = await _context.Donations
             .Where(donation => donation.TransactionReference == spNotification.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         if (donation == null)
         {
-            Log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
+            _log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
             return; // donation not found
         }
 
@@ -65,7 +62,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         await _context.SaveChangesAsync(cancellationToken);
         
         if (!notification.Processing)
-            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
+            _log.Debug("Donation with transaction reference '{0}' set to status {1}",
                 new object[] { notification.TransactionReference, donation.Status });
     }
 
