@@ -1,4 +1,5 @@
-﻿using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Infrastructure.Converters;
+using Givt.OnlineCheckout.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,6 +22,12 @@ public class CountryDataConfiguration : IEntityTypeConfiguration<CountryData>
         builder
             .Property(e => e.CountryCode)
             .HasMaxLength(2);
+
+        builder.Property(x => x.PaymentMethods)
+            .HasColumnType(nameof(UInt64))
+            .HasConversion(PaymentMethodsConverter.GetConverter())
+            .Metadata.SetValueComparer(PaymentMethodsConverter.GetComparer());
+
         builder
             .Property(e => e.Currency)
             .HasMaxLength(3);

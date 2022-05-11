@@ -11,6 +11,7 @@ public record CreateDonationIntentCommandHandler(ISinglePaymentService SinglePay
                 request.Currency,
                 request.Amount,
                 request.Amount * (request.ApplicationFeePercentage / 100M) + request.ApplicationFeeFixedAmount,
+                request.Description,
                 request.Medium.Organisation.PaymentProviderAccountReference,
                 request.PaymentMethod);
 

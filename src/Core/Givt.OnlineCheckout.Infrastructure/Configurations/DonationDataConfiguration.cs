@@ -23,8 +23,11 @@ public class DonationDataConfiguration : IEntityTypeConfiguration<DonationData>
             .Property(e => e.TransactionReference)
             .HasMaxLength(50); // Stripe seems to use 27 characters
 
-
         builder
+            .Property(e => e.Fingerprint)
+            .HasMaxLength(20);
+
+            builder
             .HasOne(e => e.Donor)
             .WithMany(d => d.Donations)
             .IsRequired(false);

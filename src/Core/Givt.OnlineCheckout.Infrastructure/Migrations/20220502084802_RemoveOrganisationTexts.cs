@@ -14,8 +14,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Title",
                 table: "MediumTexts",
-                type: "character varying(35)",
-                maxLength: 35,
+                type: "character varying(175)",
+                maxLength: 175,
                 nullable: true);
         }
 

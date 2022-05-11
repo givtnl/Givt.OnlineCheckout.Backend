@@ -1,4 +1,5 @@
-﻿using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Infrastructure.Converters;
+using Givt.OnlineCheckout.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +18,7 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
 
             builder
                 .Property(e => e.Name)
-                .HasMaxLength(35);
+                .HasMaxLength(175);
 
             builder
                 .Property(e => e.PaymentProviderAccountReference)
@@ -28,7 +29,12 @@ namespace Givt.OnlineCheckout.Infrastructure.Configurations
                 .HasMaxLength(20);
 
             builder.Property(x => x.LogoImageLink)
-                .HasMaxLength(100);
+                .HasMaxLength(200);
+
+            builder.Property(x => x.PaymentMethods)
+                .HasColumnType(nameof(UInt64))
+                .HasConversion(PaymentMethodsConverter.GetConverter())
+                .Metadata.SetValueComparer(PaymentMethodsConverter.GetComparer());
 
             builder.Property(x => x.RSIN)
                 .HasMaxLength(50); // only 9 or 14 needed? 9 + 1 + 2 + 2

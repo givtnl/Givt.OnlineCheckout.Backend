@@ -27,23 +27,9 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.Country,
                 options => options.MapFrom(src => src.CountryCode)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.GetPaymentMethods()
-            ))
-            ;
+             );
 
-        CreateMap<MediumData, MediumDetailModel>()
-            .ForMember(
-                dst => dst.Amounts,
-                options => options.MapFrom(
-                    src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
-                )
-            );
-        
-
+        CreateMap<MediumData, MediumDetailModel>();
         CreateMap<MediumTexts, MediumTextModel>();
         CreateMap<MediumTexts, CreateOrganisationMediumTextsResult>();
         CreateMap<MediumTexts, ReadOrganisationMediumTextsResult>();
@@ -57,12 +43,7 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.CountryCode,
                 options => options.MapFrom(src => src.Country)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.PaymentMethods.MapPaymentMethods())
-            );
+             );
         CreateMap<UpdateOrganisationCommand, OrganisationData>()
             .ForMember(
                 dst => dst.Id,
@@ -73,12 +54,7 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.CountryCode,
                 options => options.MapFrom(src => src.Country)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.PaymentMethods.MapPaymentMethods())
-            );
+             );
         
         CreateMap<CreateOrganisationMediumCommand, MediumData>()
             .ForMember(
