@@ -1,6 +1,6 @@
 ﻿namespace Givt.OnlineCheckout.Persistance.Enums;
 
-public enum PaymentMethod
+public enum PaymentMethod : byte
 {
     Bancontact  = 0, // Bank redirect. BE / EUR
     Card        = 1, // credit or debit. Global, 135+ currencies

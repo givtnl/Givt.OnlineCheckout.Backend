@@ -1,7 +1,6 @@
 ﻿using Givt.OnlineCheckout.Integrations.Interfaces;
-
 using Stripe;
-
+using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
 namespace Givt.OnlineCheckout.Integrations.Stripe
 {
     internal class StripePaymentNotification : ISinglePaymentNotification
@@ -17,15 +16,23 @@ namespace Givt.OnlineCheckout.Integrations.Stripe
             paymentIntent = stripeEvent.Data.Object as PaymentIntent;
         }
 
+        #region Properties
         public string TransactionReference => paymentIntent?.Id;
-
         // TODO: this is the datetime of the creation of the payment intent. Should get the transaction datetime
-        public DateTime? TransactionDate { get => paymentIntent.Created; }
+        public DateTime? TransactionDate => paymentIntent.Created;
+        public PaymentMethod PaymentMethod => (PaymentMethod)Enum.Parse(typeof(PaymentMethod), paymentIntent.GetPaymentMethod(), true);
+        public string Fingerprint => paymentIntent.GetFingerprint();
+
+        #endregion
+
+        #region Status
 
         public bool Processing => stripeEvent?.Type == Events.PaymentIntentProcessing;
         public bool Succeeded => stripeEvent?.Type == Events.PaymentIntentSucceeded;
         public bool Cancelled => stripeEvent?.Type == Events.PaymentIntentCanceled;
         public bool Failed => stripeEvent?.Type == Events.PaymentIntentPaymentFailed;
+
+        #endregion
 
     }
 }
