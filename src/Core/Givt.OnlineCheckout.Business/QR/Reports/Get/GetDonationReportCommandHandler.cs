@@ -22,10 +22,14 @@ public record GetDonationReportCommandHandler(OnlineCheckoutContext context, IMa
             .ThenInclude(o => o.Country)
             .Where(d => d.TransactionReference == request.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
-        // TODO: if required, find/create DonorData by email, and link to this donation
-        var culture = new CultureInfo(donation.Medium.Organisation.Country.Locale);
-        Thread.CurrentThread.CurrentCulture = culture;  
-        var donationReport = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.LanguageTag] = culture; });
+
+        // map data using the organisation's culture
+        CultureInfo culture;
+        try { culture = CultureInfo.GetCultureInfo(donation.Medium.Organisation.Country.Locale); }
+        catch { culture = CultureInfo.GetCultureInfo("en-GB"); }
+        Thread.CurrentThread.CurrentCulture = culture;
+
+        var donationReport = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
         var fileData = await pdfService.CreateSinglePaymentReport(donationReport, culture, cancellationToken);
         return mapper.Map<GetDonationReportCommandResponse>(fileData);
     }

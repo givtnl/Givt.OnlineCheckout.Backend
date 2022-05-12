@@ -7,13 +7,13 @@ using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.QR.Reports.Send;
 
 public record SendDonationReportNotificationHandler(
-    ILogger logger,
+    ILog logger,
     OnlineCheckoutContext context,
     IMapper mapper,
     IMediator mediator,
@@ -30,9 +30,10 @@ public record SendDonationReportNotificationHandler(
         var culture = new CultureInfo(donation.Medium.Organisation.Country.Locale);
         Thread.CurrentThread.CurrentCulture = culture;
         // Google Docs expects this
-        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.LanguageTag] = culture; });
+        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
         // the Postmark template expects this
-        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items[DonationReportMappingProfile.LanguageTag] = culture; });
+        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
+
         var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, culture, cancellationToken);
 
         var email = new BaseEmailModel

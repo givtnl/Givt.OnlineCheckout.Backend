@@ -21,6 +21,14 @@ namespace Givt.OnlineCheckout.Business.Extensions
             return donation.Medium.GetLocalisedText(nameof(MediumTexts.Goal), language);
         }
 
+        public static string GetThankYou(this DonationData donation, string language)
+        {
+            if (String.IsNullOrEmpty(language?.Replace('_', '-')?.Split('-')?.FirstOrDefault()))
+                language = "en";
+
+            return donation.Medium.GetLocalisedText(nameof(MediumTexts.ThankYou), language);
+        }
+
         public static string GetTimestamp(this DonationData donation, string language)
         {
             if (String.IsNullOrEmpty(language?.Replace('_', '-')?.Split('-')?.FirstOrDefault()))
