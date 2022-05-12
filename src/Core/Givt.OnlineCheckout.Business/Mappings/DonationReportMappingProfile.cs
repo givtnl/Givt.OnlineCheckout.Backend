@@ -50,7 +50,7 @@ namespace Givt.OnlineCheckout.Business.Mappings
                         (src, dest, _, context) => src.GetThankYou((context.Items[CultureTag] as CultureInfo)?.TwoLetterISOLanguageName)))
                 .ForMember(dst => dst.Timestamp,
                     options => options.MapFrom(
-                        (src, _, _, _) => src.TransactionDate))
+                        (src, _, _, _) => src.TransactionDate?.AddMinutes(-src.TimezoneOffset)))
                 .ForMember(dst => dst.Amount,
                     options => options.MapFrom(
                         (src) => ((int)(src.Amount * 100)) / 100.0m))
