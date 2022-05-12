@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PostmarkDotNet;
+using System.Globalization;
 
 namespace Givt.OnlineCheckout.Integrations.Postmark;
 
@@ -31,6 +32,7 @@ public class PostmarkEmailService<TNotification> : INotificationHandler<TNotific
         if (String.IsNullOrWhiteSpace(emailData.To))
             throw new ArgumentNullException("emailData.To");
 
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(emailData.Locale);
         string template;
         PostmarkMessageBase message;
         switch (emailData.EmailType)

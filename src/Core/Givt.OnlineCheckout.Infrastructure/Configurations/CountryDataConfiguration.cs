@@ -31,5 +31,24 @@ public class CountryDataConfiguration : IEntityTypeConfiguration<CountryData>
         builder
             .Property(e => e.Currency)
             .HasMaxLength(3);
+        builder
+            .Property(e => e.Locale)
+            .HasMaxLength(20); // length at least 14 (ca-ES-valencia = catalan spain valencia dialect)
+
+        builder
+            .Property(e => e.GivtName)
+            .HasMaxLength(100);
+        builder
+            .Property(e => e.GivtAddress)
+            .HasMaxLength(200);
+        builder
+            .Property(e => e.GivtEmail)
+            .HasMaxLength(200);
+        builder
+            .Property(e => e.GivtPhoneNumber)
+            .HasMaxLength(200);
+        builder
+            .Property(e => e.GivtWebsite)
+            .HasMaxLength(200);
     }
 }

@@ -22,6 +22,7 @@ namespace Givt.OnlineCheckout.Integrations.Interfaces
         string AttachmentFileName { get; }
         string AttachmentContentType { get; set; }
         List<string> AttachmentFiles { get; }
+        string Locale { get; }
     }
 
 }

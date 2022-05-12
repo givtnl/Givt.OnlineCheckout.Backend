@@ -1,7 +1,8 @@
 using Givt.OnlineCheckout.API.Utils;
+using Givt.OnlineCheckout.Infrastructure.Loggers;
 using Microsoft.IdentityModel.Tokens;
 using NUnit.Framework;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Givt.OnlineCheckout.Api.Test
     public class JwtTokenHandlerTest
     {
         private JwtOptions _options;
-        private ILogger _logger;
+        private ILog _logger;
         private SecurityKey _key;
 
         [SetUp]
@@ -27,8 +28,7 @@ namespace Givt.OnlineCheckout.Api.Test
                 ExpireHours = 24
             };
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.IssuerSigningKey));
-            var loggerConfig = new LoggerConfiguration().WriteTo.Console();
-            _logger = loggerConfig.CreateLogger();
+            _logger = new LogitHttpLogger("GOC Debug - Test", "73b6d8f0-132f-45ff-a8cf-6654ffee1922");
         }
 
         [Test]
