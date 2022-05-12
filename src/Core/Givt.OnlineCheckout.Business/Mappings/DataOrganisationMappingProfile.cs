@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Create;
@@ -9,7 +8,6 @@ using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using Givt.OnlineCheckout.Persistance.Entities;
-using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.Mappings;
 

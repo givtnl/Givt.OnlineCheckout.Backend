@@ -26,4 +26,6 @@ public class DonationReport
     public string Currency { get; set; }
     public decimal Amount { get; set; }
     public string PaymentMethod { get; set; }
+    public string Fingerprint { get; set; }
+    public GivtInfo Givt { get; set; }
 }
