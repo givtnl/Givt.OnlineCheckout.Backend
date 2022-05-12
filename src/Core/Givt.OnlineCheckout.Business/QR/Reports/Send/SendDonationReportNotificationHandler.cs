@@ -6,12 +6,12 @@ using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.Business.QR.Reports.Send;
 
 public record SendDonationReportNotificationHandler(
-    ILogger logger,
+    ILog logger,
     OnlineCheckoutContext context,
     IMapper mapper,
     IMediator mediator,
