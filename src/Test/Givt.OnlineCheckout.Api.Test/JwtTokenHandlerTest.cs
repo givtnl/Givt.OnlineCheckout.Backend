@@ -6,6 +6,7 @@ using Serilog.Sinks.Http.Logger;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Moq;
 
 namespace Givt.OnlineCheckout.Api.Test
 {
@@ -14,6 +15,7 @@ namespace Givt.OnlineCheckout.Api.Test
         private JwtOptions _options;
         private ILog _logger;
         private SecurityKey _key;
+    
 
         [SetUp]
         public void Setup()
@@ -28,7 +30,10 @@ namespace Givt.OnlineCheckout.Api.Test
                 ExpireHours = 24
             };
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.IssuerSigningKey));
-            _logger = new LogitHttpLogger("GOC Debug - Test", "73b6d8f0-132f-45ff-a8cf-6654ffee1922");
+            var logger = new Mock<ILog>();
+            _logger = logger.Object;
+            logger.Setup(x => x.Debug(It.IsAny<string>(), It.IsAny<object[]>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Callback<string, object[], string, string, int>((msg, args, method, file, linenr) => Console.WriteLine(msg));
         }
 
         [Test]
