@@ -46,7 +46,6 @@ namespace Givt.OnlineCheckout.API
             ConfigureOptions(services);
 
             services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddSingleton(new MapperConfiguration(mc =>
             {
@@ -87,6 +86,7 @@ namespace Givt.OnlineCheckout.API
                 typeof(StripeIntegration).Assembly,                         // Givt.OnlineCheckout.Integrations.Stripe
                 typeof(PostmarkEmailService<IEmailNotification>).Assembly   // Givt.OnlineCheckout.Integrations.Postmark
             );
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddTransient(typeof(JwtTokenHandler));
             services.AddTransient<IPdfService, GooglePdfService>();
@@ -155,7 +155,6 @@ namespace Givt.OnlineCheckout.API
         public void Configure(IApplicationBuilder app, IHostEnvironment env, ILog logger)
         {
             logger.Information($"Givt.OnlineCheckout.API started on {env.EnvironmentName}");
-            logger.Information("Ah yeeet this is a test");
 
             // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
