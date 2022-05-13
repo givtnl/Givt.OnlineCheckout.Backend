@@ -17,9 +17,9 @@ namespace Givt.OnlineCheckout.Integrations.Stripe
         }
 
         #region Properties
-        public string TransactionReference => paymentIntent?.Id;
-        // TODO: this is the datetime of the creation of the payment intent. Should get the transaction datetime
-        public DateTime? TransactionDate => paymentIntent.Created;
+        public string TransactionReference => paymentIntent?.Id;        
+        // Get the transaction datetime, fallback to the datetime of the creation of the payment intent. 
+        public DateTime? TransactionDate { get => paymentIntent.Charges?.First()?.Created ?? paymentIntent.Created; }
         public PaymentMethod PaymentMethod => (PaymentMethod)Enum.Parse(typeof(PaymentMethod), paymentIntent.GetPaymentMethod(), true);
         public string Fingerprint => paymentIntent.GetFingerprint();
 

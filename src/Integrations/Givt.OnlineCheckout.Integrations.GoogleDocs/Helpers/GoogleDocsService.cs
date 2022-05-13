@@ -48,12 +48,14 @@ public class GoogleDocsService : BaseGoogleService<DocsService>
 
     private static Request CreateRemoveLineRequest(string searchText)
     {
+        // Google Docs do not have named Bookmarks or other stuff that allows to do something generic.
+        // So here we only search for some text and replace it with nothing. 
         var req = new Request();
         var criteria = new SubstringMatchCriteria
         {
             MatchCase = false,
-            Text = $"{searchText}" // TODO: also remove tabs and spaces, and end of line
-        };      
+            Text = searchText // + "\t" this works for the TAB, but we also need the newline character(s)
+        };
         var replaceAllTextRequest = new ReplaceAllTextRequest
         {
             ContainsText = criteria,
