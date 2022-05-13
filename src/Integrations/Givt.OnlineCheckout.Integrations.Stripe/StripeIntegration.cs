@@ -3,23 +3,16 @@ using MediatR;
 using Serilog.Sinks.Http.Logger;
 using Stripe;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
 
 namespace Givt.OnlineCheckout.Integrations.Stripe;
 
-public class StripeIntegration : StripeIntegration<IRawSinglePaymentNotification>
-{
-    public StripeIntegration(StripeOptions settings, IMediator mediator, ILog log) :
-        base(settings, mediator, log)
-    { }
-}
-
 // Setup polymorphic dispatch, this handler is now a "generic" handler for every IRawSinglePaymentNotification
-public class StripeIntegration<TNotification> : ISinglePaymentService, INotificationHandler<TNotification>
-    where TNotification : IRawSinglePaymentNotification
+public class StripeIntegration : ISinglePaymentService
 {
-
-    private const string SIGNATURE_HEADER_KEY = "Stripe-Signature";
+    private const string SignatureHeaderKey = "Stripe-Signature";
     private readonly StripeOptions _settings;
     private readonly IMediator _mediator;
     private readonly ILog _log;
@@ -83,46 +76,28 @@ public class StripeIntegration<TNotification> : ISinglePaymentService, INotifica
         return new StripePaymentIntent(paymentIntent.Id, paymentIntent.ClientSecret);
     }
 
-    public async Task Handle(TNotification notification, CancellationToken cancellationToken)
+    public bool CanHandle(IHeaderDictionary headerDictionary)
     {
-        if (notification is not IRawSinglePaymentNotification rawNotification)
-            return;
-
-        Event stripeEvent;
-        StripeConfiguration.ApiKey = _settings.StripeApiKey;
-        _log.Debug("Stripe notification received: {0}", new object[] { rawNotification.RawData });
-        if (rawNotification.MetaData.ContainsKey(SIGNATURE_HEADER_KEY))
-        {
-            try
-            {
-                var signature = rawNotification.MetaData[SIGNATURE_HEADER_KEY].ToString();
-                _log.Debug("Stripe event signature: '{0}'", new object[] { signature });
-                stripeEvent = EventUtility.ConstructEvent(rawNotification.RawData, signature, _settings.EndpointSecret);
-            }
-            catch (Exception ex)
-            {
-                _log.Warning("Failed to decode Stripe event data: {0}", new object[] { ex.Message });
-                return;
-            }
-        }
-        else
-        {
-            // call is not from Stripe itself, perhaps an attack / spoofing attempt?
-            _log.Debug("No Stripe signature!");
-            return;
-        }
-        if (stripeEvent == null)
-        {
-            _log.Debug("Failed to decode Stripe event data");
-            return;
-        }
-        if (stripeEvent.Data.Object is not PaymentIntent)
-        {
-            _log.Debug("Stripe notification data does not contain PaymentIntent");
-            return;
-        }
-        ISinglePaymentNotification cookedNotification = new StripePaymentNotification(stripeEvent);
-        await _mediator.Publish(cookedNotification, cancellationToken);
+        return headerDictionary.ContainsKey(SignatureHeaderKey);
     }
 
+    public ISinglePaymentNotification ConstructNotification(string json, IHeaderDictionary headerDictionary)
+    {
+        Event stripeEvent = EventUtility.ConstructEvent(json, headerDictionary[SignatureHeaderKey], _settings.EndpointSecret);
+
+        if (stripeEvent == null)
+        {
+            _log.Warning($"Unable to decode Stripe event data", new object[]{json });
+            throw new Exception($"Unable to decode Stripe event data {json}");
+        }
+
+        if (stripeEvent?.Data.Object is not PaymentIntent)
+        {
+            _log.Warning($"Stripe notification data does not contain a PaymentIntent", new object[] { stripeEvent.Data.Object });
+            throw new Exception($"Stripe notification does not contain a PaymentIntent. {JsonConvert.SerializeObject(stripeEvent.Data.Object)}");
+        }
+
+        return new StripePaymentNotification(stripeEvent);
+    }
 }
+
