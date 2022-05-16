@@ -15,6 +15,8 @@ public class CountryData : AuditableEntity
     public string GivtEmail { get; set; }
     public string GivtPhoneNumber { get; set; }
     public string GivtWebsite { get; set; }
+    public string GivtWantKnowMore { get; set; }
+    public string GivtPrivacyPolicy { get; set; }
     public decimal ApplicationFeePercentage { get; set; }
     public decimal ApplicationFeeFixedAmount { get; set; }
 }

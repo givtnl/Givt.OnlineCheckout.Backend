@@ -11,5 +11,7 @@ public class GetMediumResponse
     public string[] PaymentMethods { get; set; }
     public string Currency { get; set; }
     public decimal[] Amounts { get; set; }
+    public string WantKnowMoreLink { get; set; }
+    public string PrivacyPolicyLink { get; set; }
 
 }

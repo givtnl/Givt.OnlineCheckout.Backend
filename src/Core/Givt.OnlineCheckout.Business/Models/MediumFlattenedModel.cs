@@ -14,4 +14,6 @@ public class MediumFlattenedModel
     public string Currency { get; set; }
     public decimal[] Amounts { get; set; }
     public string ThankYou { get; set; }
+    public string WantKnowMoreLink { get; set; }
+    public string PrivacyPolicyLink { get; set; }
 }
