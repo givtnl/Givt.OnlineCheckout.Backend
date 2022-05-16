@@ -50,5 +50,11 @@ public class CountryDataConfiguration : IEntityTypeConfiguration<CountryData>
         builder
             .Property(e => e.GivtWebsite)
             .HasMaxLength(200);
+        builder
+            .Property(e => e.GivtWantKnowMore)
+            .HasMaxLength(200);
+        builder
+            .Property(e => e.GivtPrivacyPolicy)
+            .HasMaxLength(200);
     }
 }
