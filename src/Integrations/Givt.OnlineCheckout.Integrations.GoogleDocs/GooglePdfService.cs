@@ -20,28 +20,25 @@ public class GooglePdfService : IPdfService
 
     public async Task<IFileData> CreateSinglePaymentReport(DonationReport report, CultureInfo cultureInfo, CancellationToken cancellationToken)
     {
-        var currSymbol = GetCurrencySymbol(report.Currency);
+        //var currSymbol = GetCurrencySymbol(report.Currency);
 
         var parameters = new Dictionary<string, string>
         {
             {"OrganisationName", report.OrganisationName},
             {"DateGenerated", report.Timestamp.ToString(cultureInfo)},
-            {"DonationAmount", $"{currSymbol}{report.Amount.ToString("N2" ,cultureInfo)}"},
-            {"RSIN", report.RSIN
-            },
-            {"hmrcReference",
-                String.IsNullOrEmpty(report.HmrcReference ) ?
-                null :
-                "HMRC Reference: " + report.HmrcReference + " "
-            },
-            {"charityNumber",
-                String.IsNullOrEmpty(report.CharityNumber) ?
-                null :
-                "Charity Number: " + report.CharityNumber + " "
-            },
+            {"DonationAmount", report.Amount.ToString("C", cultureInfo)},
+            {"RSIN", report.RSIN},
+            {"HmrcReference", report.HmrcReference},
+            {"CharityID", report.CharityNumber},
             {"PaymentMethod", report.PaymentMethod},
-            {"CampaignName", report.Goal},
+            {"Fingerprint", report.Fingerprint},
+            {"CampaignName", report.Title},
             {"CampaignThankYouSentence", report.ThankYou},
+            {"GivtName", report.Givt.Name},
+            {"GivtAddress", report.Givt.Address},
+            {"GivtEmail", report.Givt.Email},
+            {"GivtPhoneNumber", report.Givt.PhoneNumber},
+            {"GivtWebsite", report.Givt.Website},
         };
         // Now we only have english and netherlands without country, so I split on dash and take first element which is the language
         // I do this also for the name of the attachment

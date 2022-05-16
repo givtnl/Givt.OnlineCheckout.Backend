@@ -15,6 +15,7 @@ public class DonationsReport
     
     // Campaign info => This is for now like this, because we only send mails for one campaign
     public string CampaignName { get; set; }
+    public GivtInfo Givt { get; set; }
 
     // donations
     public IEnumerable<Organisation> Organisations { get; set; }

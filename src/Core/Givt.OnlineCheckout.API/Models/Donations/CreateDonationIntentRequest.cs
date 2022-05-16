@@ -1,6 +1,4 @@
-﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
-
-namespace Givt.OnlineCheckout.API.Models.Donations;
+﻿namespace Givt.OnlineCheckout.API.Models.Donations;
 
 public class CreateDonationIntentRequest
 {    
@@ -8,5 +6,6 @@ public class CreateDonationIntentRequest
     public decimal Amount { get; set; }
     public string Medium { get; set; }
     public string PaymentMethod { get; set; }
+    public string Language { get; set; }
     public int TimezoneOffset { get; set; } 
 }

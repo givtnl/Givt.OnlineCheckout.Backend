@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.API.Utils;
 
@@ -9,18 +10,18 @@ public class JwtTokenHandler
 {
     private const string S_TRANSACTIONREFERENCE = "txref";
 
-    private readonly Serilog.ILogger _logger;
+    private readonly ILog _log;
     private readonly JwtOptions _options;
 
-    public JwtTokenHandler(Serilog.ILogger logger, JwtOptions options)
+    public JwtTokenHandler(ILog log, JwtOptions options)
     {
-        _logger = logger;
+        _log = log;
         _options = options;
     }
 
     public string GetBearerToken(string transactionReference)
     {
-        _logger.Debug($"Creating JwtToken for '{transactionReference}'");
+        _log.Debug($"Creating JwtToken for '{transactionReference}'");
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString("N")), // a dummy user name
@@ -52,7 +53,7 @@ public class JwtTokenHandler
             ?.Value;
         if (String.IsNullOrEmpty(result))
             throw new UnauthorizedAccessException("Bearer does not have a transaction reference");
-        _logger.Debug($"Bearer has transaction reference '{result}'");
+        _log.Debug($"Bearer has transaction reference '{result}'");
         return result;
     }
 

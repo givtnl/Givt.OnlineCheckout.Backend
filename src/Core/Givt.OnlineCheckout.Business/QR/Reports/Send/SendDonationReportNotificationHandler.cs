@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Givt.OnlineCheckout.Business.Mappings;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Givt.OnlineCheckout.Integrations.Interfaces;
@@ -6,12 +7,13 @@ using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
+using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.QR.Reports.Send;
 
 public record SendDonationReportNotificationHandler(
-    ILogger logger,
+    ILog logger,
     OnlineCheckoutContext context,
     IMapper mapper,
     IMediator mediator,
@@ -25,11 +27,14 @@ public record SendDonationReportNotificationHandler(
                 new object[] { notification.TransactionReference, notification.Email });
         var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
+        var culture = new CultureInfo(donation.Medium.Organisation.Country.Locale);
+        Thread.CurrentThread.CurrentCulture = culture;
         // Google Docs expects this
-        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items["Language"] = notification.Culture; });
+        var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
         // the Postmark template expects this
-        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items["Language"] = notification.Culture; });
-        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, notification.Culture, cancellationToken);
+        var multipleDonationMessage = mapper.Map<DonationsReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
+
+        var fileData = await pdfService.CreateSinglePaymentReport(singleDonationMessage, culture, cancellationToken);
 
         var email = new BaseEmailModel
         {
@@ -39,6 +44,7 @@ public record SendDonationReportNotificationHandler(
             Attachment = fileData.Content,
             AttachmentFileName = fileData.Filename,
             AttachmentContentType = fileData.MimeType,
+            Locale = donation.Medium.Organisation.Country.Locale
         };
 
         await mediator.Publish(email, cancellationToken);
@@ -51,6 +57,7 @@ public record SendDonationReportNotificationHandler(
             .ThenInclude(m => m.Texts)
             .Include(d => d.Medium)
             .ThenInclude(m => m.Organisation)
+            .ThenInclude(o => o.Country)
             .Where(d => d.TransactionReference == transactionReference)
             .FirstOrDefaultAsync(cancellationToken);
     }

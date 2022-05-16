@@ -22,5 +22,6 @@ namespace Givt.OnlineCheckout.Business.Models
         public string AttachmentFileName { get; set; }
         public string AttachmentContentType { get; set; }
         public List<string> AttachmentFiles { get; set; }
+        public string Locale { get; set; }
     }
 }

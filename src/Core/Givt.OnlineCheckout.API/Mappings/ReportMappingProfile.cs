@@ -13,10 +13,10 @@ public class ReportMappingProfile : Profile
     public ReportMappingProfile()
     {
         CreateMap<GetDonationReportRequest, GetDonationReportCommand>()
-            .ForMember(x => x.Culture,
-                options => options.MapFrom(
-                    (src, _, _, context) => context.Items[Keys.CULTURE] as CultureInfo
-                ))
+            //.ForMember(x => x.Culture,
+            //    options => options.MapFrom(
+            //        (src, _, _, context) => context.Items[Keys.CULTURE] as CultureInfo
+            //    ))
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>
@@ -27,10 +27,10 @@ public class ReportMappingProfile : Profile
 
 
         CreateMap<SendDonationReportRequest, SendDonationReportNotification>()
-            .ForMember(x => x.Culture,
-                options => options.MapFrom(
-                    (src, _, _, context) => context.Items[Keys.CULTURE] as CultureInfo
-                ))
+            //.ForMember(x => x.Culture,
+            //    options => options.MapFrom(
+            //        (src, _, _, context) => context.Items[Keys.CULTURE] as CultureInfo
+            //    ))
             .ForMember(x => x.TransactionReference,
                 options => options.MapFrom(
                     (src, _, _, context) =>

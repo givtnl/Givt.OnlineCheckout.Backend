@@ -3,6 +3,7 @@ using System;
 using Givt.OnlineCheckout.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Givt.OnlineCheckout.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineCheckoutContext))]
-    partial class OnlineCheckoutContextModelSnapshot : ModelSnapshot
+    [Migration("20220510212939_MappingDenormalisations")]
+    partial class MappingDenormalisations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,38 +51,6 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("GivtAddress")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GivtEmail")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GivtName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("GivtPhoneNumber")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GivtPrivacyPolicy")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GivtWantKnowMore")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GivtWebsite")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("Locale")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
 
                     b.Property<ulong?>("PaymentMethods")
                         .HasColumnType("numeric(20,0)");
@@ -120,15 +90,8 @@ namespace Givt.OnlineCheckout.Infrastructure.Migrations
                     b.Property<Guid?>("DonorId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Fingerprint")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.Property<long?>("MediumId")
                         .HasColumnType("bigint");
-
-                    b.Property<byte?>("PaymentMethod")
-                        .HasColumnType("smallint");
 
                     b.Property<byte>("Status")
                         .HasColumnType("smallint");

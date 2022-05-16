@@ -45,10 +45,7 @@ namespace Givt.OnlineCheckout.API
         {
             ConfigureOptions(services);
 
-            var log = new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]);
-            services.AddSingleton<ILog, LogitHttpLogger>(x => log);
-            services.AddSingleton(log.SerilogLogger);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddSingleton<ILog, LogitHttpLogger>(x => new LogitHttpLogger(Configuration["LogitConfiguration:Tag"], Configuration["LogitConfiguration:Key"]));
 
             services.AddSingleton(new MapperConfiguration(mc =>
             {
@@ -89,6 +86,7 @@ namespace Givt.OnlineCheckout.API
                 typeof(StripeIntegration).Assembly,                         // Givt.OnlineCheckout.Integrations.Stripe
                 typeof(PostmarkEmailService<IEmailNotification>).Assembly   // Givt.OnlineCheckout.Integrations.Postmark
             );
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddTransient(typeof(JwtTokenHandler));
             services.AddTransient<IPdfService, GooglePdfService>();

@@ -1,20 +1,19 @@
-﻿using Givt.OnlineCheckout.Integrations.Interfaces.Models;
-using Givt.OnlineCheckout.Persistance.Entities;
+﻿using Givt.OnlineCheckout.Persistance.Entities;
+using Givt.OnlineCheckout.Persistance.Enums;
 using System.Reflection;
-using integrations = Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
 namespace Givt.OnlineCheckout.Business.Extensions;
 
 public static class MediumDataExtensions
 {
-    public static IEnumerable<integrations.PaymentMethod> GetPaymentMethods(this MediumData medium)
+    public static IEnumerable<PaymentMethod> GetPaymentMethods(this MediumData medium)
     {
-        if (medium.Organisation?.PaymentMethods > 0)
-            return medium.Organisation?.PaymentMethods.MapPaymentMethods();
+        if (medium.Organisation?.PaymentMethods?.Any() == true)
+            return medium.Organisation.PaymentMethods;
 
-        if (medium.Organisation?.Country?.PaymentMethods > 0)
-            return medium.Organisation?.Country?.PaymentMethods.MapPaymentMethods();
-        
+        if (medium.Organisation?.Country?.PaymentMethods?.Any() == true)
+            return medium.Organisation.Country.PaymentMethods;
+
         return new List<PaymentMethod>();
     }
 

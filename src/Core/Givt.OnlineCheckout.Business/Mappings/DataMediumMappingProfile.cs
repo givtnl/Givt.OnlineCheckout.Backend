@@ -2,7 +2,6 @@
 using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Persistance.Entities;
-using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.Mappings;
 
@@ -12,11 +11,6 @@ public class DataMediumMappingProfile : Profile
     public DataMediumMappingProfile()
     {
         CreateMap<MediumData, MediumFlattenedModel>()
-            .ForMember(
-                x => x.Amounts,
-                options => options.MapFrom(
-                    src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
-                    ))
             .ForMember(
                 x => x.OrganisationName,
                 options => options.MapFrom(
@@ -37,6 +31,10 @@ public class DataMediumMappingProfile : Profile
                 options => options.MapFrom(
                     src => src.Organisation.Country.Currency
                 ))
+            .ForMember(x => x.OrganisationLogoLink,
+                options => options.MapFrom(
+                    (src, dest) => src.Organisation.LogoImageLink
+                ))
             // select best Title, Goal and ThankYou texts based on dst.Locale
             .ForMember(
                 x => x.Title,
@@ -53,9 +51,15 @@ public class DataMediumMappingProfile : Profile
                 options => options.MapFrom(
                     (src, dest, _, context) => src.GetLocalisedText(nameof(MediumTexts.ThankYou), context.Items[LanguageTag] as string)
                 ))
-            .ForMember(x => x.OrganisationLogoLink,
+            .ForMember(
+                x => x.WantKnowMoreLink,
                 options => options.MapFrom(
-                    (src, dest) => src.Organisation.LogoImageLink
+                    src => src.Organisation.Country.GivtWantKnowMore
+                ))
+            .ForMember(
+                x => x.PrivacyPolicyLink,
+                options => options.MapFrom(
+                    src => src.Organisation.Country.GivtPrivacyPolicy
                 ))
             ;
     }

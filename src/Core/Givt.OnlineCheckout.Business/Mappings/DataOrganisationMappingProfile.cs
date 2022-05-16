@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Givt.OnlineCheckout.Business.Extensions;
 using Givt.OnlineCheckout.Business.Models;
 using Givt.OnlineCheckout.Business.QR.Organisations.Create;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Create;
@@ -9,7 +8,6 @@ using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Texts.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Mediums.Update;
 using Givt.OnlineCheckout.Business.QR.Organisations.Update;
 using Givt.OnlineCheckout.Persistance.Entities;
-using System.Globalization;
 
 namespace Givt.OnlineCheckout.Business.Mappings;
 
@@ -27,23 +25,9 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.Country,
                 options => options.MapFrom(src => src.CountryCode)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.GetPaymentMethods()
-            ))
-            ;
+             );
 
-        CreateMap<MediumData, MediumDetailModel>()
-            .ForMember(
-                dst => dst.Amounts,
-                options => options.MapFrom(
-                    src => src.Amounts.Split(',', StringSplitOptions.None).Select(str => decimal.Parse(str, CultureInfo.InvariantCulture)).ToList()
-                )
-            );
-        
-
+        CreateMap<MediumData, MediumDetailModel>();
         CreateMap<MediumTexts, MediumTextModel>();
         CreateMap<MediumTexts, CreateOrganisationMediumTextsResult>();
         CreateMap<MediumTexts, ReadOrganisationMediumTextsResult>();
@@ -57,12 +41,7 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.CountryCode,
                 options => options.MapFrom(src => src.Country)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.PaymentMethods.MapPaymentMethods())
-            );
+             );
         CreateMap<UpdateOrganisationCommand, OrganisationData>()
             .ForMember(
                 dst => dst.Id,
@@ -73,12 +52,7 @@ public class DataOrganisationMappingProfile : Profile
             .ForMember(
                 dst => dst.CountryCode,
                 options => options.MapFrom(src => src.Country)
-             )
-            .ForMember(
-                x => x.PaymentMethods,
-                options => options.MapFrom(
-                    src => src.PaymentMethods.MapPaymentMethods())
-            );
+             );
         
         CreateMap<CreateOrganisationMediumCommand, MediumData>()
             .ForMember(

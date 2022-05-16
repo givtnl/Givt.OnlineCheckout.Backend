@@ -7,21 +7,22 @@ using Givt.OnlineCheckout.Business.QR.Reports.Send;
 using MediatR;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.API.Controllers;
 
 [Route("api/[controller]")]
 public class ReportController : ControllerBase
 {
-    private readonly Serilog.ILogger _logger;
+    private readonly ILog _log;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly JwtTokenHandler _jwtTokenHandler;
 
-    public ReportController(Serilog.ILogger logger, IMapper mapper, IMediator mediator,
+    public ReportController(ILog log, IMapper mapper, IMediator mediator,
         JwtTokenHandler jwtTokenHandler)
     {
-        _logger = logger;
+        _log = log;
         _mapper = mapper;
         _mediator = mediator;
         _jwtTokenHandler = jwtTokenHandler;
@@ -42,7 +43,7 @@ public class ReportController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] GetDonationReportRequest request,
         CancellationToken cancellationToken)
     {
-        _logger.Debug("Get Report/singleDonation {0}", request);
+        _log.Debug("Get Report/singleDonation {0}", new object[]{request});
         try
         {
             var _ = _jwtTokenHandler.GetTransactionReference(HttpContext.User);
@@ -77,7 +78,7 @@ public class ReportController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Send([FromQuery] SendDonationReportRequest request)
     {
-        _logger.Debug("Post Report/singleDonation {0}", request);
+        _log.Debug("Post Report/singleDonation {0}", new object[] {request});
 
         request.Language = LanguageUtils.GetLanguageId(request.Language, HttpContext.Request.Headers.AcceptLanguage, "en");        
 

@@ -4,7 +4,7 @@ using Givt.OnlineCheckout.Persistance.Entities;
 using Givt.OnlineCheckout.Persistance.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Serilog.Sinks.Http.Logger;
 
 namespace Givt.OnlineCheckout.Business.PaymentProviders;
 
@@ -12,14 +12,12 @@ namespace Givt.OnlineCheckout.Business.PaymentProviders;
 public class PaymentProviderNotificationHandler<TPaymentNotification> : INotificationHandler<TPaymentNotification>
     where TPaymentNotification : ISinglePaymentNotification
 {
-    private readonly ILogger _log;
+    private readonly ILog _log;
     //private readonly IConfiguration _configuration;
     private readonly OnlineCheckoutContext _context;
     //private readonly IMediator _mediator;
-
-    public ILogger Log => _log;
-
-    public PaymentProviderNotificationHandler(ILogger log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
+    
+    public PaymentProviderNotificationHandler(ILog log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
     {
         _log = log;
         //_configuration = config;
@@ -32,14 +30,14 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         if (notification is not ISinglePaymentNotification spNotification)
             return;
 
-        Log.Debug("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
+        _log.Information("PaymentProviderNotificationHandler.Handle SinglePaymentNotification");
         // load the matching donation
         var donation = await _context.Donations
             .Where(donation => donation.TransactionReference == spNotification.TransactionReference)
             .FirstOrDefaultAsync(cancellationToken);
         if (donation == null)
         {
-            Log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
+            _log.Warning("No donation found with transaction reference '{0}'", new object[] { spNotification.TransactionReference });
             return; // donation not found
         }
 
@@ -53,31 +51,28 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
         // update donation status
         if (notification.Processing)
             donation.Status = DonationStatus.Processing;
-        else if (notification.Succeeded)
-        {
-            if (donation.Status != DonationStatus.Succeeded)
-            {
-                donation.Status = DonationStatus.Succeeded;
-                donation.TransactionDate = notification.TransactionDate;
-                Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                    new object[] { notification.TransactionReference, donation.Status });
-            }
-        }
         else if (notification.Cancelled)
-        {
             donation.Status = DonationStatus.Cancelled;
-            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { notification.TransactionReference, donation.Status });
-        }
         else if (notification.Failed)
-        {
             donation.Status = DonationStatus.PaymentFailed;
-            Log.Debug("Donation with transaction reference '{0}' set to status {1}",
-                new object[] { notification.TransactionReference, donation.Status });
-        }
-
+        else if (notification.Succeeded)
+            HandleNotificationSucceeded(notification, donation);
+        
         // write changes
         await _context.SaveChangesAsync(cancellationToken);
+        
+        if (!notification.Processing)
+            _log.Information("Donation with transaction reference '{0}' set to status {1}",
+                new object[] { notification.TransactionReference, donation.Status });
     }
 
+    private static void HandleNotificationSucceeded(ISinglePaymentNotification notification, DonationData donation)
+    {
+        if (donation.Status == DonationStatus.Succeeded) return;
+        
+        donation.Status = DonationStatus.Succeeded;
+        donation.TransactionDate = notification.TransactionDate;
+        donation.PaymentMethod = (PaymentMethod)notification.PaymentMethod;
+        donation.Fingerprint = notification.Fingerprint;
+    }
 }
