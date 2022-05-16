@@ -55,15 +55,16 @@ public class GooglePdfService : IPdfService
         };
         var attachmentName = language switch
         {
-            "nl" => "ontvangstbewijs.pdf",
-            "de" => "erhalt.pdf",
-            _ => "receipt.pdf"
+            "nl" => "ontvangstbewijs",
+            "de" => "erhalt",
+            _ => "receipt"
         };
         var document = await GenerateDocument(parameters, templateId, cancellationToken);
+
         return new GoogleFile()
         {
             Content = document,
-            Filename = attachmentName,
+            Filename = $"{attachmentName} - {report.Timestamp.ToString(cultureInfo)}.pdf",
             MimeType = "application/pdf"
         };
     }
