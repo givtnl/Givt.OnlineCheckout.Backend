@@ -62,7 +62,7 @@ public class GooglePdfService : IPdfService
             "de" => "erhalt",
             _ => "receipt"
         });
-        attachmentName.Append(" - ").Append(report.Timestamp.ToString("yyyy-MM-dd HH:mm")).Append(".pdf");
+        attachmentName.Append(" - ").Append(report.Timestamp.ToString("yyyy-MM-dd HH-mm")).Append(".pdf");
         var document = await GenerateDocument(parameters, templateId, cancellationToken);
 
         return new GoogleFile()
