@@ -22,16 +22,18 @@ public class GoogleDocsService : BaseGoogleService<DocsService>
         // Fill in the file
         var requests = new List<Request>();
 
+        if (String.IsNullOrWhiteSpace(parameters["Last4"]))
+        {
+            requests.Add(CreateRemoveTextRequest("nr. x{Last4}"));
+            requests.Add(CreateRemoveTextRequest("nr x{Last4}")); // both variants
+        }
+
         foreach (var parameter in parameters)
         {
-            var req = new Request();
-            var replaceAllTextRequest = new ReplaceAllTextRequest();
-            var criteria = new SubstringMatchCriteria { Text = $"{{{parameter.Key}}}" };
-            replaceAllTextRequest.ContainsText = criteria;
-            replaceAllTextRequest.ReplaceText = parameter.Value;
-            req.ReplaceAllText = replaceAllTextRequest;
-            requests.Add(req);
+            requests.Add(CreateFillTagRequest(parameter.Key, parameter.Value));
         }
+
+        // remove text labels for lines without values
         if (String.IsNullOrWhiteSpace(parameters["RSIN"]))
             requests.Add(CreateRemoveLineRequest("RSIN:"));
         if (String.IsNullOrWhiteSpace(parameters["HmrcReference"]))
@@ -46,22 +48,53 @@ public class GoogleDocsService : BaseGoogleService<DocsService>
         await request.ExecuteAsync(token);
     }
 
+    private static Request CreateFillTagRequest(string key, string value)
+    {
+        return new Request()
+        {
+            ReplaceAllText = new ReplaceAllTextRequest
+            {
+                ContainsText = new SubstringMatchCriteria
+                {
+                    Text = "{" + key + "}",
+                    MatchCase = false,
+                },
+                ReplaceText = value
+            },
+        };
+    }
+
+    private static Request CreateRemoveTextRequest(string text)
+    {
+        return new Request()
+        {
+            ReplaceAllText = new ReplaceAllTextRequest
+            {
+                ContainsText = new SubstringMatchCriteria
+                {
+                    Text = text,
+                    MatchCase = false,
+                },
+                ReplaceText = String.Empty
+            },
+        };
+    }
+
     private static Request CreateRemoveLineRequest(string searchText)
     {
         // Google Docs do not have named Bookmarks or other stuff that allows to do something generic.
         // So here we only search for some text and replace it with nothing. 
-        var req = new Request();
-        var criteria = new SubstringMatchCriteria
+        return new Request()
         {
-            MatchCase = false,
-            Text = searchText // + "\t" this works for the TAB, but we also need the newline character(s)
+            ReplaceAllText = new ReplaceAllTextRequest
+            {
+                ContainsText = new SubstringMatchCriteria
+                {
+                    Text = searchText, // + "\t" this works for the TAB, but we also need the newline character(s)
+                    MatchCase = false,
+                },
+                ReplaceText = String.Empty
+            }
         };
-        var replaceAllTextRequest = new ReplaceAllTextRequest
-        {
-            ContainsText = criteria,
-            ReplaceText = String.Empty
-        };
-        req.ReplaceAllText = replaceAllTextRequest;
-        return req;
     }
 }

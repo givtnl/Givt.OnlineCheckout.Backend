@@ -12,15 +12,16 @@ namespace Givt.OnlineCheckout.Integrations.Stripe
         {
             // Stripe json deserialisation has constructed both Event and inner Event.Data.Object,
             // so we can just cast the Data.Object to a PaymentIntent
-            this.stripeEvent = stripeEvent;            
+            this.stripeEvent = stripeEvent;
             paymentIntent = stripeEvent.Data.Object as PaymentIntent;
         }
 
         #region Properties
-        public string TransactionReference => paymentIntent?.Id;        
+        public string TransactionReference => paymentIntent?.Id;
         // Get the transaction datetime, fallback to the datetime of the creation of the payment intent. 
         public DateTime? TransactionDate { get => paymentIntent.Charges?.First()?.Created ?? paymentIntent.Created; }
         public PaymentMethod PaymentMethod => (PaymentMethod)Enum.Parse(typeof(PaymentMethod), paymentIntent.GetPaymentMethod(), true);
+        public string Last4 => paymentIntent.GetLast4();
         public string Fingerprint => paymentIntent.GetFingerprint();
 
         #endregion
