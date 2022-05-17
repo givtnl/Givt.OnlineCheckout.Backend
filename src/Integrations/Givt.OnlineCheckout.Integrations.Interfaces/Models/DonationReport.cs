@@ -25,6 +25,7 @@ public class DonationReport
     public DateTime Timestamp { get; set; }
     public string Currency { get; set; }
     public decimal Amount { get; set; }
+    public string Last4 { get; set; }
     public string PaymentMethod { get; set; }
     public string Fingerprint { get; set; }
     public GivtInfo Givt { get; set; }
