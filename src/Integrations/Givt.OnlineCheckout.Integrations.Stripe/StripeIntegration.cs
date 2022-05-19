@@ -64,8 +64,16 @@ public class StripeIntegration : ISinglePaymentService
             Description = description,
             TransferData = new PaymentIntentTransferDataOptions() { Destination = accountId },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
-            PaymentMethodTypes = new List<string> { stripePaymentMethod }
+            PaymentMethodTypes = new List<string> { stripePaymentMethod },
         };
+        createOptions.StatementDescriptor = description[..22]; // 22 = max length allowed. 
+        if (stripePaymentMethod == "card")
+        {
+            // 22 = max length allowed after concatenation with configured "shortened descriptor"
+            // Let's hope no-one changes it.
+            createOptions.StatementDescriptorSuffix = description[..22];
+        }
+
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -87,7 +95,7 @@ public class StripeIntegration : ISinglePaymentService
 
         if (stripeEvent == null)
         {
-            _log.Warning($"Unable to decode Stripe event data", new object[]{json });
+            _log.Warning($"Unable to decode Stripe event data", new object[] { json });
             throw new Exception($"Unable to decode Stripe event data {json}");
         }
 

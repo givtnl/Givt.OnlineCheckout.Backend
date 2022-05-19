@@ -27,8 +27,12 @@ public record SendDonationReportNotificationHandler(
                 new object[] { notification.TransactionReference, notification.Email });
         var donation = await FetchDonation(notification.TransactionReference, cancellationToken);
 
-        var culture = new CultureInfo(donation.Medium.Organisation.Country.Locale);
+        // map data using the organisation's culture
+        CultureInfo culture;
+        try { culture = CultureInfo.GetCultureInfo(donation.Medium.Organisation.Country.Locale); }
+        catch { culture = CultureInfo.GetCultureInfo("en-GB"); }
         Thread.CurrentThread.CurrentCulture = culture;
+
         // Google Docs expects this
         var singleDonationMessage = mapper.Map<DonationReport>(donation, opt => { opt.Items[DonationReportMappingProfile.CultureTag] = culture; });
         // the Postmark template expects this
