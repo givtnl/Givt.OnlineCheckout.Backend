@@ -15,6 +15,7 @@ namespace Givt.OnlineCheckout.Persistance.Entities
         public MediumData Medium { get; set; }
         public DonationStatus Status { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
+        public string Last4 { get; set; }
         public string Fingerprint { get; set; }
 
         //public DateTime? CancelledAt { get; set; }

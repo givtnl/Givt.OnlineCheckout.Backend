@@ -16,7 +16,7 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
     //private readonly IConfiguration _configuration;
     private readonly OnlineCheckoutContext _context;
     //private readonly IMediator _mediator;
-    
+
     public PaymentProviderNotificationHandler(ILog log, /*IConfiguration config, */OnlineCheckoutContext context/*, IMediator mediator*/)
     {
         _log = log;
@@ -57,10 +57,10 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
             donation.Status = DonationStatus.PaymentFailed;
         else if (notification.Succeeded)
             HandleNotificationSucceeded(notification, donation);
-        
+
         // write changes
         await _context.SaveChangesAsync(cancellationToken);
-        
+
         if (!notification.Processing)
             _log.Information("Donation with transaction reference '{0}' set to status {1}",
                 new object[] { notification.TransactionReference, donation.Status });
@@ -69,10 +69,11 @@ public class PaymentProviderNotificationHandler<TPaymentNotification> : INotific
     private static void HandleNotificationSucceeded(ISinglePaymentNotification notification, DonationData donation)
     {
         if (donation.Status == DonationStatus.Succeeded) return;
-        
+
         donation.Status = DonationStatus.Succeeded;
         donation.TransactionDate = notification.TransactionDate;
         donation.PaymentMethod = (PaymentMethod)notification.PaymentMethod;
+        donation.Last4 = notification.Last4;
         donation.Fingerprint = notification.Fingerprint;
     }
 }

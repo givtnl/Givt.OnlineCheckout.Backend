@@ -32,7 +32,7 @@ namespace Givt.OnlineCheckout.Business.Mappings
             // main mapping
             CreateMap<DonationData, DonationReport>()
                 .IncludeMembers(src => src.Medium.Organisation)
-                .ForMember(dst => dst.PaymentMethod, options => options.MapFrom((src) => GetPaymentMethodText(src.PaymentMethod)))
+                .ForMember(dst => dst.PaymentMethod, options => options.MapFrom((src) => GetPaymentMethodText(src.PaymentMethod)))                
                 .ForMember(dst => dst.Locale,
                     options => options.MapFrom(
                         (src, dst, _, context) => (context.Items[CultureTag] as CultureInfo)?.TwoLetterISOLanguageName))

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using Givt.OnlineCheckout.Integrations.Interfaces;
 using Givt.OnlineCheckout.Integrations.Interfaces.Models;
 
@@ -30,6 +31,7 @@ public class GooglePdfService : IPdfService
             {"RSIN", report.RSIN},
             {"HmrcReference", report.HmrcReference},
             {"CharityID", report.CharityNumber},
+            {"Last4", report.Last4},
             {"PaymentMethod", report.PaymentMethod},
             {"Fingerprint", report.Fingerprint},
             {"CampaignName", report.Title},
@@ -53,17 +55,20 @@ public class GooglePdfService : IPdfService
             "de" => _options.DonationConfirmationDE,
             _ => _options.DonationConfirmationEN
         };
-        var attachmentName = language switch
+        var attachmentName = new StringBuilder();
+        attachmentName.Append(language switch
         {
-            "nl" => "ontvangstbewijs.pdf",
-            "de" => "erhalt.pdf",
-            _ => "receipt.pdf"
-        };
+            "nl" => "ontvangstbewijs",
+            "de" => "erhalt",
+            _ => "receipt"
+        });
+        attachmentName.Append(" - ").Append(report.Timestamp.ToString("yyyy-MM-dd HH-mm")).Append(".pdf");
         var document = await GenerateDocument(parameters, templateId, cancellationToken);
+
         return new GoogleFile()
         {
             Content = document,
-            Filename = attachmentName,
+            Filename = attachmentName.ToString(),
             MimeType = "application/pdf"
         };
     }
