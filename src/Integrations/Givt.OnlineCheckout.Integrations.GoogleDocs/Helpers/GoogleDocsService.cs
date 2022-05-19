@@ -22,6 +22,7 @@ public class GoogleDocsService : BaseGoogleService<DocsService>
         // Fill in the file
         var requests = new List<Request>();
 
+        // TODO: make this "text hiding" stuff configurable
         if (String.IsNullOrWhiteSpace(parameters["Last4"]))
         {
             requests.Add(CreateRemoveTextRequest("nr. x{Last4}"));
