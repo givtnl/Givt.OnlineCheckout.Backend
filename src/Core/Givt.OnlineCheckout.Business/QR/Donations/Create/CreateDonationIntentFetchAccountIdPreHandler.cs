@@ -27,10 +27,11 @@ public record CreateDonationIntentFetchAccountIdPreHandler(OnlineCheckoutContext
         request.Medium = medium;
 
         var description = new StringBuilder();
-        description.Append(medium.GetLocalisedText(nameof(MediumTexts.Title), request.Language)?.Trim());
-        if (description.Length > 0)
-            description.Append(" - ");
+        // on payments through Stripe, only the first 22 chars are shown. Make sure most important info comes first.
         description.Append(medium.Organisation.Name);
+        var campaignName = medium.GetLocalisedText(nameof(MediumTexts.Title), request.Language)?.Trim();
+        if (!String.IsNullOrWhiteSpace(campaignName))        
+            description.Append(" - ").Append(campaignName);
 
         request.Description = description.ToString();
     }

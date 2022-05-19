@@ -6,7 +6,7 @@ public static class PaymentIntentExtensions
 {
     private static ChargePaymentMethodDetails GetPaymentMethodDetails(PaymentIntent paymentIntent)
     {
-        return paymentIntent.Charges.FirstOrDefault()?.PaymentMethodDetails;
+        return paymentIntent.Charges?.FirstOrDefault()?.PaymentMethodDetails;
     }
 
     public static string GetPaymentMethod(this PaymentIntent paymentIntent)
