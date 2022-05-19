@@ -34,8 +34,8 @@ namespace Givt.OnlineCheckout.API
                                 .TrimKeyPrefix(ConfigKeyCommonPrefix)
                                 ;
                             })
-                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // I think we dont need this anymore right? Bcus AddAzureAppConfig() ?
-                            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false) // I think we dont need this anymore right? Bcus AddAzureAppConfig() ?
+                            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: false)
                             .AddEnvironmentVariables();
                     })
                     .UseDefaultServiceProvider(x =>
