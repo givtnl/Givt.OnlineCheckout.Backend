@@ -1,10 +1,11 @@
 ﻿using Givt.OnlineCheckout.Integrations.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Serilog.Sinks.Http.Logger;
 using Stripe;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
 
 namespace Givt.OnlineCheckout.Integrations.Stripe;
@@ -66,13 +67,12 @@ public class StripeIntegration : ISinglePaymentService
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
             PaymentMethodTypes = new List<string> { stripePaymentMethod },
         };
-        createOptions.StatementDescriptor = description[..22]; // 22 = max length allowed. 
+        createOptions.StatementDescriptor = description;
         if (stripePaymentMethod == "card")
-        {
-            // 22 = max length allowed after concatenation with configured "shortened descriptor"
-            // Let's hope no-one changes it.
-            createOptions.StatementDescriptorSuffix = description[..22];
-        }
+            createOptions.StatementDescriptorSuffix = description;
+
+        createOptions.StatementDescriptor = SanitizeDescriptor(createOptions.StatementDescriptor, 5, 22);
+        createOptions.StatementDescriptorSuffix = SanitizeDescriptor(createOptions.StatementDescriptorSuffix, 2, 22 - 5);// 5 = length "Givt" + *
 
 
         var stopwatch = new Stopwatch();
@@ -82,6 +82,15 @@ public class StripeIntegration : ISinglePaymentService
         _log.Debug("Stripe returned a payment intent, id='{0}' in {1} ms", new object[] { paymentIntent.Id, stopwatch.ElapsedMilliseconds });
 
         return new StripePaymentIntent(paymentIntent.Id, paymentIntent.ClientSecret);
+    }
+
+    private static string SanitizeDescriptor(string statementDescriptor, int minLength, int maxLength)
+    {
+        // strip illegal chars: < > \ ' " *
+        var saneString = Regex.Replace(statementDescriptor, "[^<>\\'\"*]", String.Empty).Trim();
+        if (saneString.Length < minLength)
+            return null;
+        return saneString[..maxLength];
     }
 
     public bool CanHandle(IHeaderDictionary headerDictionary)
