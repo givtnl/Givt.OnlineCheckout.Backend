@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
+using System.Text.RegularExpressions;
 
 namespace Givt.OnlineCheckout.Integrations.Stripe;
 
@@ -65,15 +66,9 @@ public class StripeIntegration : ISinglePaymentService
             TransferData = new PaymentIntentTransferDataOptions() { Destination = accountId },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
             PaymentMethodTypes = new List<string> { stripePaymentMethod },
+            StatementDescriptor = SanitizeDescriptor(description, 5, 22), // non-card
+            StatementDescriptorSuffix = SanitizeDescriptor(description, 2, 22 - ("Givt*".Length)), // card. "Givt" is what is configured in the dashboard, '*' is added as separator
         };
-        createOptions.StatementDescriptor = description[..22]; // 22 = max length allowed. 
-        if (stripePaymentMethod == "card")
-        {
-            // 22 = max length allowed after concatenation with configured "shortened descriptor"
-            // Let's hope no-one changes it.
-            createOptions.StatementDescriptorSuffix = description[..22];
-        }
-
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -82,6 +77,16 @@ public class StripeIntegration : ISinglePaymentService
         _log.Debug("Stripe returned a payment intent, id='{0}' in {1} ms", new object[] { paymentIntent.Id, stopwatch.ElapsedMilliseconds });
 
         return new StripePaymentIntent(paymentIntent.Id, paymentIntent.ClientSecret);
+    }
+
+    private string SanitizeDescriptor(string descriptor, int minLength, int maxLength)
+    {
+        var result = Regex.Replace(descriptor, "[<>\\'\"*]", string.Empty, RegexOptions.Compiled).Trim();
+        if (result.Length < minLength)
+            return null;
+        if (result.Length > maxLength)
+            return result.Substring(0, maxLength);
+        return result;
     }
 
     public bool CanHandle(IHeaderDictionary headerDictionary)
