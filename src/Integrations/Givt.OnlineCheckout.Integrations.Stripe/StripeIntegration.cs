@@ -7,6 +7,7 @@ using Stripe;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using PaymentMethod = Givt.OnlineCheckout.Integrations.Interfaces.Models.PaymentMethod;
+using System.Text.RegularExpressions;
 
 namespace Givt.OnlineCheckout.Integrations.Stripe;
 
@@ -66,14 +67,9 @@ public class StripeIntegration : ISinglePaymentService
             TransferData = new PaymentIntentTransferDataOptions() { Destination = accountId },
             ApplicationFeeAmount = Convert.ToInt64(applicationFee * 100),
             PaymentMethodTypes = new List<string> { stripePaymentMethod },
+            StatementDescriptor = SanitizeDescriptor(description, 5, 22), // non-card
+            StatementDescriptorSuffix = SanitizeDescriptor(description, 2, 22 - ("Givt*".Length)), // card. "Givt" is what is configured in the dashboard, '*' is added as separator
         };
-        createOptions.StatementDescriptor = description;
-        if (stripePaymentMethod == "card")
-            createOptions.StatementDescriptorSuffix = description;
-
-        createOptions.StatementDescriptor = SanitizeDescriptor(createOptions.StatementDescriptor, 5, 22);
-        createOptions.StatementDescriptorSuffix = SanitizeDescriptor(createOptions.StatementDescriptorSuffix, 2, 22 - 5);// 5 = length "Givt" + *
-
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -84,13 +80,14 @@ public class StripeIntegration : ISinglePaymentService
         return new StripePaymentIntent(paymentIntent.Id, paymentIntent.ClientSecret);
     }
 
-    private static string SanitizeDescriptor(string statementDescriptor, int minLength, int maxLength)
+    private string SanitizeDescriptor(string descriptor, int minLength, int maxLength)
     {
-        // strip illegal chars: < > \ ' " *
-        var saneString = Regex.Replace(statementDescriptor, "[^<>\\'\"*]", String.Empty).Trim();
-        if (saneString.Length < minLength)
+        var result = Regex.Replace(descriptor, "[<>\\'\"*]", string.Empty, RegexOptions.Compiled).Trim();
+        if (result.Length < minLength)
             return null;
-        return saneString[..maxLength];
+        if (result.Length > maxLength)
+            return result.Substring(0, maxLength);
+        return result;
     }
 
     public bool CanHandle(IHeaderDictionary headerDictionary)
