@@ -6,7 +6,7 @@ name: Build OnlineCheckout.API
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, pre-main ]
   pull_request:
 jobs:
   build:
@@ -31,8 +31,9 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/onlinecheckout-api:production
+          # Only push image when on main (production) and pre-main (development)
+          push: ${{ GitHub.event_name != 'pull_request' }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/onlinecheckout-api:${{ endsWith(github.ref, '/main') && 'production' || 'development' }}
       
   notify:
     name: Notify on Slack
