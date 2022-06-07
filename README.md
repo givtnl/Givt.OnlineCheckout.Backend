@@ -12,11 +12,6 @@ This repository holds the API backend for Givt V2
 
 _TODO for developing locally_
 
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 <!-- USAGE EXAMPLES -->
 ## Usage with docker run
 
