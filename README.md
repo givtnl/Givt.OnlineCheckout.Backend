@@ -2,53 +2,36 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+This repository holds the API backend for Givt V2
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-
 <!-- GETTING STARTED -->
-## Getting Started
-
-_TODO - This is an example_
-
 ### Prerequisites
 
-_TODO - This is an example_
+_TODO for developing locally_
 
 * npm
   ```sh
   npm install npm@latest -g
   ```
 
-### Installation
-
-_TODO - This is an example_
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- USAGE EXAMPLES -->
-## Usage
+## Usage with docker run
 
-TODO
+1. Build the backend project
+   ```sh
+   docker build -t backend .
+   ```
+2. Run the backend
+   ```sh
+   docker run -e CUSTOMCONNSTR_AzureAppConfiguration="__CONNECTION_STRING__" -p 5000:5000 backend
+   ```
+3. Go to localhost:5000/health, which should return HTTP/200
+4. Go to localhost:5000/swagger to get an overview of all the API calls available
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
